@@ -1,6 +1,8 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 
+import cloudflare from "@astrojs/cloudflare";
+
 // SITE_VARIANT=aurora builds the standalone aurora.luminusos.org variant:
 // the Aurora Shell page becomes the site root and links back to the main
 // site. The wiki and blog are separate repositories.
@@ -17,6 +19,7 @@ export default defineConfig({
   site: sites[/** @type {keyof typeof sites} */ (variant)],
   outDir: variant ? `./dist-${variant}` : './dist',
   trailingSlash: 'ignore',
+
   i18n: {
     defaultLocale: 'en',
     locales: ['en', 'pt-br'],
@@ -24,4 +27,6 @@ export default defineConfig({
       prefixDefaultLocale: false,
     },
   },
+
+  adapter: cloudflare()
 });
