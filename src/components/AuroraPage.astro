@@ -1,0 +1,539 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+import type { Lang } from '../i18n/translations';
+import { translations, langPrefix, links, mainSite } from '../i18n/translations';
+
+interface Props {
+  lang: Lang;
+  path?: string;
+}
+
+const { lang, path = '/aurora' } = Astro.props;
+const t = translations[lang];
+const a = t.auroraPage;
+const p = langPrefix(lang);
+const homeHref = `${mainSite}${p}` || '/';
+
+let latestVersion = 'v50.9';
+try {
+  const res = await fetch('https://api.github.com/repos/luminusOS/aurora-shell/releases/latest');
+  if (res.ok) {
+    const release = await res.json();
+    if (release?.tag_name) latestVersion = release.tag_name;
+  }
+} catch {
+  /* offline build — keep the fallback tag */
+}
+
+const readySpotlights = new Set<string>([]);
+
+const spotlightColors = [
+  { main: '0, 255, 135', alt: '96, 239, 255' },
+  { main: '255, 99, 216', alt: '142, 45, 226' },
+  { main: '96, 239, 255', alt: '0, 255, 135' },
+  { main: '255, 190, 92', alt: '96, 239, 255' },
+];
+---
+
+<BaseLayout lang={lang} title={a.meta.title} description={a.meta.description} path={path} ogImage="/aurora-logo.svg">
+  <Header lang={lang} path={path} />
+
+  <main class="aurora-page">
+    <section class="a-hero">
+      <div class="a-aurora" aria-hidden="true"></div>
+      <div class="container a-hero-inner">
+        <img
+          class="a-logo reveal"
+          src="/aurora-logo.svg"
+          alt="Aurora Shell logo"
+          width="180"
+          height="180"
+        />
+        <p class="eyebrow reveal" style="animation-delay: 0.1s">{a.eyebrow}</p>
+        <h1 class="reveal" style="animation-delay: 0.2s">
+          <span class="gradient-text--aurora">{a.title}</span>
+        </h1>
+        <p class="a-sub reveal" style="animation-delay: 0.32s">{a.subtitle}</p>
+        <div class="a-ctas reveal" style="animation-delay: 0.45s">
+          <a class="btn btn-primary" href={links.auroraEgo} target="_blank" rel="noopener">
+            {a.install}
+          </a>
+          <a class="btn btn-ghost" href={links.auroraRepo} target="_blank" rel="noopener">
+            {a.source} ↗
+          </a>
+        </div>
+        <p class="a-version mono reveal" style="animation-delay: 0.55s">
+          {a.version}: <a href={`${links.auroraRepo}/releases/latest`} target="_blank" rel="noopener"><strong data-aurora-version>{latestVersion}</strong></a> · GNOME Shell 50 · GPL-3.0
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container philosophy">
+        <h2>{a.philosophyTitle}</h2>
+        <blockquote>“{a.philosophy}”</blockquote>
+      </div>
+    </section>
+
+    <section class="section spotlight" id="spotlight">
+      <div class="container">
+        <div class="section-head">
+          <h2>{a.spotlightTitle}</h2>
+          <p>{a.spotlightSubtitle}</p>
+        </div>
+
+        <div class="spot-list">
+          {a.spotlights.map((s, i) => {
+            const color = spotlightColors[i % spotlightColors.length];
+            return (
+            <article
+              class="spot"
+              data-spot
+              style={`--spot-color: ${color.main}; --spot-color-alt: ${color.alt};`}
+            >
+              <div class="spot-text">
+                <span class="spot-tag mono">{s.tag}</span>
+                <h3>{s.title}</h3>
+                <p>{s.body}</p>
+              </div>
+              <div class="spot-frame">
+                <div class="spot-window">
+                  {readySpotlights.has(s.file) ? (
+                    <img src={`/img/aurora/${s.file}`} alt={s.title} loading="lazy" />
+                  ) : (
+                    <div class="spot-placeholder">
+                      <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <rect x="3" y="4" width="18" height="14" rx="2" />
+                        <circle cx="8.5" cy="9" r="1.5" />
+                        <path d="m3 15.5 4.5-4 3.5 3 4-4.5 6 5.5" />
+                      </svg>
+                      <span>{a.screenshotSoon}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </article>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="modules">
+      <div class="container">
+        <div class="section-head">
+          <h2>{a.modulesTitle}</h2>
+          <p>{a.modulesSubtitle}</p>
+        </div>
+
+        <div class="module-groups">
+          {a.moduleGroups.map((g, gi) => (
+            <div class="module-group">
+              <h3 class="module-group-title">{g.name}</h3>
+              <div class="module-grid">
+                {g.modules.map((m, i) => (
+                  <article class="card module" style={`--hue-shift: ${(gi * 4 + i) * 18}deg`}>
+                    <span class="module-dot" aria-hidden="true"></span>
+                    <h4>{m.name}</h4>
+                    <p>{m.body}</p>
+                  </article>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section design">
+      <div class="container">
+        <div class="section-head">
+          <h2>{a.designTitle}</h2>
+        </div>
+        <div class="design-grid">
+          {a.design.map((d) => (
+            <article class="design-item">
+              <h3>{d.title}</h3>
+              <p>{d.body}</p>
+            </article>
+          ))}
+        </div>
+
+        <p class="back-home">
+          <a href={homeHref}>← {a.backHome}</a>
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <Footer lang={lang} />
+</BaseLayout>
+
+<script>
+  const versionEl = document.querySelector('[data-aurora-version]');
+  if (versionEl) {
+    fetch('https://api.github.com/repos/luminusOS/aurora-shell/releases/latest')
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
+      .then((release) => {
+        if (release?.tag_name) {
+          versionEl.textContent = release.tag_name;
+        }
+      })
+      .catch(() => {
+        /* rate-limited or offline — keep the build-time tag */
+      });
+  }
+
+  const spots = document.querySelectorAll('[data-spot]');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+            io.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.2 },
+    );
+    spots.forEach((spot) => io.observe(spot));
+  } else {
+    spots.forEach((spot) => spot.classList.add('in-view'));
+  }
+</script>
+
+<style>
+  .a-hero {
+    position: relative;
+    padding-block: clamp(4.5rem, 9vw, 7rem);
+    overflow: hidden;
+  }
+
+  .a-aurora {
+    position: absolute;
+    inset: -30% -15% auto;
+    height: 90%;
+    background:
+      radial-gradient(40% 55% at 25% 35%, rgba(0, 255, 135, 0.22), transparent 70%),
+      radial-gradient(45% 60% at 55% 20%, rgba(96, 239, 255, 0.18), transparent 70%),
+      radial-gradient(40% 55% at 80% 40%, rgba(142, 45, 226, 0.24), transparent 70%);
+    filter: blur(46px);
+    opacity: var(--glow-strength);
+    animation: a-sway 12s ease-in-out infinite alternate;
+    pointer-events: none;
+  }
+
+  @keyframes a-sway {
+    from { transform: translateX(-3%) rotate(-1.5deg); }
+    to { transform: translateX(3%) rotate(1.5deg); }
+  }
+
+  .a-hero-inner {
+    position: relative;
+    text-align: center;
+    display: grid;
+    justify-items: center;
+    gap: 1.1rem;
+  }
+
+  .a-logo {
+    filter: drop-shadow(0 0 50px rgba(0, 255, 135, 0.4));
+    animation: rise-in 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) forwards, logo-breathe 6s ease-in-out 1s infinite;
+  }
+
+  @keyframes logo-breathe {
+    0%, 100% { filter: drop-shadow(0 0 50px rgba(0, 255, 135, 0.4)); }
+    50% { filter: drop-shadow(0 0 70px rgba(96, 239, 255, 0.55)); }
+  }
+
+  .a-hero h1 {
+    font-size: clamp(3rem, 8vw, 5.8rem);
+    font-weight: 800;
+  }
+
+  .a-sub {
+    max-width: 42rem;
+    color: var(--ink-dim);
+    font-size: clamp(1.05rem, 1.6vw, 1.2rem);
+  }
+
+  .a-ctas {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 0.8rem;
+  }
+
+  .a-version {
+    font-size: 0.8rem;
+    color: var(--ink-faint);
+  }
+
+  .a-version a {
+    text-decoration: none;
+  }
+
+  .a-version a:hover strong {
+    text-decoration: underline;
+  }
+
+  .a-version strong {
+    color: var(--aurora-green);
+  }
+
+  .philosophy {
+    max-width: 50rem;
+    text-align: center;
+    display: grid;
+    gap: 1.6rem;
+  }
+
+  .philosophy h2 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+  }
+
+  .philosophy blockquote {
+    margin: 0;
+    font-size: clamp(1.15rem, 2vw, 1.45rem);
+    line-height: 1.55;
+    color: var(--ink-dim);
+    font-style: italic;
+    border-inline-start: 3px solid;
+    border-image: linear-gradient(180deg, var(--aurora-green), var(--aurora-violet)) 1;
+    padding-inline-start: 1.5rem;
+    text-align: start;
+  }
+
+  .spot-list {
+    display: grid;
+    gap: clamp(3.2rem, 7vw, 5rem);
+  }
+
+  .spot {
+    display: grid;
+    grid-template-columns: minmax(16rem, 2fr) 3fr;
+    gap: clamp(1.6rem, 4vw, 3.5rem);
+    align-items: center;
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  .spot.in-view {
+    opacity: 1;
+    transform: none;
+  }
+
+  .spot:nth-child(even) {
+    grid-template-columns: 3fr minmax(16rem, 2fr);
+  }
+
+  .spot:nth-child(even) .spot-text {
+    order: 2;
+  }
+
+  .spot-text {
+    display: grid;
+    gap: 0.8rem;
+    align-content: center;
+  }
+
+  .spot-tag {
+    justify-self: start;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgb(var(--spot-color));
+    border: 1px solid rgba(var(--spot-color), 0.35);
+    border-radius: 999px;
+    padding: 0.25rem 0.7rem;
+  }
+
+  .spot-text h3 {
+    font-size: clamp(1.4rem, 2.6vw, 1.9rem);
+    line-height: 1.2;
+    color: rgb(var(--spot-color));
+  }
+
+  .spot-text p {
+    color: var(--ink-dim);
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .spot-frame {
+    position: relative;
+    display: grid;
+    justify-items: center;
+  }
+
+  .spot-window {
+    position: relative;
+    display: grid;
+    justify-items: center;
+    max-width: 100%;
+    transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  .spot-frame:hover .spot-window {
+    transform: translateY(-6px);
+  }
+
+  .spot-window img {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    filter:
+      drop-shadow(0 24px 34px rgba(0, 0, 0, 0.26))
+      drop-shadow(0 0 34px rgba(var(--spot-color), 0.28))
+      drop-shadow(0 0 78px rgba(var(--spot-color-alt), 0.14));
+  }
+
+  .spot-placeholder {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    width: min(100%, 760px);
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 0.7rem;
+    color: var(--ink-faint);
+    font-size: 0.85rem;
+    background:
+      radial-gradient(60% 80% at 50% 0%, rgba(var(--spot-color), 0.14), transparent 70%),
+      radial-gradient(50% 70% at 80% 100%, rgba(var(--spot-color-alt), 0.12), transparent 70%);
+    overflow: hidden;
+    filter:
+      drop-shadow(0 24px 34px rgba(0, 0, 0, 0.22))
+      drop-shadow(0 0 34px rgba(var(--spot-color), 0.18));
+  }
+
+  .spot-placeholder::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, transparent 42%, rgba(96, 239, 255, 0.09) 50%, transparent 58%);
+    transform: translateX(-100%);
+    animation: spot-shimmer 3s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  @keyframes spot-shimmer {
+    0% { transform: translateX(-100%); }
+    60%, 100% { transform: translateX(100%); }
+  }
+
+  @media (max-width: 760px) {
+    .spot,
+    .spot:nth-child(even) {
+      grid-template-columns: 1fr;
+    }
+
+    .spot:nth-child(even) .spot-text {
+      order: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .spot {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+
+    .spot-placeholder::after {
+      animation: none;
+    }
+  }
+
+  .module-groups {
+    display: grid;
+    gap: 2.6rem;
+  }
+
+  .module-group {
+    display: grid;
+    gap: 1.1rem;
+  }
+
+  .module-group-title {
+    font-size: 1.05rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--ink-dim);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.55rem;
+  }
+
+  .module-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(245px, 1fr));
+    gap: 1.3rem;
+  }
+
+  .module {
+    display: grid;
+    gap: 0.6rem;
+    align-content: start;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+
+  .module:hover {
+    transform: translateY(-4px);
+    border-color: rgba(0, 255, 135, 0.4);
+  }
+
+  .module-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--grad-aurora);
+    filter: hue-rotate(var(--hue-shift, 0deg));
+    box-shadow: 0 0 12px rgba(96, 239, 255, 0.5);
+  }
+
+  .module h4 {
+    font-size: 1.15rem;
+  }
+
+  .module p {
+    color: var(--ink-dim);
+    font-size: 0.93rem;
+  }
+
+  .design-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 2.2rem;
+  }
+
+  .design-item h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.6rem;
+    border-bottom: 1px solid rgba(96, 239, 255, 0.25);
+    padding-bottom: 0.6rem;
+  }
+
+  .design-item p {
+    color: var(--ink-dim);
+    font-size: 0.97rem;
+  }
+
+  .back-home {
+    margin-top: 3.5rem;
+  }
+
+  .back-home a {
+    color: var(--ink-dim);
+    text-decoration: none;
+  }
+
+  .back-home a:hover {
+    color: var(--aurora-cyan);
+  }
+</style>

@@ -1,0 +1,602 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+import DeviceShowcase from './DeviceShowcase.astro';
+import type { Lang } from '../i18n/translations';
+import { translations, langPrefix, links } from '../i18n/translations';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = translations[lang];
+const p = langPrefix(lang);
+
+const editionOrder = ['workstation', 'play', 'mobile', 'tablet', 'cast'] as const;
+
+const editionIcons: Record<(typeof editionOrder)[number], string> = {
+  workstation: 'M3 5h18v11H3zM1 19h22v1.5H1z',
+  play: 'M6 8h12a4 4 0 0 1 4 4v3a3 3 0 0 1-5.4 1.8L15 15H9l-1.6 1.8A3 3 0 0 1 2 15v-3a4 4 0 0 1 4-4z',
+  mobile: 'M8 2h8a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm2 17h4',
+  tablet: 'M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z',
+  cast: 'M2 5h20v12h-8M2 21l5-.02A5 5 0 0 0 2 16zm0-4a9 9 0 0 1 9 9',
+};
+---
+
+<BaseLayout lang={lang} title={t.meta.title} description={t.meta.description} path="/">
+  <Header lang={lang} path="/" />
+
+  <main>
+    <section class="hero">
+      <div class="hero-aurora" aria-hidden="true"></div>
+      <div class="container">
+        <p class="eyebrow reveal" style="animation-delay: 0.05s">{t.hero.eyebrow}</p>
+        <h1 class="reveal" style="animation-delay: 0.15s">
+          {t.hero.title}<br />
+          <span class="gradient-text">{t.hero.titleAccent}</span>
+        </h1>
+        <p class="hero-sub reveal" style="animation-delay: 0.3s">{t.hero.subtitle}</p>
+        <div class="hero-ctas reveal" style="animation-delay: 0.45s">
+          <a class="btn btn-primary" href={links.releasesLatest} target="_blank" rel="noopener">
+            ⬇ {t.hero.cta}
+          </a>
+          <a class="btn btn-ghost" href={`${p}/aurora`}>{t.hero.ctaSecondary}</a>
+        </div>
+
+        <DeviceShowcase lang={lang} />
+        <p class="device-note mono">{t.hero.deviceNote}</p>
+      </div>
+    </section>
+
+    <section class="section" id="why">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">01</p>
+          <h2>{t.pillars.title}</h2>
+          <p>{t.pillars.subtitle}</p>
+        </div>
+
+        <div class="pillar-grid">
+          {t.pillars.items.map((item, i) => (
+            <article class="card pillar">
+              <span class="pillar-index mono">{String(i + 1).padStart(2, '0')}</span>
+              <h3>{item.title}</h3>
+              <p>{item.body}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section how" id="how">
+      <div class="container how-grid">
+        <div>
+          <div class="section-head">
+            <p class="eyebrow">02</p>
+            <h2>{t.how.title}</h2>
+            <p>{t.how.subtitle}</p>
+          </div>
+
+          <ol class="steps">
+            {t.how.steps.map((step) => (
+              <li>
+                <span class="step-num mono">{step.num}</span>
+                <div>
+                  <h3>{step.title}</h3>
+                  <p>{step.body}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+
+        <aside class="terminal" aria-label={t.how.terminalTitle}>
+          <div class="terminal-bar">
+            <i></i><i></i><i></i>
+            <span class="mono">{t.how.terminalTitle}</span>
+          </div>
+          <pre class="mono"><code><span class="t-prompt">$</span> bootc status
+<span class="t-ok">●</span> booted&#58;   ghcr.io/luminusos/luminusos-workstation&#58;44
+  rollback&#58; 44.20260528
+
+<span class="t-prompt">$</span> sudo bootc upgrade
+<span class="t-dim">pulling image… layers cached</span>
+<span class="t-dim">staging 44.20260610</span>
+<span class="t-ok">✓</span> queued for next boot (rollback kept)</code></pre>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" id="editions">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">03</p>
+          <h2>{t.editions.title}</h2>
+          <p>{t.editions.subtitle}</p>
+        </div>
+
+        <div class="edition-grid">
+          {editionOrder.map((key) => {
+            const e = t.editions.items[key];
+            const available = key === 'workstation';
+            return (
+              <article class={`card edition ${available ? 'is-available' : 'is-locked'}`}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="edition-icon" aria-hidden="true">
+                  <path d={editionIcons[key]} stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <h3>{e.name}</h3>
+                <p class="edition-device mono">{e.device}</p>
+                <p class="edition-body">{e.body}</p>
+                {available ? (
+                  <a class="btn btn-primary btn-sm" href={links.releasesLatest} target="_blank" rel="noopener">
+                    ⬇ {t.editions.downloadLatest}
+                  </a>
+                ) : (
+                  <span class="locked-pill mono">
+                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                      <rect x="5" y="11" width="14" height="9" rx="2" />
+                      <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+                    </svg>
+                    {t.editions.comingSoon}
+                  </span>
+                )}
+              </article>
+            );
+          })}
+        </div>
+
+        <p class="all-releases">
+          <a href={links.releasesAll} target="_blank" rel="noopener">{t.editions.viewAll} ↗</a>
+        </p>
+      </div>
+    </section>
+
+    <section class="section aurora-teaser">
+      <div class="container teaser-card">
+        <div class="teaser-text">
+          <p class="eyebrow">{t.aurora.eyebrow}</p>
+          <h2 class="gradient-text--aurora">{t.aurora.title}</h2>
+          <p>{t.aurora.subtitle}</p>
+          <a class="btn btn-ghost" href={`${p}/aurora`}>{t.aurora.cta} →</a>
+        </div>
+        <img src="/aurora-logo.svg" alt="Aurora Shell logo" width="220" height="220" loading="lazy" />
+      </div>
+    </section>
+
+    <section class="section download" id="download">
+      <div class="container download-inner">
+        <h2>{t.download.title}</h2>
+        <p>{t.download.subtitle}</p>
+        <a class="btn btn-primary btn-lg" href={links.releasesLatest} target="_blank" rel="noopener">
+          ⬇ {t.download.button}
+          <span class="release-tag mono" data-release-tag hidden></span>
+        </a>
+        <p class="download-note">{t.download.note}</p>
+      </div>
+    </section>
+
+    <section class="section support" id="support">
+      <div class="container support-card">
+        <div class="support-heart" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="42" height="42" fill="currentColor">
+            <path d="M12 21s-7.5-4.7-10-9.3C.4 8.6 2.4 5 5.8 5c2 0 3.4 1.1 4.2 2.4l2 .1 2-.1C14.8 6.1 16.2 5 18.2 5c3.4 0 5.4 3.6 3.8 6.7C19.5 16.3 12 21 12 21z" />
+          </svg>
+        </div>
+        <h2>{t.support.title}</h2>
+        <p>{t.support.subtitle}</p>
+        <a class="btn btn-donate" href={links.donate} target="_blank" rel="noopener">
+          {t.support.button}
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <Footer lang={lang} />
+</BaseLayout>
+
+<script>
+  const tagEl = document.querySelector('[data-release-tag]');
+  if (tagEl) {
+    fetch('https://api.github.com/repos/luminusOS/images/releases/latest')
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
+      .then((release) => {
+        if (release?.tag_name) {
+          tagEl.textContent = release.tag_name;
+          tagEl.removeAttribute('hidden');
+        }
+      })
+      .catch(() => {
+        /* no releases yet — button still points at /releases/latest */
+      });
+  }
+</script>
+
+<style>
+  .hero {
+    position: relative;
+    padding-block: clamp(4rem, 9vw, 7rem) 3rem;
+    overflow: hidden;
+  }
+
+  .hero-aurora {
+    position: absolute;
+    inset: -20% -10% auto;
+    height: 70%;
+    background:
+      radial-gradient(45% 60% at 18% 30%, rgba(96, 168, 255, 0.16), transparent 70%),
+      radial-gradient(50% 65% at 50% 18%, rgba(60, 130, 246, 0.22), transparent 70%),
+      radial-gradient(45% 60% at 82% 32%, rgba(37, 99, 235, 0.18), transparent 70%);
+    filter: blur(40px);
+    opacity: var(--glow-strength);
+    animation: aurora-sway 14s ease-in-out infinite alternate;
+    pointer-events: none;
+  }
+
+  @keyframes aurora-sway {
+    from { transform: translateX(-2.5%) skewX(-2deg); }
+    to { transform: translateX(2.5%) skewX(2deg); }
+  }
+
+  .hero .container {
+    position: relative;
+    text-align: center;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.8rem, 7.5vw, 5.5rem);
+    font-weight: 800;
+    margin-top: 1.2rem;
+  }
+
+  .hero-sub {
+    max-width: 44rem;
+    margin: 1.6rem auto 0;
+    color: var(--ink-dim);
+    font-size: clamp(1.05rem, 1.6vw, 1.2rem);
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2.2rem;
+    flex-wrap: wrap;
+  }
+
+  .device-note {
+    margin-top: 3.4rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    color: var(--ink-faint);
+  }
+
+  .pillar-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.4rem;
+  }
+
+  .pillar {
+    display: grid;
+    gap: 0.8rem;
+    align-content: start;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+
+  .pillar:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent);
+  }
+
+  .pillar-index {
+    color: var(--accent);
+    font-size: 0.8rem;
+  }
+
+  .pillar h3 {
+    font-size: 1.35rem;
+  }
+
+  .pillar p {
+    color: var(--ink-dim);
+    font-size: 0.97rem;
+  }
+
+  .how-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: start;
+  }
+
+  .steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 2rem;
+  }
+
+  .steps li {
+    display: flex;
+    gap: 1.3rem;
+  }
+
+  .step-num {
+    color: var(--accent);
+    font-size: 0.85rem;
+    padding-top: 0.45rem;
+    flex-shrink: 0;
+  }
+
+  .steps h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .steps p {
+    color: var(--ink-dim);
+    font-size: 0.97rem;
+  }
+
+  .terminal {
+    position: sticky;
+    top: 6rem;
+    color: #e8eefb;
+    border: 1px solid rgba(159, 176, 204, 0.16);
+    border-radius: var(--radius);
+    background: rgba(6, 10, 18, 0.85);
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+  }
+
+  .terminal-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid rgba(159, 176, 204, 0.16);
+    background: rgba(24, 36, 65, 0.5);
+  }
+
+  .terminal-bar i {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: #66758f;
+    opacity: 0.5;
+  }
+
+  .terminal-bar span {
+    margin-left: auto;
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    color: #66758f;
+  }
+
+  .terminal pre {
+    margin: 0;
+    padding: 1.2rem 1.3rem;
+    font-size: 0.8rem;
+    line-height: 1.75;
+    overflow-x: auto;
+  }
+
+  .t-prompt { color: var(--aurora-green); }
+  .t-ok { color: var(--aurora-cyan); }
+  .t-dim { color: var(--ink-faint); }
+
+  .edition-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
+    gap: 1.4rem;
+  }
+
+  @media (min-width: 1100px) {
+    .edition-grid {
+      grid-template-columns: repeat(5, 1fr);
+    }
+  }
+
+  .edition {
+    display: grid;
+    gap: 0.7rem;
+    align-content: start;
+    justify-items: start;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+
+  .edition.is-available {
+    border-color: rgba(60, 130, 246, 0.5);
+    background: linear-gradient(160deg, rgba(60, 130, 246, 0.18), var(--surface-2));
+  }
+
+  .edition.is-available:hover {
+    transform: translateY(-4px);
+  }
+
+  .edition.is-locked {
+    opacity: 0.72;
+  }
+
+  .edition.is-locked:hover {
+    opacity: 1;
+    border-color: var(--accent);
+  }
+
+  .edition-icon {
+    width: 34px;
+    height: 34px;
+    color: var(--accent);
+  }
+
+  .edition h3 {
+    font-size: 1.3rem;
+  }
+
+  .edition-device {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--ink-faint);
+  }
+
+  .edition-body {
+    color: var(--ink-dim);
+    font-size: 0.93rem;
+    min-height: 4.2em;
+  }
+
+  .btn-sm {
+    padding: 0.55rem 1.15rem;
+    font-size: 0.88rem;
+  }
+
+  .locked-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    border: 1px dashed var(--border-color);
+    color: var(--ink-faint);
+  }
+
+  .all-releases {
+    margin-top: 2.2rem;
+    text-align: center;
+  }
+
+  .all-releases a {
+    color: var(--ink-dim);
+    text-decoration: none;
+    font-size: 0.95rem;
+  }
+
+  .all-releases a:hover {
+    color: var(--accent);
+  }
+
+  .teaser-card {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 2.5rem;
+    align-items: center;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: clamp(2rem, 5vw, 3.5rem);
+    background:
+      radial-gradient(80% 120% at 100% 0%, rgba(142, 45, 226, 0.16), transparent 60%),
+      radial-gradient(70% 120% at 0% 100%, rgba(0, 255, 135, 0.1), transparent 60%),
+      linear-gradient(160deg, var(--surface-1), var(--surface-2));
+    overflow: hidden;
+  }
+
+  .teaser-text {
+    display: grid;
+    gap: 1.1rem;
+    justify-items: start;
+  }
+
+  .teaser-text h2 {
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+  }
+
+  .teaser-text p:not(.eyebrow) {
+    color: var(--ink-dim);
+    max-width: 34rem;
+  }
+
+  .teaser-card img {
+    filter: drop-shadow(0 0 40px rgba(96, 239, 255, 0.35));
+  }
+
+  .download-inner {
+    text-align: center;
+    display: grid;
+    gap: 1.4rem;
+    justify-items: center;
+  }
+
+  .download-inner h2 {
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+  }
+
+  .download-inner > p {
+    color: var(--ink-dim);
+    max-width: 36rem;
+  }
+
+  .btn-lg {
+    padding: 1.05rem 2.2rem;
+    font-size: 1.1rem;
+  }
+
+  .release-tag {
+    font-size: 0.75rem;
+    background: rgba(6, 10, 18, 0.35);
+    border-radius: 999px;
+    padding: 0.2rem 0.7rem;
+  }
+
+  .download-note {
+    font-size: 0.85rem;
+    color: var(--ink-faint);
+  }
+
+  .support {
+    padding-top: 0;
+  }
+
+  .support-card {
+    text-align: center;
+    display: grid;
+    gap: 1.2rem;
+    justify-items: center;
+    border: 1px solid rgba(224, 53, 107, 0.35);
+    border-radius: var(--radius-lg);
+    padding: clamp(2rem, 5vw, 3.5rem);
+    background:
+      radial-gradient(70% 130% at 50% 0%, rgba(224, 53, 107, 0.12), transparent 65%),
+      linear-gradient(160deg, var(--surface-1), var(--surface-2));
+  }
+
+  .support-heart {
+    color: #ff5d8f;
+    filter: drop-shadow(0 0 18px rgba(255, 93, 143, 0.45));
+  }
+
+  .support-card h2 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+  }
+
+  .support-card p {
+    color: var(--ink-dim);
+    max-width: 36rem;
+  }
+
+  @media (max-width: 860px) {
+    .how-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .terminal {
+      position: static;
+    }
+
+    .teaser-card {
+      grid-template-columns: 1fr;
+      justify-items: center;
+      text-align: center;
+    }
+
+    .teaser-text {
+      justify-items: center;
+    }
+  }
+</style>

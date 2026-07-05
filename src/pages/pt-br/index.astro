@@ -1,0 +1,7 @@
+---
+import HomePage from '../../components/HomePage.astro';
+import AuroraPage from '../../components/AuroraPage.astro';
+import { siteVariant } from '../../i18n/translations';
+---
+
+{siteVariant === 'aurora' ? <AuroraPage lang="pt-br" path="/" /> : <HomePage lang="pt-br" />}

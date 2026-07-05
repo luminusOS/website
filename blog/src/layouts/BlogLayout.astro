@@ -1,0 +1,322 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+
+// Posts are written in English only. The Translate menu hands the current
+// page to Google Translate's proxy (<host with dashes>.translate.goog).
+const translateHost = new URL(Astro.site ?? 'https://blog.luminusos.org').hostname.replaceAll('.', '-');
+const translateTo = (tl: string) =>
+  `https://${translateHost}.translate.goog${Astro.url.pathname}?_x_tr_sl=en&_x_tr_tl=${tl}&_x_tr_hl=${tl}`;
+
+const translateLangs = [
+  { code: 'pt', label: 'Português' },
+  { code: 'es', label: 'Español' },
+  { code: 'fr', label: 'Français' },
+  { code: 'de', label: 'Deutsch' },
+  { code: 'it', label: 'Italiano' },
+  { code: 'ja', label: '日本語' },
+  { code: 'zh-CN', label: '中文' },
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark light" />
+    <script is:inline>
+      (() => {
+        const saved = localStorage.getItem('theme');
+        const theme =
+          saved === 'light' || saved === 'dark'
+            ? saved
+            : matchMedia('(prefers-color-scheme: light)').matches
+              ? 'light'
+              : 'dark';
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="article" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Sans:ital,wght@0,400..700;1,400&family=JetBrains+Mono:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <meta name="generator" content={Astro.generator} />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="brand" href="/">
+          <img src="/logos/brand.svg" alt="" width="26" height="26" />
+          <span>Luminus<strong>OS</strong> Blog</span>
+        </a>
+
+        <nav class="main-nav" aria-label="Main">
+          <a href="https://luminusos.org">luminusos.org</a>
+          <a href="https://wiki.luminusos.org">Wiki</a>
+          <a href="https://aurora.luminusos.org">Aurora Shell</a>
+          <a href="https://github.com/luminusOS" target="_blank" rel="noopener">GitHub ↗</a>
+        </nav>
+
+        <div class="header-actions">
+          <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle light/dark theme" title="Toggle light/dark theme">
+            <svg class="icon-sun" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="4.5" />
+              <path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M19.4 4.6l-1.8 1.8M6.4 17.6l-1.8 1.8" />
+            </svg>
+            <svg class="icon-moon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
+            </svg>
+          </button>
+
+          <details class="translate-menu" data-translate-menu>
+            <summary>
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+              </svg>
+              Translate
+              <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </summary>
+            <div class="translate-pop">
+              <p>Posts are written in English. Read a machine translation via Google Translate:</p>
+              <ul role="list">
+                {translateLangs.map((l) => (
+                  <li><a href={translateTo(l.code)} rel="noopener nofollow">{l.label}</a></li>
+                ))}
+              </ul>
+            </div>
+          </details>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>
+          © {new Date().getFullYear()} LuminusOS Community ·
+          <a href="https://luminusos.org">luminusos.org</a> ·
+          <a href="https://github.com/luminusOS/blog" target="_blank" rel="noopener">Source</a>
+        </p>
+      </div>
+    </footer>
+
+    <script>
+      document.querySelectorAll('[data-theme-toggle]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const next = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+          document.documentElement.dataset.theme = next;
+          localStorage.setItem('theme', next);
+        });
+      });
+
+      document.addEventListener('click', (e) => {
+        document.querySelectorAll('[data-translate-menu][open]').forEach((menu) => {
+          if (e.target instanceof Node && !menu.contains(e.target)) {
+            menu.removeAttribute('open');
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    backdrop-filter: blur(14px);
+    background: var(--header-bg);
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .header-inner {
+    width: min(72rem, calc(100% - 2.5rem));
+    margin-inline: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 0.85rem;
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    text-decoration: none;
+    color: inherit;
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+  }
+
+  .brand strong {
+    color: var(--accent);
+  }
+
+  .main-nav {
+    display: flex;
+    gap: 1.4rem;
+  }
+
+  .main-nav a {
+    text-decoration: none;
+    color: var(--ink-dim);
+    font-size: 0.95rem;
+    transition: color 0.15s ease;
+  }
+
+  .main-nav a:hover {
+    color: var(--accent);
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+  }
+
+  .theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.1rem;
+    height: 2.1rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background: transparent;
+    color: var(--ink-dim);
+    cursor: pointer;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .theme-toggle:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .theme-toggle .icon-sun { display: none; }
+  :global(html[data-theme='dark']) .theme-toggle .icon-sun { display: block; }
+  :global(html[data-theme='dark']) .theme-toggle .icon-moon { display: none; }
+
+  .translate-menu {
+    position: relative;
+  }
+
+  .translate-menu summary {
+    list-style: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.85rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.4rem 0.7rem;
+    color: var(--ink-dim);
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .translate-menu summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .translate-menu summary:hover,
+  .translate-menu[open] summary {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .translate-pop {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 0.5rem);
+    width: 15rem;
+    padding: 0.9rem;
+    background: var(--surface-2);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(14px);
+    z-index: 50;
+  }
+
+  .translate-pop p {
+    margin: 0 0 0.6rem;
+    font-size: 0.78rem;
+    color: var(--ink-faint);
+    line-height: 1.5;
+  }
+
+  .translate-pop ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 0.1rem;
+  }
+
+  .translate-pop a {
+    display: block;
+    padding: 0.4rem 0.6rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    color: var(--ink-dim);
+  }
+
+  .translate-pop a:hover {
+    background: var(--ghost-bg);
+    color: var(--accent);
+  }
+
+  main {
+    padding-block: clamp(2.5rem, 6vw, 4.5rem);
+    min-height: 60vh;
+  }
+
+  .site-footer {
+    border-top: 1px solid var(--border-color);
+    padding-block: 2rem;
+  }
+
+  .site-footer p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--ink-faint);
+  }
+
+  .site-footer a {
+    color: var(--ink-dim);
+  }
+
+  @media (max-width: 720px) {
+    .main-nav {
+      display: none;
+    }
+  }
+</style>

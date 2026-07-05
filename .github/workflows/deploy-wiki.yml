@@ -1,0 +1,37 @@
+# Builds the wiki (a sub-project in wiki/) and publishes it to the gh-pages
+# branch of luminusOS/wiki, which serves wiki.luminusos.org via GitHub Pages
+# (one Pages site per repo). Requires the WIKI_DEPLOY_TOKEN secret: a
+# fine-grained PAT with "Contents: write" on luminusOS/wiki.
+
+name: Deploy wiki site
+
+on:
+  push:
+    branches: [main]
+    paths: ['wiki/**']
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: wiki
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: wiki/package-lock.json
+
+      - run: npm ci
+      - run: npm run build
+
+      - uses: peaceiris/actions-gh-pages@v4
+        with:
+          personal_token: ${{ secrets.WIKI_DEPLOY_TOKEN }}
+          external_repository: luminusOS/wiki
+          publish_branch: gh-pages
+          publish_dir: ./wiki/dist

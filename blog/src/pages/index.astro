@@ -1,0 +1,109 @@
+---
+import { getCollection } from 'astro:content';
+import BlogLayout from '../layouts/BlogLayout.astro';
+
+const posts = (await getCollection('posts')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+
+const dateFormat = new Intl.DateTimeFormat('en-US', { dateStyle: 'long', timeZone: 'UTC' });
+---
+
+<BlogLayout
+  title="LuminusOS Blog"
+  description="Release announcements, development updates and stories from the LuminusOS project."
+>
+  <p class="eyebrow">News</p>
+  <h1>The LuminusOS Blog</h1>
+  <p class="sub">
+    Release notes, development updates and the occasional behind-the-scenes story.
+  </p>
+
+  <div class="post-list">
+    {posts.map((post) => (
+      <a class="card post-item" href={`/posts/${post.id}/`}>
+        <header>
+          <span class="tag mono">{post.data.tag}</span>
+          <time class="mono" datetime={post.data.date.toISOString()}>
+            {dateFormat.format(post.data.date)}
+          </time>
+        </header>
+        <h2>{post.data.title}</h2>
+        <p>{post.data.description}</p>
+        <span class="read-more">Read more →</span>
+      </a>
+    ))}
+  </div>
+</BlogLayout>
+
+<style>
+  h1 {
+    font-size: clamp(2.4rem, 6vw, 3.6rem);
+    font-weight: 800;
+    margin-top: 0.6rem;
+  }
+
+  .sub {
+    color: var(--ink-dim);
+    font-size: 1.1rem;
+    margin: 1rem 0 0;
+  }
+
+  .post-list {
+    margin-top: 2.5rem;
+    display: grid;
+    gap: 1.4rem;
+  }
+
+  .post-item {
+    display: grid;
+    gap: 0.7rem;
+    padding: 1.75rem;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+
+  .post-item:hover {
+    transform: translateY(-3px);
+    border-color: var(--accent);
+  }
+
+  .post-item header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    padding: 0.25rem 0.75rem;
+  }
+
+  time {
+    font-size: 0.75rem;
+    color: var(--ink-faint);
+  }
+
+  .post-item h2 {
+    font-size: 1.6rem;
+  }
+
+  .post-item p {
+    margin: 0;
+    color: var(--ink-dim);
+  }
+
+  .read-more {
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+</style>

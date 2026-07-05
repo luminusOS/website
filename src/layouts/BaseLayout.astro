@@ -1,0 +1,62 @@
+---
+import '../styles/global.css';
+import type { Lang } from '../i18n/translations';
+import { langPrefix } from '../i18n/translations';
+
+interface Props {
+  lang: Lang;
+  title: string;
+  description: string;
+  path: string;
+  ogImage?: string;
+}
+
+const { lang, title, description, path, ogImage = '/logos/brand.svg' } = Astro.props;
+const canonical = new URL(langPrefix(lang) + path, Astro.site);
+const altEn = new URL(path, Astro.site);
+const altPt = new URL('/pt-br' + (path === '/' ? '' : path), Astro.site);
+---
+
+<!doctype html>
+<html lang={lang === 'pt-br' ? 'pt-BR' : 'en'}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark light" />
+    <script is:inline>
+      // Apply the saved (or system) theme before first paint to avoid flashing.
+      (() => {
+        const saved = localStorage.getItem('theme');
+        const theme =
+          saved === 'light' || saved === 'dark'
+            ? saved
+            : matchMedia('(prefers-color-scheme: light)').matches
+              ? 'light'
+              : 'dark';
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="en" href={altEn} />
+    <link rel="alternate" hreflang="pt-BR" href={altPt} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(ogImage, Astro.site)} />
+    <meta property="og:type" content="website" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Sans:ital,wght@0,400..700;1,400&family=JetBrains+Mono:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <meta name="generator" content={Astro.generator} />
+  </head>
+  <body>
+    <div class="starfield" aria-hidden="true"></div>
+    <slot />
+    <div class="grain" aria-hidden="true"></div>
+  </body>
+</html>

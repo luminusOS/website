@@ -1,0 +1,348 @@
+---
+import type { Lang } from '../i18n/translations';
+import { translations } from '../i18n/translations';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = translations[lang];
+---
+
+<div class="stage" role="img" aria-label={t.hero.deviceNote}>
+  <div class="device tv">
+    <div class="screen aurora-screen">
+      <span class="edition mono">Cast</span>
+      <span class="pill">{t.hero.soon}</span>
+    </div>
+    <div class="tv-stand"></div>
+  </div>
+
+  <div class="device tablet">
+    <div class="screen aurora-screen vertical">
+      <span class="edition mono">Tablet</span>
+      <span class="pill">{t.hero.soon}</span>
+    </div>
+  </div>
+
+  <div class="device laptop">
+    <div class="laptop-lid">
+      <div class="screen aurora-screen">
+        <span class="edition mono">{t.editions.items.workstation.name}</span>
+        <span class="pill">{t.hero.available}</span>
+      </div>
+    </div>
+    <div class="laptop-base"></div>
+  </div>
+
+  <div class="device phone">
+    <div class="screen aurora-screen vertical">
+      <span class="notch"></span>
+      <span class="edition mono">Mobile</span>
+      <span class="pill">{t.hero.soon}</span>
+    </div>
+  </div>
+
+  <div class="device deck">
+    <div class="grip grip-l">
+      <span class="stick"></span>
+      <span class="dpad"></span>
+    </div>
+    <div class="screen aurora-screen">
+      <span class="edition mono">Play</span>
+      <span class="pill">{t.hero.soon}</span>
+    </div>
+    <div class="grip grip-r">
+      <span class="stick"></span>
+      <span class="buttons"><i></i><i></i><i></i><i></i></span>
+    </div>
+  </div>
+
+  <div class="stage-glow" aria-hidden="true"></div>
+</div>
+
+<style>
+  .stage {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9.5;
+    margin-top: clamp(2rem, 5vw, 4rem);
+  }
+
+  .stage-glow {
+    position: absolute;
+    inset: auto 8% -12% 8%;
+    height: 38%;
+    background: radial-gradient(ellipse at center, rgba(60, 130, 246, 0.22), rgba(96, 168, 255, 0.1) 55%, transparent 75%);
+    filter: blur(28px);
+    opacity: var(--glow-strength);
+    z-index: 0;
+  }
+
+  .device {
+    position: absolute;
+    opacity: 0;
+    animation:
+      device-in 1s cubic-bezier(0.2, 0.7, 0.2, 1) forwards,
+      hover-float 7s ease-in-out infinite;
+  }
+
+  @keyframes device-in {
+    from { opacity: 0; transform: translateY(36px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes hover-float {
+    0%, 100% { margin-top: 0; }
+    50% { margin-top: -8px; }
+  }
+
+  .screen {
+    border-radius: inherit;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45em;
+    position: relative;
+  }
+
+  .aurora-screen {
+    background:
+      radial-gradient(120% 90% at 20% 10%, rgba(96, 168, 255, 0.4), transparent 55%),
+      radial-gradient(110% 100% at 85% 20%, rgba(37, 99, 235, 0.5), transparent 60%),
+      radial-gradient(120% 120% at 55% 95%, rgba(96, 239, 255, 0.3), transparent 65%),
+      #0a1120;
+  }
+
+  .edition {
+    font-size: clamp(0.55rem, 1.4cqw, 1.05rem);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(232, 238, 251, 0.92);
+  }
+
+  .pill {
+    font-family: var(--font-mono);
+    font-size: clamp(0.45rem, 1cqw, 0.7rem);
+    padding: 0.25em 0.9em;
+    border-radius: 999px;
+    border: 1px solid rgba(232, 238, 251, 0.35);
+    color: rgba(232, 238, 251, 0.75);
+    background: rgba(6, 10, 18, 0.45);
+    backdrop-filter: blur(4px);
+    white-space: nowrap;
+  }
+
+  .tv {
+    left: 50%;
+    top: 0;
+    width: 56%;
+    margin-left: -28%; /* keep centered: the entry animation owns `transform` */
+    z-index: 1;
+    animation-delay: 0.05s, 1.1s;
+    container-type: inline-size;
+  }
+
+  .tv .screen {
+    aspect-ratio: 16 / 9;
+    border-radius: 10px;
+    border: 3px solid #1c2434;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6);
+  }
+
+  .tv-stand {
+    width: 26%;
+    height: 0.9vw;
+    margin: 0 auto;
+    background: linear-gradient(180deg, #151d2e, #0b1120);
+    border-radius: 0 0 8px 8px;
+  }
+
+  .laptop {
+    left: 50%;
+    bottom: 9%;
+    width: 44%;
+    margin-left: -22%; /* keep centered: the entry animation owns `transform` */
+    z-index: 3;
+    animation-delay: 0.25s, 1.3s;
+    container-type: inline-size;
+  }
+
+  .laptop-lid {
+    border: 3px solid #232c40;
+    border-bottom-width: 0;
+    border-radius: 12px 12px 0 0;
+    background: #0b1120;
+    padding: 1.2% 1.2% 0;
+  }
+
+  .laptop .screen {
+    aspect-ratio: 827 / 469;
+    border-radius: 8px 8px 0 0;
+  }
+
+  .laptop-base {
+    height: 1.1vw;
+    background: linear-gradient(180deg, #2a3650, #141d31);
+    border-radius: 0 0 14px 14px;
+    width: 108%;
+    margin-left: -4%;
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.65);
+  }
+
+  .tablet {
+    left: 14%;
+    bottom: 4%;
+    width: 15%;
+    z-index: 4;
+    rotate: -4deg;
+    animation-delay: 0.45s, 1.6s;
+    container-type: inline-size;
+  }
+
+  .tablet .screen {
+    aspect-ratio: 3 / 4;
+    border-radius: 14px;
+    border: 3px solid #1c2434;
+    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.55);
+  }
+
+  .phone {
+    right: 22%;
+    bottom: 3%;
+    width: 8%;
+    z-index: 4;
+    rotate: 4deg;
+    animation-delay: 0.6s, 1.9s;
+    container-type: inline-size;
+  }
+
+  .phone .screen {
+    aspect-ratio: 9 / 19;
+    border-radius: 16px;
+    border: 3px solid #1c2434;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+  }
+
+  .notch {
+    position: absolute;
+    top: 4%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 34%;
+    height: 2.5%;
+    border-radius: 999px;
+    background: #1c2434;
+  }
+
+  .deck {
+    right: 0;
+    bottom: 10%;
+    width: 26%;
+    z-index: 3;
+    display: flex;
+    align-items: stretch;
+    animation-delay: 0.75s, 2.2s;
+    container-type: inline-size;
+    filter: drop-shadow(0 18px 40px rgba(0, 0, 0, 0.6));
+  }
+
+  .deck .screen {
+    aspect-ratio: 16 / 10;
+    border-radius: 6px;
+    border: 3px solid #1c2434;
+    flex: 1;
+  }
+
+  .grip {
+    width: 17%;
+    background: linear-gradient(180deg, #232c40, #131b2c);
+    position: relative;
+  }
+
+  .grip-l {
+    border-radius: 45% 6px 6px 45% / 30% 6px 6px 30%;
+    margin-right: -2px;
+  }
+
+  .grip-r {
+    border-radius: 6px 45% 45% 6px / 6px 30% 30% 6px;
+    margin-left: -2px;
+  }
+
+  .stick {
+    position: absolute;
+    top: 18%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 46%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #3a4763, #10182a 70%);
+    border: 1px solid #2c3a55;
+  }
+
+  .dpad,
+  .buttons {
+    position: absolute;
+    bottom: 16%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 48%;
+    aspect-ratio: 1;
+  }
+
+  .dpad {
+    background:
+      linear-gradient(#2c3a55, #2c3a55) 50% 0 / 34% 100% no-repeat,
+      linear-gradient(#2c3a55, #2c3a55) 0 50% / 100% 34% no-repeat;
+    border-radius: 4px;
+  }
+
+  .buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18%;
+    rotate: 45deg;
+  }
+
+  .buttons i {
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #3a4763, #141d31 75%);
+  }
+
+  @media (max-width: 640px) {
+    .stage {
+      aspect-ratio: 16 / 12;
+    }
+
+    .tablet {
+      display: none;
+    }
+
+    .tv {
+      width: 78%;
+    }
+
+    .laptop {
+      width: 60%;
+      bottom: 12%;
+    }
+
+    .deck {
+      width: 34%;
+      bottom: 2%;
+    }
+
+    .phone {
+      right: 4%;
+      bottom: 0;
+      width: 12%;
+    }
+  }
+</style>

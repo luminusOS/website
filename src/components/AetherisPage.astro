@@ -1,0 +1,495 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+import type { Lang } from '../i18n/translations';
+import { translations, langPrefix, links, mainSite } from '../i18n/translations';
+
+interface Props {
+  lang: Lang;
+  path?: string;
+}
+
+const { lang, path = '/aetheris' } = Astro.props;
+const t = translations[lang];
+const k = t.aetherisPage;
+const p = langPrefix(lang);
+const homeHref = `${mainSite}${p}` || '/';
+
+const readyScreenshots = new Set<string>([
+  'overview.png',
+  'resources.png',
+  'yaml.png',
+  'terminal.png',
+]);
+
+---
+
+<BaseLayout lang={lang} title={k.meta.title} description={k.meta.description} path={path} ogImage="/aetheris-logo.svg">
+  <Header lang={lang} path={path} />
+
+  <main class="aetheris-page">
+    <section class="k-hero">
+      <div class="k-aether" aria-hidden="true"></div>
+      <div class="container k-hero-inner">
+        <img
+          class="k-logo reveal"
+          src="/aetheris-logo.svg"
+          alt="Aetheris logo"
+          width="160"
+          height="160"
+        />
+        <p class="eyebrow reveal" style="animation-delay: 0.1s">{k.eyebrow}</p>
+        <h1 class="reveal" style="animation-delay: 0.2s">
+          <span class="gradient-text">{k.title}</span>
+        </h1>
+        <p class="k-sub reveal" style="animation-delay: 0.32s">{k.subtitle}</p>
+        <div class="k-ctas reveal" style="animation-delay: 0.45s">
+          <a
+            id="aetheris-download"
+            class="btn btn-primary"
+            href={links.aetherisReleases}
+            target="_blank"
+            rel="noopener"
+            data-download-generic={k.downloadGeneric}
+            data-download-linux={k.downloadLinux}
+            data-download-mac={k.downloadMac}
+            data-download-windows={k.downloadWindows}
+          >
+            {k.downloadGeneric}
+          </a>
+          <a class="btn btn-ghost" href={links.aetherisReleases} target="_blank" rel="noopener">
+            {k.allDownloads} ↗
+          </a>
+        </div>
+        <p class="k-version mono reveal" style="animation-delay: 0.55s">
+          {k.status}: <strong id="aetheris-release-version">{k.statusValue}</strong> · Linux · Windows · macOS
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container meaning">
+        <h2>{k.meaningTitle}</h2>
+        <blockquote>“{k.meaning}”</blockquote>
+      </div>
+    </section>
+
+    <section class="section" id="screenshots">
+      <div class="container">
+        <div class="section-head">
+          <h2>{k.screenshotsTitle}</h2>
+          <p>{k.screenshotsSubtitle}</p>
+        </div>
+
+        <div class="showcase-list">
+          {k.screenshots.map((s) => (
+            <article class="showcase">
+              <div class="showcase-text">
+                <span class="showcase-tag mono">{s.tag}</span>
+                <h3>{s.title}</h3>
+                <p>{s.body}</p>
+              </div>
+              <div class="shot-window">
+                {readyScreenshots.has(s.file) ? (
+                  <img src={`/img/aetheris/${s.file}`} alt={s.title} loading="lazy" />
+                ) : (
+                  <div class="shot-placeholder">
+                    <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <rect x="3" y="4" width="18" height="14" rx="2" />
+                      <circle cx="8.5" cy="9" r="1.5" />
+                      <path d="m3 15.5 4.5-4 3.5 3 4-4.5 6 5.5" />
+                    </svg>
+                    <span>{k.screenshotSoon}</span>
+                  </div>
+                )}
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="features">
+      <div class="container">
+        <div class="section-head">
+          <h2>{k.featuresTitle}</h2>
+          <p>{k.featuresSubtitle}</p>
+        </div>
+
+        <div class="feature-grid">
+          {k.features.map((f, i) => (
+            <article class="card feature" style={`--hue-shift: ${i * 12}deg`}>
+              <span class="feature-dot" aria-hidden="true"></span>
+              <h3>{f.name}</h3>
+              <p>{f.body}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section design">
+      <div class="container">
+        <div class="section-head">
+          <h2>{k.designTitle}</h2>
+        </div>
+        <div class="design-grid">
+          {k.design.map((d) => (
+            <article class="design-item">
+              <h3>{d.title}</h3>
+              <p>{d.body}</p>
+            </article>
+          ))}
+        </div>
+
+        <p class="back-home">
+          <a href={homeHref}>← {k.backHome}</a>
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <Footer lang={lang} />
+
+  <script
+    define:vars={{
+      releasesApi: links.aetherisReleasesApi,
+      releasesPage: links.aetherisReleases,
+    }}
+  >
+    const downloadButton = document.getElementById('aetheris-download');
+    const releaseVersion = document.getElementById('aetheris-release-version');
+    const platformOverride = new URLSearchParams(window.location.search).get('platform')?.toLowerCase();
+
+    function currentPlatform() {
+      if (platformOverride === 'linux' || platformOverride === 'windows' || platformOverride === 'mac') {
+        return platformOverride;
+      }
+      const nav = window.navigator;
+      const uaDataPlatform = nav.userAgentData?.platform;
+      const value = `${uaDataPlatform || nav.platform || ''} ${nav.userAgent || ''}`.toLowerCase();
+      if (value.includes('win')) return 'windows';
+      if (value.includes('mac')) return 'mac';
+      return 'linux';
+    }
+
+    async function currentArchitecture() {
+      const uaData = window.navigator.userAgentData;
+      if (uaData?.getHighEntropyValues) {
+        try {
+          const data = await uaData.getHighEntropyValues(['architecture']);
+          return `${data.architecture || ''}`.toLowerCase();
+        } catch {
+          return '';
+        }
+      }
+      return '';
+    }
+
+    function assetForPlatform(assets, platform, architecture) {
+      const byName = (pattern) => assets.find((asset) => pattern.test(asset.name));
+      if (platform === 'windows') {
+        return byName(/windows-x86_64-setup\.exe$/i) || byName(/windows.*\.zip$/i);
+      }
+      if (platform === 'mac') {
+        if (architecture.includes('arm') || architecture.includes('aarch64')) {
+          return byName(/macos-aarch64\.dmg$/i) || byName(/macos-x86_64\.dmg$/i);
+        }
+        return byName(/macos-x86_64\.dmg$/i) || byName(/macos-aarch64\.dmg$/i);
+      }
+      return byName(/linux-x86_64\.flatpak$/i) || byName(/x86_64\.AppImage$/i);
+    }
+
+    if (downloadButton) {
+      const platform = currentPlatform();
+      downloadButton.dataset.detectedPlatform = platform;
+      const labels = {
+        linux: downloadButton.dataset.downloadLinux,
+        mac: downloadButton.dataset.downloadMac,
+        windows: downloadButton.dataset.downloadWindows,
+      };
+      downloadButton.textContent =
+        labels[platform] || downloadButton.dataset.downloadLinux || downloadButton.dataset.downloadGeneric || downloadButton.textContent;
+
+      async function refreshDownloadLink() {
+        try {
+          const [release, architecture] = await Promise.all([
+            fetch(releasesApi, { headers: { Accept: 'application/vnd.github+json' } }).then((response) => response.json()),
+            currentArchitecture(),
+          ]);
+          if (releaseVersion && release.tag_name) {
+            releaseVersion.textContent = release.tag_name;
+          }
+          const asset = assetForPlatform(release.assets || [], platform, architecture);
+          if (asset?.browser_download_url) {
+            downloadButton.setAttribute('href', asset.browser_download_url);
+          } else if (!downloadButton.getAttribute('href')) {
+            downloadButton.setAttribute('href', release.html_url || releasesPage);
+          }
+        } catch {
+          if (!downloadButton.getAttribute('href')) {
+            downloadButton.setAttribute('href', releasesPage);
+          }
+        }
+      }
+
+      refreshDownloadLink();
+    }
+  </script>
+</BaseLayout>
+
+<style>
+  .k-hero {
+    position: relative;
+    padding-block: clamp(4.5rem, 9vw, 7rem);
+    overflow: hidden;
+  }
+
+  .k-aether {
+    position: absolute;
+    inset: -35% -15% auto;
+    height: 95%;
+    background:
+      radial-gradient(45% 55% at 50% 18%, rgba(233, 245, 255, 0.28), transparent 70%),
+      radial-gradient(40% 55% at 25% 40%, rgba(96, 168, 255, 0.22), transparent 70%),
+      radial-gradient(40% 55% at 78% 38%, rgba(60, 130, 246, 0.24), transparent 70%);
+    filter: blur(46px);
+    opacity: var(--glow-strength);
+    animation: k-drift 14s ease-in-out infinite alternate;
+    pointer-events: none;
+  }
+
+  @keyframes k-drift {
+    from { transform: translateY(-2%) scale(1); }
+    to { transform: translateY(2%) scale(1.04); }
+  }
+
+  .k-hero-inner {
+    position: relative;
+    text-align: center;
+    display: grid;
+    justify-items: center;
+    gap: 1.1rem;
+  }
+
+  .k-logo {
+    border-radius: 32px;
+    filter: drop-shadow(0 0 50px rgba(96, 168, 255, 0.45));
+    animation: rise-in 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) forwards, k-breathe 6s ease-in-out 1s infinite;
+  }
+
+  @keyframes k-breathe {
+    0%, 100% { filter: drop-shadow(0 0 50px rgba(96, 168, 255, 0.45)); }
+    50% { filter: drop-shadow(0 0 70px rgba(233, 245, 255, 0.5)); }
+  }
+
+  .k-hero h1 {
+    font-size: clamp(2.6rem, 7vw, 5rem);
+    font-weight: 800;
+    max-width: 18ch;
+  }
+
+  .k-sub {
+    max-width: 42rem;
+    color: var(--ink-dim);
+    font-size: clamp(1.05rem, 1.6vw, 1.2rem);
+  }
+
+  .k-ctas {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 0.8rem;
+  }
+
+  .btn-disabled {
+    opacity: 0.55;
+    cursor: default;
+    pointer-events: none;
+  }
+
+  .k-version {
+    font-size: 0.8rem;
+    color: var(--ink-faint);
+  }
+
+  .k-version strong {
+    color: var(--accent-sky);
+  }
+
+  .meaning {
+    max-width: 50rem;
+    text-align: center;
+    display: grid;
+    gap: 1.6rem;
+  }
+
+  .meaning h2 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+  }
+
+  .meaning blockquote {
+    margin: 0;
+    font-size: clamp(1.15rem, 2vw, 1.45rem);
+    line-height: 1.55;
+    color: var(--ink-dim);
+    font-style: italic;
+    border-inline-start: 3px solid;
+    border-image: linear-gradient(180deg, var(--accent-sky), var(--accent-deep)) 1;
+    padding-inline-start: 1.5rem;
+    text-align: start;
+  }
+
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(245px, 1fr));
+    gap: 1.3rem;
+  }
+
+  .feature {
+    display: grid;
+    gap: 0.6rem;
+    align-content: start;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+
+  .feature:hover {
+    transform: translateY(-4px);
+    border-color: rgba(96, 168, 255, 0.45);
+  }
+
+  .feature-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--grad-brand);
+    filter: hue-rotate(var(--hue-shift, 0deg));
+    box-shadow: 0 0 12px rgba(96, 168, 255, 0.5);
+  }
+
+  .feature h3 {
+    font-size: 1.2rem;
+  }
+
+  .feature p {
+    color: var(--ink-dim);
+    font-size: 0.93rem;
+  }
+
+  .showcase-list {
+    display: grid;
+    gap: clamp(3rem, 6vw, 4.5rem);
+  }
+
+  .showcase {
+    display: grid;
+    grid-template-columns: minmax(16rem, 2fr) 3fr;
+    gap: clamp(1.6rem, 4vw, 3.5rem);
+    align-items: center;
+  }
+
+  .showcase:nth-child(even) {
+    grid-template-columns: 3fr minmax(16rem, 2fr);
+  }
+
+  .showcase:nth-child(even) .showcase-text {
+    order: 2;
+  }
+
+  .showcase-text {
+    display: grid;
+    gap: 0.8rem;
+    align-content: center;
+  }
+
+  .showcase-tag {
+    justify-self: start;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent-sky);
+    border: 1px solid rgba(96, 168, 255, 0.35);
+    border-radius: 999px;
+    padding: 0.25rem 0.7rem;
+  }
+
+  .showcase-text h3 {
+    font-size: clamp(1.4rem, 2.6vw, 1.9rem);
+    line-height: 1.2;
+  }
+
+  .showcase-text p {
+    color: var(--ink-dim);
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 760px) {
+    .showcase {
+      grid-template-columns: 1fr;
+    }
+
+    .showcase:nth-child(even) .showcase-text {
+      order: 0;
+    }
+  }
+
+  .shot-window {
+    position: relative;
+  }
+
+  .shot-window img {
+    display: block;
+    width: 100%;
+    height: auto;
+    filter:
+      drop-shadow(0 24px 34px rgba(0, 0, 0, 0.26))
+      drop-shadow(0 0 34px rgba(96, 168, 255, 0.22))
+      drop-shadow(0 0 78px rgba(47, 214, 168, 0.10));
+  }
+
+  .shot-placeholder {
+    aspect-ratio: 16 / 10;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 0.7rem;
+    color: var(--ink-faint);
+    font-size: 0.85rem;
+    background:
+      radial-gradient(60% 80% at 50% 0%, rgba(96, 168, 255, 0.12), transparent 70%);
+  }
+
+  .design-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 2.2rem;
+  }
+
+  .design-item h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.6rem;
+    border-bottom: 1px solid rgba(96, 168, 255, 0.3);
+    padding-bottom: 0.6rem;
+  }
+
+  .design-item p {
+    color: var(--ink-dim);
+    font-size: 0.97rem;
+  }
+
+  .back-home {
+    margin-top: 3.5rem;
+  }
+
+  .back-home a {
+    color: var(--ink-dim);
+    text-decoration: none;
+  }
+
+  .back-home a:hover {
+    color: var(--accent-sky);
+  }
+</style>

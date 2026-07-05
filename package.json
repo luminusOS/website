@@ -1,0 +1,16 @@
+{
+  "name": "luminusos-website",
+  "type": "module",
+  "version": "2.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "build:aurora": "SITE_VARIANT=aurora astro build && echo aurora.luminusos.org > dist-aurora/CNAME",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "astro": "^5.8.0"
+  }
+}

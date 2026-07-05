@@ -1,0 +1,41 @@
+---
+title: LuminusOS Wiki
+description: Practical guides for LuminusOS, the immutable Linux built on Fedora bootc.
+template: splash
+hero:
+  tagline: Short, practical guides for everything LuminusOS. No fluff, just the steps.
+  actions:
+    - text: Install LuminusOS
+      link: /guides/installation/
+      icon: right-arrow
+    - text: Visit luminusos.org
+      link: https://luminusos.org
+      icon: external
+      variant: minimal
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+<CardGrid stagger>
+  <Card title="Installation" icon="rocket">
+    Download the ISO, flash a USB drive and let Sirius guide you.
+    [Get started →](/guides/installation/)
+  </Card>
+  <Card title="Updates & rollback" icon="approve-check-circle">
+    Atomic updates that apply on reboot, with the previous version one boot
+    menu away. [Learn how →](/guides/updates/)
+  </Card>
+  <Card title="Installing apps" icon="add-document">
+    Everything comes from Flathub, sandboxed and independent from the OS.
+    [Install apps →](/guides/apps/)
+  </Card>
+  <Card title="Aurora Shell" icon="puzzle">
+    The modular GNOME extension that ships with Workstation.
+    [Explore modules →](/guides/aurora-shell/)
+  </Card>
+</CardGrid>
+
+:::tip[This wiki is just getting started]
+Spotted a gap or want to write a guide? Every page has an "Edit page" link,
+and pull requests are very welcome.
+:::
