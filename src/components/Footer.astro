@@ -1,6 +1,6 @@
 ---
-import type { Lang, SiteVariant } from '../i18n/translations';
-import { translations, langPrefix, links, mainSite, siteVariant } from '../i18n/translations';
+import type { Lang } from '../i18n/translations';
+import { translations, langPrefix, links, mainSite, subHref, siteHref } from '../i18n/translations';
 
 interface Props {
   lang: Lang;
@@ -10,17 +10,6 @@ const { lang } = Astro.props;
 const t = translations[lang];
 const p = langPrefix(lang);
 const year = new Date().getFullYear();
-
-function subHref(variant: SiteVariant, localPath: string, absolute: string): string {
-  if (siteVariant === variant) return p || '/';
-  if (siteVariant === '') return `${p}${localPath}`;
-  return absolute;
-}
-
-function siteHref(localPath: string, absolute: string): string {
-  if (siteVariant === '') return localPath;
-  return absolute;
-}
 ---
 
 <footer class="site-footer">
@@ -38,7 +27,7 @@ function siteHref(localPath: string, absolute: string): string {
       <a href={`${mainSite}${p}/#why`}>{t.nav.overview}</a>
       <a href={`${mainSite}${p}/#how`}>{t.nav.how}</a>
       <a href={`${mainSite}${p}/#editions`}>{t.nav.editions}</a>
-      <a href={subHref('aurora', '/aurora', links.auroraSite)}>{t.nav.aurora}</a>
+      <a href={subHref(p, 'aurora', '/aurora', links.auroraSite)}>{t.nav.aurora}</a>
       <a href={`${mainSite}${p}/aetheris`}>{t.nav.aetheris}</a>
       <a href={siteHref('/wiki', links.wikiSite)}>{t.nav.wiki}</a>
       <a href={siteHref('/blog', links.blogSite)}>{t.nav.blog}</a>

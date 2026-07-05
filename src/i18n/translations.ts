@@ -14,6 +14,22 @@ export function langPrefix(lang: Lang): string {
   return lang === 'en' ? '' : '/pt-br';
 }
 
+// In dev the blog/wiki/aurora sites are reachable as local paths, but each
+// production site lives on its own subdomain, so built pages must link to
+// the absolute URL.
+const useLocalPaths = import.meta.env.DEV;
+
+export function subHref(p: string, variant: SiteVariant, localPath: string, absolute: string): string {
+  if (siteVariant === variant) return p || '/';
+  if (siteVariant === '' && useLocalPaths) return `${p}${localPath}`;
+  return `${absolute}${p}`;
+}
+
+export function siteHref(localPath: string, absolute: string): string {
+  if (siteVariant === '' && useLocalPaths) return localPath;
+  return absolute;
+}
+
 const en = {
   meta: {
     title: 'LuminusOS: a Linux that just works, everywhere',

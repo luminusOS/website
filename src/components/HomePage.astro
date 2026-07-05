@@ -4,7 +4,7 @@ import Header from './Header.astro';
 import Footer from './Footer.astro';
 import DeviceShowcase from './DeviceShowcase.astro';
 import type { Lang } from '../i18n/translations';
-import { translations, langPrefix, links } from '../i18n/translations';
+import { translations, langPrefix, links, subHref } from '../i18n/translations';
 
 interface Props {
   lang: Lang;
@@ -13,6 +13,7 @@ interface Props {
 const { lang } = Astro.props;
 const t = translations[lang];
 const p = langPrefix(lang);
+const auroraHref = subHref(p, 'aurora', '/aurora', links.auroraSite);
 
 const editionOrder = ['workstation', 'play', 'mobile', 'tablet', 'cast'] as const;
 
@@ -42,7 +43,7 @@ const editionIcons: Record<(typeof editionOrder)[number], string> = {
           <a class="btn btn-primary" href={links.releasesLatest} target="_blank" rel="noopener">
             ⬇ {t.hero.cta}
           </a>
-          <a class="btn btn-ghost" href={`${p}/aurora`}>{t.hero.ctaSecondary}</a>
+          <a class="btn btn-ghost" href={auroraHref}>{t.hero.ctaSecondary}</a>
         </div>
 
         <DeviceShowcase lang={lang} />
@@ -159,7 +160,7 @@ const editionIcons: Record<(typeof editionOrder)[number], string> = {
           <p class="eyebrow">{t.aurora.eyebrow}</p>
           <h2 class="gradient-text--aurora">{t.aurora.title}</h2>
           <p>{t.aurora.subtitle}</p>
-          <a class="btn btn-ghost" href={`${p}/aurora`}>{t.aurora.cta} →</a>
+          <a class="btn btn-ghost" href={auroraHref}>{t.aurora.cta} →</a>
         </div>
         <img src="/aurora-logo.svg" alt="Aurora Shell logo" width="220" height="220" loading="lazy" />
       </div>

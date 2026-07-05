@@ -1,6 +1,6 @@
 ---
-import type { Lang, SiteVariant } from '../i18n/translations';
-import { translations, langPrefix, languages, links, mainSite, siteVariant } from '../i18n/translations';
+import type { Lang } from '../i18n/translations';
+import { translations, langPrefix, languages, links, mainSite, siteVariant, subHref, siteHref } from '../i18n/translations';
 
 interface Props {
   lang: Lang;
@@ -12,22 +12,11 @@ const t = translations[lang];
 const p = langPrefix(lang);
 const current = languages.find((l) => l.code === lang) ?? languages[0];
 
-function subHref(variant: SiteVariant, localPath: string, absolute: string): string {
-  if (siteVariant === variant) return p || '/';
-  if (siteVariant === '') return `${p}${localPath}`;
-  return absolute;
-}
-
-function siteHref(localPath: string, absolute: string): string {
-  if (siteVariant === '') return localPath;
-  return absolute;
-}
-
 const nav = [
   { href: `${mainSite}${p}/#why`, label: t.nav.overview },
   { href: `${mainSite}${p}/#how`, label: t.nav.how },
   { href: `${mainSite}${p}/#editions`, label: t.nav.editions },
-  { href: subHref('aurora', '/aurora', links.auroraSite), label: t.nav.auroraShort },
+  { href: subHref(p, 'aurora', '/aurora', links.auroraSite), label: t.nav.auroraShort },
 ];
 
 const products = [
