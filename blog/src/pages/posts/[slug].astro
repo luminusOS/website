@@ -97,6 +97,25 @@ const withBase = (path: string) => `${basePath}${path}`;
     overflow-x: auto;
   }
 
+  .prose :global(figure) {
+    margin: 2rem 0;
+  }
+
+  .prose :global(figure img) {
+    display: block;
+    width: 100%;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--surface-2);
+  }
+
+  .prose :global(figcaption) {
+    margin-top: 0.6rem;
+    color: var(--ink-faint);
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
   .back {
     margin-top: 3rem;
   }
