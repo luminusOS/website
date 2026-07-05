@@ -18,7 +18,7 @@ export default defineConfig({
         { icon: 'github', label: 'GitHub', href: 'https://github.com/luminusOS' },
       ],
       editLink: {
-        baseUrl: 'https://github.com/luminusOS/wiki/edit/main/',
+        baseUrl: 'https://github.com/luminusOS/website/edit/main/wiki/',
       },
       defaultLocale: 'root',
       locales: {
