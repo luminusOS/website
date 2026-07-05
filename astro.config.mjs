@@ -11,13 +11,17 @@ const sites = {
   '': 'https://luminusos.org',
   aurora: 'https://aurora.luminusos.org',
 };
+const outDirs = {
+  '': './dist',
+  aurora: './aurora/dist',
+};
 if (!(variant in sites)) {
   throw new Error(`Unknown SITE_VARIANT "${variant}" (expected aurora)`);
 }
 
 export default defineConfig({
   site: sites[/** @type {keyof typeof sites} */ (variant)],
-  outDir: variant ? `./dist-${variant}` : './dist',
+  outDir: outDirs[/** @type {keyof typeof outDirs} */ (variant)],
   trailingSlash: 'ignore',
 
   i18n: {

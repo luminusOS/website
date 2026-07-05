@@ -51,13 +51,32 @@ by editing the `available` check when its first release lands.
 `aurora.luminusos.org` is a second build of this same project:
 
 ```sh
-npm run build:aurora   # static output in dist-aurora/
-npm run deploy:aurora  # deploy dist-aurora to Cloudflare Pages
+npm run build:aurora   # static output in aurora/dist/
+npm run deploy:aurora  # local/manual upload with Wrangler
 ```
 
 With `SITE_VARIANT=aurora` the Aurora Shell page becomes the site root
 (`/` and `/pt-br/`), cross-links point back to `https://luminusos.org`, and
-`dist-aurora/CNAME` is written as `aurora.luminusos.org`.
+`aurora/dist/CNAME` is written as `aurora.luminusos.org`.
+
+Cloudflare Pages settings for `aurora.luminusos.org`:
+
+| Setting | Value |
+| --- | --- |
+| Root directory | `website` |
+| Build command | `npm run build:aurora` |
+| Build output directory | `aurora/dist` |
+| Deploy command | leave empty |
+
+The `deploy:aurora` script is only for a local/manual Wrangler upload. Do not
+use it as the Cloudflare Pages deploy command; Git-connected Pages deployments
+upload the configured output directory automatically after the build command.
+
+This repository intentionally does not keep a default `wrangler.jsonc` in the
+Pages root. The same source tree is used by multiple Cloudflare Pages projects
+with different output directories, so each Pages project should use its own UI
+settings. The Worker config used by the manual `npm run deploy` command lives
+in `wrangler.worker.jsonc`.
 
 ## Wiki & Blog (sub-projects)
 
@@ -79,6 +98,9 @@ npm run deploy:blog
 npm run build:wiki
 npm run deploy:wiki
 ```
+
+For Git-connected Cloudflare Pages projects, use only the build command and
+output directory. Leave the deploy command empty there as well.
 
 ## License
 
