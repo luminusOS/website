@@ -4,17 +4,28 @@
   "version": "2.0.0",
   "private": true,
   "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
-    "build:aurora": "SITE_VARIANT=aurora astro build && echo aurora.luminusos.org > dist-aurora/CNAME",
+    "dev": "node scripts/dev.mjs",
+    "dev:site": "astro dev",
+    "build": "npm run build:site && npm run build:blog:site && npm run build:wiki:site && node scripts/add-embedded-routes.mjs",
+    "build:site": "astro build",
+    "build:aurora": "SITE_VARIANT=aurora astro build && node scripts/clean-aurora-build.mjs && echo aurora.luminusos.org > dist-aurora/CNAME",
+    "build:blog": "astro build --root blog",
+    "build:blog:site": "SITE_BASE=/blog SITE_URL=https://luminusos.org astro build --root blog && rm -rf dist/blog && mkdir -p dist/blog && cp -R blog/dist/. dist/blog/",
+    "build:wiki": "astro build --root wiki",
+    "build:wiki:site": "SITE_BASE=/wiki SITE_URL=https://luminusos.org astro build --root wiki && rm -rf dist/wiki && mkdir -p dist/wiki && cp -R wiki/dist/. dist/wiki/",
     "preview": "npm run build && wrangler dev",
     "astro": "astro",
     "deploy": "npm run build && wrangler deploy",
+    "deploy:aurora": "npm run build:aurora && wrangler pages deploy dist-aurora --project-name luminusos-aurora",
+    "deploy:blog": "npm run build:blog && wrangler pages deploy blog/dist --project-name luminusos-blog",
+    "deploy:wiki": "npm run build:wiki && wrangler pages deploy wiki/dist --project-name luminusos-wiki",
     "cf-typegen": "wrangler types"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "12",
-    "astro": "^5.8.0"
+    "@astrojs/cloudflare": "^12.6.13",
+    "@astrojs/starlight": "^0.36.0",
+    "astro": "^5.8.0",
+    "sharp": "^0.34.0"
   },
   "devDependencies": {
     "wrangler": "^4.107.0"

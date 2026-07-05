@@ -29,8 +29,8 @@ The file name becomes the URL: `my-post.md` → `/posts/my-post/`.
 
 ```sh
 npm install
-npm run dev      # http://localhost:4321
-npm run build    # static output in dist/
+npm run dev           # from the repository root, served at /blog
+npm run build:blog    # static output in blog/dist/
 ```
 
 ## Deployment

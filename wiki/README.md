@@ -27,8 +27,8 @@ labels). Add the new page's slug there when you create one.
 
 ```sh
 npm install
-npm run dev      # http://localhost:4321
-npm run build    # static output in dist/
+npm run dev           # from the repository root, served at /wiki
+npm run build:wiki    # static output in wiki/dist/
 ```
 
 ## Deployment

@@ -18,6 +18,11 @@ function subHref(variant: SiteVariant, localPath: string, absolute: string): str
   return absolute;
 }
 
+function siteHref(localPath: string, absolute: string): string {
+  if (siteVariant === '') return localPath;
+  return absolute;
+}
+
 const nav = [
   { href: `${mainSite}${p}/#why`, label: t.nav.overview },
   { href: `${mainSite}${p}/#how`, label: t.nav.how },
@@ -30,8 +35,8 @@ const products = [
 ];
 
 const navAfter = [
-  { href: links.wikiSite, label: t.nav.wiki },
-  { href: links.blogSite, label: t.nav.blog },
+  { href: siteHref('/wiki', links.wikiSite), label: t.nav.wiki },
+  { href: siteHref('/blog', links.blogSite), label: t.nav.blog },
 ];
 ---
 

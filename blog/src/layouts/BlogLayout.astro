@@ -8,6 +8,12 @@ interface Props {
 
 const { title, description } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
+const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
+const withBase = (path: string) => `${basePath}${path}`;
+const embedded = basePath === '/blog';
+const mainHref = embedded ? '/' : 'https://luminusos.org';
+const wikiHref = embedded ? '/wiki' : 'https://wiki.luminusos.org';
+const auroraHref = embedded ? '/aurora' : 'https://aurora.luminusos.org';
 
 // Posts are written in English only. The Translate menu hands the current
 // page to Google Translate's proxy (<host with dashes>.translate.goog).
@@ -46,7 +52,7 @@ const translateLangs = [
     </script>
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href={withBase('/favicon.svg')} />
     <link rel="canonical" href={canonical} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -62,15 +68,15 @@ const translateLangs = [
   <body>
     <header class="site-header">
       <div class="header-inner">
-        <a class="brand" href="/">
-          <img src="/logos/brand.svg" alt="" width="26" height="26" />
+        <a class="brand" href={withBase('/')}>
+          <img src={withBase('/logos/brand.svg')} alt="" width="26" height="26" />
           <span>Luminus<strong>OS</strong> Blog</span>
         </a>
 
         <nav class="main-nav" aria-label="Main">
-          <a href="https://luminusos.org">luminusos.org</a>
-          <a href="https://wiki.luminusos.org">Wiki</a>
-          <a href="https://aurora.luminusos.org">Aurora Shell</a>
+          <a href={mainHref}>luminusos.org</a>
+          <a href={wikiHref}>Wiki</a>
+          <a href={auroraHref}>Aurora Shell</a>
           <a href="https://github.com/luminusOS" target="_blank" rel="noopener">GitHub ↗</a>
         </nav>
 
@@ -117,7 +123,7 @@ const translateLangs = [
       <div class="container">
         <p>
           © {new Date().getFullYear()} LuminusOS Community ·
-          <a href="https://luminusos.org">luminusos.org</a> ·
+          <a href={mainHref}>luminusos.org</a> ·
           <a href="https://github.com/luminusOS/blog" target="_blank" rel="noopener">Source</a>
         </p>
       </div>

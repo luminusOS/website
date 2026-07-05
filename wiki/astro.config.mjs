@@ -2,8 +2,12 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 
+const base = process.env.SITE_BASE ?? '';
+const site = process.env.SITE_URL ?? 'https://wiki.luminusos.org';
+
 export default defineConfig({
-  site: 'https://wiki.luminusos.org',
+  site,
+  base,
   integrations: [
     starlight({
       title: 'LuminusOS Wiki',

@@ -17,6 +17,8 @@ Every page exists in English (default) and Brazilian Portuguese:
 | --- | --- |
 | `/` and `/pt-br/` | LuminusOS home: hero, pillars, how it works, editions, download, support |
 | `/aurora/` and `/pt-br/aurora/` | Aurora Shell subpage |
+| `/blog/` | Blog copy embedded in the main website build |
+| `/wiki/` | Wiki copy embedded in the main website build |
 
 All copy lives in a single typed dictionary: `src/i18n/translations.ts`.
 Adding a language = append it to the `languages` array (name + flag, the
@@ -30,8 +32,8 @@ preference, with a header toggle persisted in `localStorage`.
 
 ```sh
 npm install
-npm run dev      # http://localhost:4321
-npm run build    # static output in dist/
+npm run dev      # http://localhost:4321, including /aurora, /blog and /wiki
+npm run build    # static output in dist/, including /blog and /wiki
 npm run preview  # serve dist/ locally
 ```
 
@@ -50,34 +52,33 @@ by editing the `available` check when its first release lands.
 
 ```sh
 npm run build:aurora   # static output in dist-aurora/
+npm run deploy:aurora  # deploy dist-aurora to Cloudflare Pages
 ```
 
 With `SITE_VARIANT=aurora` the Aurora Shell page becomes the site root
 (`/` and `/pt-br/`), cross-links point back to `https://luminusos.org`, and
 `dist-aurora/CNAME` is written as `aurora.luminusos.org`.
 
-`deploy-aurora.yml` pushes that build to the `gh-pages` branch of
-`luminusOS/aurora-shell` (needs the `AURORA_DEPLOY_TOKEN` secret: a
-fine-grained PAT with Contents: write there), since GitHub Pages serves one
-site per repository.
-
 ## Wiki & Blog (sub-projects)
 
-The wiki and the blog live in this repository as independent Astro projects:
+The wiki and the blog live in this repository as Astro roots that share the
+top-level `package.json` and lockfile:
 
 | Site | Folder | Stack |
 | --- | --- | --- |
 | [wiki.luminusos.org](https://wiki.luminusos.org) | `wiki/` | Astro Starlight (sidebar, search, i18n) |
 | [blog.luminusos.org](https://blog.luminusos.org) | `blog/` | Astro content collections, English + Google Translate menu |
 
-Each has its own `package.json` (`cd wiki && npm install && npm run dev`).
-GitHub Pages serves one site per repository, so `deploy-wiki.yml` and
-`deploy-blog.yml` build the sub-project and push its `dist/` to the
-`gh-pages` branch of `luminusOS/wiki` / `luminusOS/blog` (Pages-only repos).
-Setup per subdomain: create the target repo, enable Pages on `gh-pages`,
-point DNS `<sub>.luminusos.org` → `luminusos.github.io`, and add the
-`WIKI_DEPLOY_TOKEN` / `BLOG_DEPLOY_TOKEN` secret here (fine-grained PAT
-with Contents: write on the target repo).
+The root `npm run build` builds both projects with `/blog` and `/wiki` bases
+and copies them into the main website `dist/`. Standalone Cloudflare Pages
+builds use the subdomain versions:
+
+```sh
+npm run build:blog
+npm run deploy:blog
+npm run build:wiki
+npm run deploy:wiki
+```
 
 ## License
 

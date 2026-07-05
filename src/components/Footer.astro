@@ -16,6 +16,11 @@ function subHref(variant: SiteVariant, localPath: string, absolute: string): str
   if (siteVariant === '') return `${p}${localPath}`;
   return absolute;
 }
+
+function siteHref(localPath: string, absolute: string): string {
+  if (siteVariant === '') return localPath;
+  return absolute;
+}
 ---
 
 <footer class="site-footer">
@@ -35,8 +40,8 @@ function subHref(variant: SiteVariant, localPath: string, absolute: string): str
       <a href={`${mainSite}${p}/#editions`}>{t.nav.editions}</a>
       <a href={subHref('aurora', '/aurora', links.auroraSite)}>{t.nav.aurora}</a>
       <a href={`${mainSite}${p}/aetheris`}>{t.nav.aetheris}</a>
-      <a href={links.wikiSite}>{t.nav.wiki}</a>
-      <a href={links.blogSite}>{t.nav.blog}</a>
+      <a href={siteHref('/wiki', links.wikiSite)}>{t.nav.wiki}</a>
+      <a href={siteHref('/blog', links.blogSite)}>{t.nav.blog}</a>
     </nav>
 
     <nav aria-label={t.footer.community}>
