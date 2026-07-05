@@ -13,16 +13,16 @@
     "build:blog:site": "SITE_BASE=/blog SITE_URL=https://luminusos.org astro build --root blog && rm -rf dist/blog && mkdir -p dist/blog && cp -R blog/dist/. dist/blog/",
     "build:wiki": "astro build --root wiki",
     "build:wiki:site": "SITE_BASE=/wiki SITE_URL=https://luminusos.org astro build --root wiki && rm -rf dist/wiki && mkdir -p dist/wiki && cp -R wiki/dist/. dist/wiki/",
-    "preview": "npm run build && wrangler dev --config wrangler.worker.jsonc",
+    "preview": "npm run build:site && wrangler dev",
     "astro": "astro",
-    "deploy": "npm run build && wrangler deploy --config wrangler.worker.jsonc",
+    "deploy": "npm run build:site && wrangler deploy",
     "deploy:aurora": "npm run build:aurora && wrangler pages deploy aurora/dist --project-name luminusos-aurora",
     "deploy:blog": "npm run build:blog && wrangler pages deploy blog/dist --project-name luminusos-blog",
     "deploy:wiki": "npm run build:wiki && wrangler pages deploy wiki/dist --project-name luminusos-wiki",
     "cf-typegen": "wrangler types --config wrangler.worker.jsonc"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^12.6.13",
+    "@astrojs/cloudflare": "12",
     "@astrojs/starlight": "^0.36.0",
     "astro": "^5.8.0",
     "sharp": "^0.34.0"
