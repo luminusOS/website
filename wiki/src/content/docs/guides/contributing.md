@@ -27,7 +27,7 @@ suggestion and pull request shapes the project.
 - **Translate.** The website and this wiki speak English and Portuguese so
   far. More languages are welcome.
 - **Code.** The images repo and Aurora Shell both have good first issues.
-- **Support the project.** [Donations](https://github.com/sponsors/luminusOS)
+- **Support the project.** [Donations](https://opencollective.com/luminusos)
   help us ship the next edition sooner.
 
 ## Future editions

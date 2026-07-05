@@ -28,7 +28,7 @@ issue, sugestão e pull request molda o projeto.
   Mais línguas são bem-vindas.
 - **Programe.** O repo das imagens e o Aurora Shell têm boas issues para
   começar.
-- **Apoie o projeto.** [Doações](https://github.com/sponsors/luminusOS)
+- **Apoie o projeto.** [Doações](https://opencollective.com/luminusos)
   ajudam a próxima edição a chegar mais cedo.
 
 ## Edições futuras

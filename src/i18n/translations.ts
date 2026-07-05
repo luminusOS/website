@@ -710,6 +710,7 @@ export const links = {
   releasesAll: 'https://github.com/luminusOS/images/releases',
   releasesApi: 'https://api.github.com/repos/luminusOS/images/releases/latest',
   org: 'https://github.com/luminusOS',
+  discord: 'https://discord.gg/eVmXsqkvkw',
   imagesRepo: 'https://github.com/luminusOS/images',
   auroraRepo: 'https://github.com/luminusOS/aurora-shell',
   aetherisRepo: 'https://github.com/luminusOS/aetheris',
@@ -720,5 +721,5 @@ export const links = {
   wikiSite: 'https://wiki.luminusos.org',
   blogSite: 'https://blog.luminusos.org',
   websiteRepo: 'https://github.com/luminusOS/website',
-  donate: 'https://github.com/sponsors/luminusOS',
+  donate: 'https://opencollective.com/luminusos',
 };
