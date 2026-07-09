@@ -15,6 +15,18 @@ const outDirs = {
   '': './dist',
   aurora: './aurora/dist',
 };
+const ignoredWatchPaths = [
+  '**/.astro/**',
+  '**/.git/**',
+  '**/.wrangler/**',
+  '**/aurora/dist/**',
+  '**/blog/**',
+  '**/dist/**',
+  '**/dist-aurora/**',
+  '**/node_modules/**',
+  '**/wiki/**',
+];
+
 if (!(variant in sites)) {
   throw new Error(`Unknown SITE_VARIANT "${variant}" (expected aurora)`);
 }
@@ -32,5 +44,14 @@ export default defineConfig({
     },
   },
 
-  adapter: cloudflare()
+  adapter: cloudflare(),
+  vite: {
+    server: {
+      watch: {
+        ignored: ignoredWatchPaths,
+        usePolling: true,
+        interval: 300,
+      },
+    },
+  },
 });

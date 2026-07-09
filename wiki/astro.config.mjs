@@ -4,10 +4,29 @@ import starlight from '@astrojs/starlight';
 
 const base = process.env.SITE_BASE ?? '';
 const site = process.env.SITE_URL ?? 'https://wiki.luminusos.org';
+const ignoredWatchPaths = [
+  '**/.astro/**',
+  '**/.git/**',
+  '**/.wrangler/**',
+  '**/aurora/dist/**',
+  '**/blog/**',
+  '**/dist/**',
+  '**/dist-aurora/**',
+  '**/node_modules/**',
+];
 
 export default defineConfig({
   site,
   base,
+  vite: {
+    server: {
+      watch: {
+        ignored: ignoredWatchPaths,
+        usePolling: true,
+        interval: 300,
+      },
+    },
+  },
   integrations: [
     starlight({
       title: 'LuminusOS Wiki',
