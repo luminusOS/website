@@ -247,17 +247,7 @@ const readyScreenshots = new Set<string>([
   }
 
   .k-aether {
-    position: absolute;
-    inset: -35% -15% auto;
-    height: 95%;
-    background:
-      radial-gradient(45% 55% at 50% 18%, rgba(233, 245, 255, 0.28), transparent 70%),
-      radial-gradient(40% 55% at 25% 40%, rgba(96, 168, 255, 0.22), transparent 70%),
-      radial-gradient(40% 55% at 78% 38%, rgba(60, 130, 246, 0.24), transparent 70%);
-    filter: blur(46px);
-    opacity: var(--glow-strength);
-    animation: k-drift 14s ease-in-out infinite alternate;
-    pointer-events: none;
+    display: none;
   }
 
   @keyframes k-drift {
@@ -274,14 +264,14 @@ const readyScreenshots = new Set<string>([
   }
 
   .k-logo {
-    border-radius: 32px;
-    filter: drop-shadow(0 0 50px rgba(96, 168, 255, 0.45));
-    animation: rise-in 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) forwards, k-breathe 6s ease-in-out 1s infinite;
+    border-radius: 12px;
+    filter: none;
+    animation: rise-in 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
   }
 
   @keyframes k-breathe {
-    0%, 100% { filter: drop-shadow(0 0 50px rgba(96, 168, 255, 0.45)); }
-    50% { filter: drop-shadow(0 0 70px rgba(233, 245, 255, 0.5)); }
+    0%, 100% { filter: none; }
+    50% { filter: none; }
   }
 
   .k-hero h1 {
@@ -337,7 +327,7 @@ const readyScreenshots = new Set<string>([
     color: var(--ink-dim);
     font-style: italic;
     border-inline-start: 3px solid;
-    border-image: linear-gradient(180deg, var(--accent-sky), var(--accent-deep)) 1;
+    border-color: var(--accent);
     padding-inline-start: 1.5rem;
     text-align: start;
   }
@@ -352,21 +342,20 @@ const readyScreenshots = new Set<string>([
     display: grid;
     gap: 0.6rem;
     align-content: start;
-    transition: transform 0.2s ease, border-color 0.2s ease;
+    transition: border-color 0.2s ease;
   }
 
   .feature:hover {
-    transform: translateY(-4px);
-    border-color: rgba(96, 168, 255, 0.45);
+    border-color: var(--accent);
   }
 
   .feature-dot {
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background: var(--grad-brand);
-    filter: hue-rotate(var(--hue-shift, 0deg));
-    box-shadow: 0 0 12px rgba(96, 168, 255, 0.5);
+    background: var(--accent);
+    filter: none;
+    box-shadow: none;
   }
 
   .feature h3 {
@@ -444,10 +433,9 @@ const readyScreenshots = new Set<string>([
     display: block;
     width: 100%;
     height: auto;
-    filter:
-      drop-shadow(0 24px 34px rgba(0, 0, 0, 0.26))
-      drop-shadow(0 0 34px rgba(96, 168, 255, 0.22))
-      drop-shadow(0 0 78px rgba(47, 214, 168, 0.10));
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    filter: none;
   }
 
   .shot-placeholder {
@@ -458,8 +446,7 @@ const readyScreenshots = new Set<string>([
     gap: 0.7rem;
     color: var(--ink-faint);
     font-size: 0.85rem;
-    background:
-      radial-gradient(60% 80% at 50% 0%, rgba(96, 168, 255, 0.12), transparent 70%);
+    background: var(--surface-2);
   }
 
   .design-grid {
@@ -471,7 +458,7 @@ const readyScreenshots = new Set<string>([
   .design-item h3 {
     font-size: 1.25rem;
     margin-bottom: 0.6rem;
-    border-bottom: 1px solid rgba(96, 168, 255, 0.3);
+    border-bottom: 1px solid var(--border-color);
     padding-bottom: 0.6rem;
   }
 

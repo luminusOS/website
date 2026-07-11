@@ -30,9 +30,7 @@ const altPt = new URL('/pt-br' + (path === '/' ? '' : path), Astro.site);
         const theme =
           saved === 'light' || saved === 'dark'
             ? saved
-            : matchMedia('(prefers-color-scheme: light)').matches
-              ? 'light'
-              : 'dark';
+            : 'light';
         document.documentElement.dataset.theme = theme;
       })();
     </script>

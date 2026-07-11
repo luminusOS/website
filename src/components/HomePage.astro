@@ -217,22 +217,12 @@ const editionIcons: Record<(typeof editionOrder)[number], string> = {
 <style>
   .hero {
     position: relative;
-    padding-block: clamp(4rem, 9vw, 7rem) 3rem;
+    padding-block: clamp(4.5rem, 9vw, 7.5rem) 3rem;
     overflow: hidden;
   }
 
   .hero-aurora {
-    position: absolute;
-    inset: -20% -10% auto;
-    height: 70%;
-    background:
-      radial-gradient(45% 60% at 18% 30%, rgba(96, 168, 255, 0.16), transparent 70%),
-      radial-gradient(50% 65% at 50% 18%, rgba(60, 130, 246, 0.22), transparent 70%),
-      radial-gradient(45% 60% at 82% 32%, rgba(37, 99, 235, 0.18), transparent 70%);
-    filter: blur(40px);
-    opacity: var(--glow-strength);
-    animation: aurora-sway 14s ease-in-out infinite alternate;
-    pointer-events: none;
+    display: none;
   }
 
   @keyframes aurora-sway {
@@ -246,7 +236,7 @@ const editionIcons: Record<(typeof editionOrder)[number], string> = {
   }
 
   .hero h1 {
-    font-size: clamp(2.8rem, 7.5vw, 5.5rem);
+    font-size: clamp(2.7rem, 7vw, 5rem);
     font-weight: 800;
     margin-top: 1.2rem;
   }
@@ -283,11 +273,10 @@ const editionIcons: Record<(typeof editionOrder)[number], string> = {
     display: grid;
     gap: 0.8rem;
     align-content: start;
-    transition: transform 0.2s ease, border-color 0.2s ease;
+    transition: border-color 0.2s ease;
   }
 
   .pillar:hover {
-    transform: translateY(-4px);
     border-color: var(--accent);
   }
 
@@ -346,10 +335,9 @@ const editionIcons: Record<(typeof editionOrder)[number], string> = {
     position: sticky;
     top: 6rem;
     color: #e8eefb;
-    border: 1px solid rgba(159, 176, 204, 0.16);
+    border: 1px solid var(--border-color);
     border-radius: var(--radius);
-    background: rgba(6, 10, 18, 0.85);
-    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.5);
+    background: #242424;
     overflow: hidden;
   }
 
@@ -358,8 +346,8 @@ const editionIcons: Record<(typeof editionOrder)[number], string> = {
     align-items: center;
     gap: 0.45rem;
     padding: 0.7rem 1rem;
-    border-bottom: 1px solid rgba(159, 176, 204, 0.16);
-    background: rgba(24, 36, 65, 0.5);
+    border-bottom: 1px solid #3f3f3f;
+    background: #303030;
   }
 
   .terminal-bar i {
@@ -406,16 +394,16 @@ const editionIcons: Record<(typeof editionOrder)[number], string> = {
     gap: 0.7rem;
     align-content: start;
     justify-items: start;
-    transition: transform 0.2s ease, border-color 0.2s ease;
+    transition: border-color 0.2s ease, opacity 0.2s ease;
   }
 
   .edition.is-available {
-    border-color: rgba(60, 130, 246, 0.5);
-    background: linear-gradient(160deg, rgba(60, 130, 246, 0.18), var(--surface-2));
+    border-color: var(--accent);
+    background: var(--surface-1);
   }
 
   .edition.is-available:hover {
-    transform: translateY(-4px);
+    border-color: var(--accent-deep);
   }
 
   .edition.is-locked {
@@ -491,10 +479,7 @@ const editionIcons: Record<(typeof editionOrder)[number], string> = {
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
     padding: clamp(2rem, 5vw, 3.5rem);
-    background:
-      radial-gradient(80% 120% at 100% 0%, rgba(142, 45, 226, 0.16), transparent 60%),
-      radial-gradient(70% 120% at 0% 100%, rgba(0, 255, 135, 0.1), transparent 60%),
-      linear-gradient(160deg, var(--surface-1), var(--surface-2));
+    background: var(--surface-1);
     overflow: hidden;
   }
 
@@ -514,7 +499,7 @@ const editionIcons: Record<(typeof editionOrder)[number], string> = {
   }
 
   .teaser-card img {
-    filter: drop-shadow(0 0 40px rgba(96, 239, 255, 0.35));
+    filter: none;
   }
 
   .download-inner {
@@ -540,7 +525,7 @@ const editionIcons: Record<(typeof editionOrder)[number], string> = {
 
   .release-tag {
     font-size: 0.75rem;
-    background: rgba(6, 10, 18, 0.35);
+    background: rgba(0, 0, 0, 0.12);
     border-radius: 999px;
     padding: 0.2rem 0.7rem;
   }
@@ -559,17 +544,15 @@ const editionIcons: Record<(typeof editionOrder)[number], string> = {
     display: grid;
     gap: 1.2rem;
     justify-items: center;
-    border: 1px solid rgba(224, 53, 107, 0.35);
+    border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
     padding: clamp(2rem, 5vw, 3.5rem);
-    background:
-      radial-gradient(70% 130% at 50% 0%, rgba(224, 53, 107, 0.12), transparent 65%),
-      linear-gradient(160deg, var(--surface-1), var(--surface-2));
+    background: var(--surface-1);
   }
 
   .support-heart {
-    color: #ff5d8f;
-    filter: drop-shadow(0 0 18px rgba(255, 93, 143, 0.45));
+    color: #c01c28;
+    filter: none;
   }
 
   .support-card h2 {

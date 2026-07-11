@@ -122,6 +122,20 @@ const withBase = (path: string) => `${basePath}${path}`;
     background: var(--surface-2);
   }
 
+  .prose :global(.screenshot-placeholder) {
+    display: grid;
+    min-height: 18rem;
+    place-items: center;
+    border: 1px dashed var(--border-color);
+    border-radius: 8px;
+    background: var(--surface-2);
+    color: var(--ink-faint);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    padding: 1.5rem;
+    text-align: center;
+  }
+
   .prose :global(figcaption) {
     margin-top: 0.6rem;
     color: var(--ink-faint);

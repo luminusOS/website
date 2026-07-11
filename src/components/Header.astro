@@ -88,6 +88,25 @@ const navAfter = [
         </ul>
       </details>
 
+      <details class="mobile-menu" data-mobile-menu>
+        <summary aria-label="Menu">
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <path d="M4 7h16M4 12h16M4 17h16" />
+          </svg>
+        </summary>
+        <div class="mobile-panel">
+          <nav aria-label="Mobile">
+            {nav.map((item) => <a href={item.href}>{item.label}</a>)}
+            {products.map((item) => <a href={item.href}>{item.label}</a>)}
+            {navAfter.map((item) => <a href={item.href}>{item.label}</a>)}
+          </nav>
+          <div class="mobile-actions">
+            <a class="btn btn-primary btn-sm" href={`${mainSite}${p}/#download`}>{t.nav.download}</a>
+            <a class="btn btn-ghost btn-sm" href={links.donate} target="_blank" rel="noopener">{t.nav.donate}</a>
+          </div>
+        </div>
+      </details>
+
       <a class="btn btn-donate btn-sm" href={links.donate} target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true">
           <path d="M12 21s-7.5-4.7-10-9.3C.4 8.6 2.4 5 5.8 5c2 0 3.4 1.1 4.2 2.4l2 .1 2-.1C14.8 6.1 16.2 5 18.2 5c3.4 0 5.4 3.6 3.8 6.7C19.5 16.3 12 21 12 21z" />
@@ -109,10 +128,16 @@ const navAfter = [
   });
 
   document.addEventListener('click', (e) => {
-    document.querySelectorAll('[data-lang-menu][open], [data-nav-menu][open]').forEach((menu) => {
+    document.querySelectorAll('[data-lang-menu][open], [data-nav-menu][open], [data-mobile-menu][open]').forEach((menu) => {
       if (e.target instanceof Node && !menu.contains(e.target)) {
         menu.removeAttribute('open');
       }
+    });
+  });
+
+  document.querySelectorAll('[data-mobile-menu] a').forEach((link) => {
+    link.addEventListener('click', () => {
+      link.closest('[data-mobile-menu]')?.removeAttribute('open');
     });
   });
 </script>
@@ -122,7 +147,6 @@ const navAfter = [
     position: sticky;
     top: 0;
     z-index: 40;
-    backdrop-filter: blur(14px);
     background: var(--header-bg);
     border-bottom: 1px solid var(--border-color);
   }
@@ -209,9 +233,7 @@ const navAfter = [
     gap: 0.15rem;
     background: var(--surface-2);
     border: 1px solid var(--border-color);
-    border-radius: 12px;
-    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
-    backdrop-filter: blur(14px);
+    border-radius: 8px;
     z-index: 50;
   }
 
@@ -259,6 +281,11 @@ const navAfter = [
     position: relative;
   }
 
+  .mobile-menu {
+    display: none;
+    position: relative;
+  }
+
   .lang-menu summary {
     list-style: none;
     display: inline-flex;
@@ -272,6 +299,82 @@ const navAfter = [
     cursor: pointer;
     transition: color 0.15s ease, border-color 0.15s ease;
     user-select: none;
+  }
+
+  .mobile-menu summary {
+    list-style: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.1rem;
+    height: 2.1rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    color: var(--ink-dim);
+    cursor: pointer;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .mobile-menu summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .mobile-menu summary:hover,
+  .mobile-menu[open] summary {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .mobile-panel {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 0.5rem);
+    width: min(18rem, calc(100vw - 2rem));
+    padding: 0.45rem;
+    display: grid;
+    gap: 0.45rem;
+    background: var(--surface-1);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    z-index: 60;
+  }
+
+  .mobile-panel nav {
+    display: grid;
+    gap: 0.1rem;
+  }
+
+  .mobile-panel a {
+    display: flex;
+    align-items: center;
+    min-height: 2.35rem;
+    padding: 0.55rem 0.7rem;
+    border-radius: 6px;
+    color: var(--ink-dim);
+    text-decoration: none;
+    font-size: 0.95rem;
+  }
+
+  .mobile-panel a:hover {
+    background: var(--surface-2);
+    color: var(--accent);
+  }
+
+  .mobile-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.45rem;
+    padding-top: 0.45rem;
+    border-top: 1px solid var(--border-color);
+  }
+
+  .mobile-actions .btn {
+    justify-content: center;
+    color: inherit;
+  }
+
+  .mobile-actions .btn-primary {
+    color: #fff;
   }
 
   .lang-menu summary::-webkit-details-marker {
@@ -296,9 +399,7 @@ const navAfter = [
     gap: 0.15rem;
     background: var(--surface-2);
     border: 1px solid var(--border-color);
-    border-radius: 12px;
-    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
-    backdrop-filter: blur(14px);
+    border-radius: 8px;
     z-index: 50;
   }
 
@@ -337,11 +438,33 @@ const navAfter = [
     .main-nav {
       display: none;
     }
+
+    .mobile-menu {
+      display: block;
+    }
   }
 
-  @media (max-width: 560px) {
+  @media (max-width: 760px) {
     .btn-donate {
       display: none;
+    }
+
+    .header-actions > .btn-primary {
+      display: none;
+    }
+  }
+
+  @media (max-width: 420px) {
+    .header-inner {
+      gap: 0.8rem;
+    }
+
+    .brand span {
+      font-size: 1rem;
+    }
+
+    .header-actions {
+      gap: 0.45rem;
     }
   }
 </style>

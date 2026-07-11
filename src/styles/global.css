@@ -1,53 +1,55 @@
 :root {
-  --accent: #3c82f6;
-  --accent-deep: #2563eb;
-  --accent-sky: #60a8ff;
+  --accent: #3584e4;
+  --accent-deep: #1c71d8;
+  --accent-sky: #62a0ea;
 
-  --aurora-green: #00ff87;
-  --aurora-cyan: #60efff;
-  --aurora-violet: #8e2de2;
+  --aurora-green: #2ec27e;
+  --aurora-cyan: #3584e4;
+  --aurora-violet: #9141ac;
 
-  --grad-brand: linear-gradient(100deg, var(--accent-sky), var(--accent) 55%, var(--accent-deep));
-  --grad-aurora: linear-gradient(100deg, var(--aurora-green), var(--aurora-cyan) 45%, var(--aurora-violet));
+  --grad-brand: var(--accent);
+  --grad-aurora: var(--aurora-green);
 
   --font-display: 'Bricolage Grotesque', 'Instrument Sans', sans-serif;
   --font-body: 'Instrument Sans', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 
-  --radius: 14px;
-  --radius-lg: 22px;
+  --radius: 8px;
+  --radius-lg: 10px;
   --container: 1120px;
 
-  --bg: #060a12;
-  --surface-1: rgba(24, 36, 65, 0.55);
-  --surface-2: rgba(10, 17, 32, 0.85);
-  --ink: #e8eefb;
-  --ink-dim: #9fb0cc;
-  --ink-faint: #66758f;
-  --border-color: rgba(159, 176, 204, 0.16);
-  --header-bg: rgba(6, 10, 18, 0.72);
-  --ghost-bg: rgba(16, 26, 48, 0.5);
-  --footer-bg: linear-gradient(180deg, transparent, rgba(16, 26, 48, 0.55));
-  --glow-strength: 1;
-  --device-bezel: #1c2434;
-  --device-body: #0b1120;
-  --screen-night: #0a1120;
+  --bg: #f6f5f4;
+  --surface-1: #ffffff;
+  --surface-2: #f0efed;
+  --ink: #1d1d1f;
+  --ink-dim: #55575c;
+  --ink-faint: #8a8d92;
+  --border-color: #deddda;
+  --header-bg: rgba(246, 245, 244, 0.94);
+  --ghost-bg: #ffffff;
+  --footer-bg: #f0efed;
+  --glow-strength: 0;
+  --device-bezel: #deddda;
+  --device-body: #f0efed;
+  --screen-night: #ffffff;
   --selection-bg: var(--accent);
   --selection-ink: #fff;
 }
 
-html[data-theme='light'] {
-  --bg: #f3f7ff;
-  --surface-1: rgba(255, 255, 255, 0.85);
-  --surface-2: rgba(255, 255, 255, 0.95);
-  --ink: #101e38;
-  --ink-dim: #44587e;
-  --ink-faint: #7787a3;
-  --border-color: rgba(60, 130, 246, 0.2);
-  --header-bg: rgba(243, 247, 255, 0.8);
-  --ghost-bg: rgba(255, 255, 255, 0.6);
-  --footer-bg: linear-gradient(180deg, transparent, rgba(60, 130, 246, 0.08));
-  --glow-strength: 0.45;
+html[data-theme='dark'] {
+  --bg: #1e1e1e;
+  --surface-1: #2a2a2a;
+  --surface-2: #242424;
+  --ink: #f4f4f4;
+  --ink-dim: #c7c7c7;
+  --ink-faint: #8f8f8f;
+  --border-color: #3f3f3f;
+  --header-bg: rgba(30, 30, 30, 0.94);
+  --ghost-bg: #2a2a2a;
+  --footer-bg: #242424;
+  --device-bezel: #4a4a4a;
+  --device-body: #2a2a2a;
+  --screen-night: #242424;
   --selection-bg: var(--accent);
   --selection-ink: #fff;
 }
@@ -81,7 +83,7 @@ body {
 h1, h2, h3, h4 {
   font-family: var(--font-display);
   line-height: 1.08;
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
   margin: 0;
   text-wrap: balance;
 }
@@ -136,17 +138,11 @@ img {
 }
 
 .gradient-text {
-  background: var(--grad-brand);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--accent);
 }
 
 .gradient-text--aurora {
-  background: var(--grad-aurora);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--aurora-green);
 }
 
 .btn {
@@ -154,51 +150,46 @@ img {
   align-items: center;
   gap: 0.6rem;
   padding: 0.85rem 1.6rem;
-  border-radius: 999px;
+  border-radius: var(--radius);
   font-weight: 600;
   font-size: 1rem;
   text-decoration: none;
-  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+  transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
   cursor: pointer;
   border: none;
 }
 
 .btn-primary {
-  background: var(--grad-brand);
+  background: var(--accent);
   color: #fff;
-  box-shadow: 0 8px 32px rgba(60, 130, 246, calc(0.35 * var(--glow-strength)));
 }
 
 .btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 14px 44px rgba(60, 130, 246, calc(0.45 * var(--glow-strength)));
+  background: var(--accent-deep);
 }
 
 .btn-ghost {
   border: 1px solid var(--border-color);
   color: var(--ink);
   background: var(--ghost-bg);
-  backdrop-filter: blur(8px);
 }
 
 .btn-ghost:hover {
   border-color: var(--accent);
-  transform: translateY(-2px);
+  color: var(--accent);
 }
 
 .btn-donate {
-  background: linear-gradient(100deg, #ff5d8f, #e0356b);
+  background: #c01c28;
   color: #fff;
-  box-shadow: 0 8px 28px rgba(224, 53, 107, calc(0.4 * var(--glow-strength)));
 }
 
 .btn-donate:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 14px 40px rgba(224, 53, 107, calc(0.5 * var(--glow-strength)));
+  background: #a51d2d;
 }
 
 .card {
-  background: linear-gradient(160deg, var(--surface-1), var(--surface-2));
+  background: var(--surface-1);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
   padding: 1.75rem;
@@ -212,24 +203,11 @@ img {
 
 .starfield,
 .grain {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
+  display: none;
 }
 
 .starfield {
   z-index: -2;
-  background-image:
-    radial-gradient(1px 1px at 12% 18%, rgba(232, 238, 251, 0.7) 50%, transparent 51%),
-    radial-gradient(1px 1px at 28% 64%, rgba(232, 238, 251, 0.45) 50%, transparent 51%),
-    radial-gradient(1.5px 1.5px at 41% 32%, rgba(96, 168, 255, 0.65) 50%, transparent 51%),
-    radial-gradient(1px 1px at 57% 76%, rgba(232, 238, 251, 0.5) 50%, transparent 51%),
-    radial-gradient(1px 1px at 66% 12%, rgba(232, 238, 251, 0.65) 50%, transparent 51%),
-    radial-gradient(1.5px 1.5px at 79% 48%, rgba(60, 130, 246, 0.55) 50%, transparent 51%),
-    radial-gradient(1px 1px at 88% 84%, rgba(232, 238, 251, 0.5) 50%, transparent 51%),
-    radial-gradient(1px 1px at 94% 27%, rgba(96, 168, 255, 0.5) 50%, transparent 51%);
-  background-size: 720px 720px;
-  animation: star-drift 120s linear infinite;
 }
 
 html[data-theme='light'] .starfield {
@@ -242,9 +220,6 @@ html[data-theme='light'] .starfield {
 
 .grain {
   z-index: 50;
-  opacity: 0.05;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 html[data-theme='light'] .grain {

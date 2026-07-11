@@ -213,17 +213,7 @@ const spotlightColors = [
   }
 
   .a-aurora {
-    position: absolute;
-    inset: -30% -15% auto;
-    height: 90%;
-    background:
-      radial-gradient(40% 55% at 25% 35%, rgba(0, 255, 135, 0.22), transparent 70%),
-      radial-gradient(45% 60% at 55% 20%, rgba(96, 239, 255, 0.18), transparent 70%),
-      radial-gradient(40% 55% at 80% 40%, rgba(142, 45, 226, 0.24), transparent 70%);
-    filter: blur(46px);
-    opacity: var(--glow-strength);
-    animation: a-sway 12s ease-in-out infinite alternate;
-    pointer-events: none;
+    display: none;
   }
 
   @keyframes a-sway {
@@ -240,18 +230,25 @@ const spotlightColors = [
   }
 
   .a-logo {
-    filter: drop-shadow(0 0 50px rgba(0, 255, 135, 0.4));
-    animation: rise-in 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) forwards, logo-breathe 6s ease-in-out 1s infinite;
+    filter: none;
+    animation: rise-in 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
   }
 
   @keyframes logo-breathe {
-    0%, 100% { filter: drop-shadow(0 0 50px rgba(0, 255, 135, 0.4)); }
-    50% { filter: drop-shadow(0 0 70px rgba(96, 239, 255, 0.55)); }
+    0%, 100% { filter: none; }
+    50% { filter: none; }
   }
 
   .a-hero h1 {
     font-size: clamp(3rem, 8vw, 5.8rem);
     font-weight: 800;
+  }
+
+  .a-hero .gradient-text--aurora {
+    background: linear-gradient(100deg, var(--aurora-green), var(--aurora-cyan) 48%, var(--aurora-violet));
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
   }
 
   .a-sub {
@@ -303,7 +300,7 @@ const spotlightColors = [
     color: var(--ink-dim);
     font-style: italic;
     border-inline-start: 3px solid;
-    border-image: linear-gradient(180deg, var(--aurora-green), var(--aurora-violet)) 1;
+    border-color: var(--aurora-green);
     padding-inline-start: 1.5rem;
     text-align: start;
   }
@@ -376,11 +373,11 @@ const spotlightColors = [
     display: grid;
     justify-items: center;
     max-width: 100%;
-    transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
+    transition: none;
   }
 
   .spot-frame:hover .spot-window {
-    transform: translateY(-6px);
+    transform: none;
   }
 
   .spot-window img {
@@ -388,10 +385,9 @@ const spotlightColors = [
     width: auto;
     max-width: 100%;
     height: auto;
-    filter:
-      drop-shadow(0 24px 34px rgba(0, 0, 0, 0.26))
-      drop-shadow(0 0 34px rgba(var(--spot-color), 0.28))
-      drop-shadow(0 0 78px rgba(var(--spot-color-alt), 0.14));
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    filter: none;
   }
 
   .spot-placeholder {
@@ -404,23 +400,13 @@ const spotlightColors = [
     gap: 0.7rem;
     color: var(--ink-faint);
     font-size: 0.85rem;
-    background:
-      radial-gradient(60% 80% at 50% 0%, rgba(var(--spot-color), 0.14), transparent 70%),
-      radial-gradient(50% 70% at 80% 100%, rgba(var(--spot-color-alt), 0.12), transparent 70%);
+    background: var(--surface-2);
     overflow: hidden;
-    filter:
-      drop-shadow(0 24px 34px rgba(0, 0, 0, 0.22))
-      drop-shadow(0 0 34px rgba(var(--spot-color), 0.18));
+    filter: none;
   }
 
   .spot-placeholder::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(105deg, transparent 42%, rgba(96, 239, 255, 0.09) 50%, transparent 58%);
-    transform: translateX(-100%);
-    animation: spot-shimmer 3s ease-in-out infinite;
-    pointer-events: none;
+    content: none;
   }
 
   @keyframes spot-shimmer {
@@ -480,21 +466,20 @@ const spotlightColors = [
     display: grid;
     gap: 0.6rem;
     align-content: start;
-    transition: transform 0.2s ease, border-color 0.2s ease;
+    transition: border-color 0.2s ease;
   }
 
   .module:hover {
-    transform: translateY(-4px);
-    border-color: rgba(0, 255, 135, 0.4);
+    border-color: var(--aurora-green);
   }
 
   .module-dot {
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background: var(--grad-aurora);
-    filter: hue-rotate(var(--hue-shift, 0deg));
-    box-shadow: 0 0 12px rgba(96, 239, 255, 0.5);
+    background: var(--aurora-green);
+    filter: none;
+    box-shadow: none;
   }
 
   .module h4 {
@@ -515,7 +500,7 @@ const spotlightColors = [
   .design-item h3 {
     font-size: 1.25rem;
     margin-bottom: 0.6rem;
-    border-bottom: 1px solid rgba(96, 239, 255, 0.25);
+    border-bottom: 1px solid var(--border-color);
     padding-bottom: 0.6rem;
   }
 
