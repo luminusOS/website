@@ -20,7 +20,7 @@ Veja [Adaptando o Sirius para outra distro](/pt-br/sirius/adapting/) se foi
 isso que te trouxe aqui.
 
 Para o fluxo completo de instalação do LuminusOS (baixar a ISO, gravar um
-pendrive, primeiro boot), veja o [guia de instalação](/guides/installation/).
+pendrive, primeiro boot), veja o [guia de instalação](/pt-br/guides/installation/).
 Esta seção é um mergulho mais fundo em como o Sirius funciona por dentro.
 
 ## O assistente
