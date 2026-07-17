@@ -62,6 +62,17 @@ export default defineConfig({
           ],
         },
         {
+          label: 'Sirius',
+          translations: { 'pt-BR': 'Sirius' },
+          items: [
+            { slug: 'sirius/overview' },
+            { slug: 'sirius/diagnostics' },
+            { slug: 'sirius/storage' },
+            { slug: 'sirius/adapting' },
+            { slug: 'sirius/troubleshooting' },
+          ],
+        },
+        {
           label: 'Project',
           translations: { 'pt-BR': 'Projeto' },
           items: [
