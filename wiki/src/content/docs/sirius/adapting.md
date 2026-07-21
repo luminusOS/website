@@ -37,31 +37,31 @@ repart_dir = "/usr/share/sirius/repart.d"
 # icon = "starred-symbolic"
 ```
 
-- **`[bootc] image`** — the container image `bootc install` deploys.
+- **`[bootc] image`**: the container image `bootc install` deploys.
   Required.
-- **`target_imgref`**, **`enforce_sigpolicy`**, **`kargs`**, **`args`** —
+- **`target_imgref`**, **`enforce_sigpolicy`**, **`kargs`**, **`args`**:
   passed through to `bootc install` for cases where the deployed image
   reference differs from the source image, signature policy needs relaxing,
   or you need extra kernel/install arguments.
-- **`[disk] repart_dir`** — where Sirius looks for the partition layout, see
+- **`[disk] repart_dir`**: where Sirius looks for the partition layout, see
   below.
-- **`[[bento]]`** — up to three optional link cards shown on the install
+- **`[[bento]]`**: up to three optional link cards shown on the install
   progress page (title, description, link, icon).
-- **`[branding]`** — the welcome page's logo or icon. `logo` (an image path)
+- **`[branding]`**: the welcome page's logo or icon. `logo` (an image path)
   takes priority over `icon` (a themed icon name) if both are set.
 
 ## Partition layout: repart.d
 
 `repart_dir` points at a directory of `systemd-repart` partition-definition
 `.conf` files. These define the layout Sirius's automatic partitioning mode
-creates (see [Storage](/sirius/storage/)). LuminusOS ships two, as an example
+creates (see [Storage](../storage/)). LuminusOS ships two, as an example
 to build from: `10-esp.conf` (the EFI system partition) and `20-root.conf`
 (the root partition).
 
 :::caution[MountPoint options are raw kernel mount options]
 Anything after the `:` in a repart config's `MountPoint=` line is passed
 **raw** to the `mount(2)` syscall by the underlying library. Only real kernel
-mount options work there — userspace keywords like `defaults`, `auto`, or
+mount options work there: userspace keywords like `defaults`, `auto`, or
 `nofail` (the kind you'd put in `/etc/fstab`) are **not** understood by
 `mount(2)` and will make the mount fail with `EINVAL`. Stick to actual
 kernel-level options.
@@ -81,5 +81,5 @@ Sirius expects these tools to be present on the live/target system:
 - `NetworkManager`
 
 A polkit authentication agent needs to be running in the session (or a polkit
-rule granting the `io.sirius.Installer.run-playbook` action outright) —
-otherwise `pkexec` fails. See [Troubleshooting](/sirius/troubleshooting/).
+rule granting the `io.sirius.Installer.run-playbook` action outright),
+otherwise `pkexec` fails. See [Troubleshooting](../troubleshooting/).

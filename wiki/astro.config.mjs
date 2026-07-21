@@ -18,6 +18,10 @@ const ignoredWatchPaths = [
 export default defineConfig({
   site,
   base,
+  redirects: {
+    '/guides/aurora-shell': `${base}/aurora-shell/overview`,
+    '/pt-br/guides/aurora-shell': `${base}/pt-br/aurora-shell/overview`,
+  },
   vite: {
     server: {
       watch: {
@@ -29,10 +33,16 @@ export default defineConfig({
   },
   integrations: [
     starlight({
-      title: 'LuminusOS Wiki',
+      title: 'Wiki',
       logo: { src: './src/assets/brand.svg' },
       favicon: '/favicon.svg',
       customCss: ['./src/styles/custom.css'],
+      components: {
+        // Local override: enables Pagefind search in `astro dev` (upstream
+        // hard-disables it). Needs an index at <base>/pagefind/ — dev.mjs
+        // generates one into wiki/public/pagefind/ on startup.
+        Search: './src/components/Search.astro',
+      },
       social: [
         { icon: 'github', label: 'GitHub', href: 'https://github.com/luminusOS' },
       ],
@@ -58,7 +68,14 @@ export default defineConfig({
           translations: { 'pt-BR': 'Dia a dia' },
           items: [
             { slug: 'guides/apps' },
-            { slug: 'guides/aurora-shell' },
+          ],
+        },
+        {
+          label: 'Aurora Shell',
+          translations: { 'pt-BR': 'Aurora Shell' },
+          items: [
+            { slug: 'aurora-shell/overview' },
+            { slug: 'aurora-shell/settings' },
           ],
         },
         {

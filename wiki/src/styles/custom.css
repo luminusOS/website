@@ -1,11 +1,86 @@
+/*
+ * LuminusOS wiki theme — maps the main site's palette (src/styles/global.css)
+ * onto Starlight's CSS variables so the wiki reads as part of luminusos.org
+ * instead of the stock Starlight theme. Keep in sync with global.css.
+ *
+ * Main site tokens:
+ *   accent #3584e4 · accent-deep #1c71d8 · accent-sky #62a0ea
+ *   dark:  bg #1e1e1e · surface #2a2a2a / #242424 · ink #f4f4f4 · border #3f3f3f
+ *   light: bg #f6f5f4 · surface #ffffff / #f0efed · ink #1d1d1f · border #deddda
+ */
+
+/* Dark theme (Starlight default). */
 :root {
-  --sl-color-accent-low: #102a52;
-  --sl-color-accent: #3c82f6;
-  --sl-color-accent-high: #a8c7fa;
+  /* Accent ramp — the GNOME blue used across luminusos.org. */
+  --sl-color-accent-low: #1c71d8;
+  --sl-color-accent: #3584e4;
+  --sl-color-accent-high: #62a0ea;
+
+  /* Grayscale — main site's dark surfaces and ink. */
+  --sl-color-white: #f4f4f4;
+  --sl-color-gray-1: #c7c7c7;
+  --sl-color-gray-2: #a3a3a3;
+  --sl-color-gray-3: #8f8f8f;
+  --sl-color-gray-4: #666666;
+  --sl-color-gray-5: #3f3f3f;
+  --sl-color-gray-6: #2a2a2a;
+  --sl-color-black: #1e1e1e;
+
+  /* Surfaces. */
+  --sl-color-bg: #1e1e1e;
+  --sl-color-bg-nav: #242424;
+  --sl-color-bg-sidebar: #242424;
+  --sl-color-hairline: #3f3f3f;
 }
 
+/* Light theme. */
 :root[data-theme='light'] {
-  --sl-color-accent-low: #d6e5fd;
-  --sl-color-accent: #2563eb;
-  --sl-color-accent-high: #1c3f8f;
+  --sl-color-accent-low: #dbe9fb;
+  --sl-color-accent: #3584e4;
+  --sl-color-accent-high: #1c71d8;
+
+  --sl-color-white: #1d1d1f;
+  --sl-color-gray-1: #55575c;
+  --sl-color-gray-2: #6f7276;
+  --sl-color-gray-3: #8a8d92;
+  --sl-color-gray-4: #b4b6ba;
+  --sl-color-gray-5: #deddda;
+  --sl-color-gray-6: #f0efed;
+  --sl-color-black: #ffffff;
+
+  --sl-color-bg: #f6f5f4;
+  --sl-color-bg-nav: #f6f5f4;
+  --sl-color-bg-sidebar: #f0efed;
+  --sl-color-hairline: #deddda;
+}
+
+/* Text selection matches the main site's accent selection. */
+::selection {
+  background: var(--sl-color-accent);
+  color: #ffffff;
+}
+
+/* Sidebar current page: a tinted wash with a solid accent bar instead of
+   Starlight's default full-accent background with inverted text, which
+   reads as blue-on-blue with this palette. Inset shadow, not border, so the
+   label doesn't shift 2px when the bar appears. */
+.sidebar-pane a[aria-current='page'],
+.sidebar-pane a[aria-current='page']:hover,
+.sidebar-pane a[aria-current='page']:focus {
+  background-color: rgb(53 132 228 / 0.18);
+  color: #99c1f1;
+  box-shadow: inset 2px 0 0 var(--sl-color-accent);
+}
+
+:root[data-theme='light'] .sidebar-pane a[aria-current='page'],
+:root[data-theme='light'] .sidebar-pane a[aria-current='page']:hover,
+:root[data-theme='light'] .sidebar-pane a[aria-current='page']:focus {
+  background-color: rgb(53 132 228 / 0.12);
+  color: #1c71d8;
+}
+
+/* Rounded, main-site-like code blocks and asides. */
+.expressive-code,
+.starlight-aside {
+  border-radius: 8px;
 }

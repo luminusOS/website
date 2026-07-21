@@ -1,4 +1,5 @@
-import { spawn } from 'node:child_process';
+import { spawn, spawnSync } from 'node:child_process';
+import { cpSync, existsSync } from 'node:fs';
 import http from 'node:http';
 import net from 'node:net';
 
@@ -59,6 +60,7 @@ server.on('upgrade', (request, socket, head) => {
 server.listen(publicPort, '0.0.0.0', () => {
   console.log(`dev proxy ready: http://localhost:${publicPort}`);
   console.log(`routes: / -> site, /aurora -> site, /blog -> blog, /wiki -> wiki`);
+  ensureWikiSearchIndex();
   children = [
     start('site', ['exec', 'astro', '--', 'dev', '--host', host, '--port', String(targets.site.port)]),
     start('blog', ['exec', 'astro', '--', 'dev', '--root', 'blog', '--host', host, '--port', String(targets.blog.port)], {
@@ -98,6 +100,35 @@ function start(label, args, env = {}) {
   });
 
   return child;
+}
+
+/**
+ * Starlight's search needs a Pagefind index at `<base>/pagefind/`, which is
+ * normally only produced by `astro build`. The local Search override
+ * (wiki/src/components/Search.astro) enables search in dev too, so make sure
+ * an index exists: build the wiki once (with the same /wiki base the dev
+ * proxy uses, so result URLs resolve) and copy the index into
+ * wiki/public/pagefind/, which `astro dev` then serves. Gitignored; stale is
+ * fine for local development — rebuilds refresh it.
+ */
+function ensureWikiSearchIndex() {
+  const root = new URL('..', import.meta.url).pathname;
+  const dest = `${root}wiki/public/pagefind`;
+  if (existsSync(`${dest}/pagefind.js`)) {
+    return;
+  }
+  console.log('[wiki] generating Pagefind index for dev search (one-time build)…');
+  const build = spawnSync('npm', ['exec', 'astro', '--', 'build', '--root', 'wiki'], {
+    cwd: root,
+    env: { ...process.env, SITE_BASE: '/wiki', SITE_URL: `http://localhost:${publicPort}` },
+    stdio: 'inherit',
+  });
+  if (build.status !== 0 || !existsSync(`${root}wiki/dist/pagefind/pagefind.js`)) {
+    console.warn('[wiki] search index build failed; dev search will be unavailable');
+    return;
+  }
+  cpSync(`${root}wiki/dist/pagefind`, dest, { recursive: true });
+  console.log('[wiki] dev search index ready');
 }
 
 function targetFor(rawUrl, headers = {}) {

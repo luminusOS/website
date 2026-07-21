@@ -32,15 +32,15 @@ warn = ["secure_boot", "network", "virt"]
 min_ram_gib = 2
 ```
 
-- **`require`** — if any of these fail, Sirius blocks the install. On
+- **`require`**: if any of these fail, Sirius blocks the install. On
   LuminusOS that's UEFI firmware, enough RAM, and enough disk space.
-- **`warn`** — shown on the diagnostics page but doesn't block anything.
+- **`warn`**: shown on the diagnostics page but doesn't block anything.
   Secure Boot being on, no network connection, or running inside a VM are all
   worth flagging but not worth stopping the wizard over.
-- **`min_ram_gib`** — the RAM threshold the `ram` check uses, in GiB. The
+- **`min_ram_gib`**: the RAM threshold the `ram` check uses, in GiB. The
   default in Sirius itself is `2`, but LuminusOS's shipped Workstation image
   config raises it to `5`. See
-  [Troubleshooting → why does install need so much RAM](/sirius/troubleshooting/#why-does-install-need-so-much-ram)
+  [Troubleshooting → why does install need so much RAM](../troubleshooting/#why-does-install-need-so-much-ram)
   for why.
 
 ## Page order and disabling pages

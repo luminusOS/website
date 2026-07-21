@@ -33,16 +33,16 @@ warn = ["secure_boot", "network", "virt"]
 min_ram_gib = 2
 ```
 
-- **`require`** — se qualquer uma dessas falhar, o Sirius bloqueia a
+- **`require`**: se qualquer uma dessas falhar, o Sirius bloqueia a
   instalação. No LuminusOS são firmware UEFI, RAM suficiente e espaço em
   disco suficiente.
-- **`warn`** — aparece na tela de diagnóstico mas não bloqueia nada. Secure
+- **`warn`**: aparece na tela de diagnóstico mas não bloqueia nada. Secure
   Boot ativado, sem conexão de rede, ou rodar dentro de uma VM valem um
   aviso, mas não valem parar o assistente.
-- **`min_ram_gib`** — o limite de RAM que a verificação `ram` usa, em GiB. O
+- **`min_ram_gib`**: o limite de RAM que a verificação `ram` usa, em GiB. O
   padrão no próprio Sirius é `2`, mas a imagem Workstation do LuminusOS eleva
   isso para `5`. Veja
-  [Solução de problemas → por que a instalação precisa de tanta RAM](/pt-br/sirius/troubleshooting/#por-que-a-instalação-precisa-de-tanta-ram)
+  [Solução de problemas → por que a instalação precisa de tanta RAM](../troubleshooting/#por-que-a-instalação-precisa-de-tanta-ram)
   para entender o motivo.
 
 ## Ordem das telas e telas desativadas

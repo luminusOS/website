@@ -1,12 +1,12 @@
 ---
-title: LuminusOS Wiki
+title: Home
 description: Practical guides for LuminusOS, the immutable Linux built on Fedora bootc.
 template: splash
 hero:
   tagline: Short, practical guides for everything LuminusOS. No fluff, just the steps.
   actions:
     - text: Install LuminusOS
-      link: /guides/installation/
+      link: ./guides/installation/
       icon: right-arrow
     - text: Visit luminusos.org
       link: https://luminusos.org
@@ -19,19 +19,23 @@ import { Card, CardGrid } from '@astrojs/starlight/components';
 <CardGrid stagger>
   <Card title="Installation" icon="rocket">
     Download the ISO, flash a USB drive and let Sirius guide you.
-    [Get started →](/guides/installation/)
+    [Get started →](./guides/installation/)
   </Card>
   <Card title="Updates & rollback" icon="approve-check-circle">
     Atomic updates that apply on reboot, with the previous version one boot
-    menu away. [Learn how →](/guides/updates/)
+    menu away. [Learn how →](./guides/updates/)
   </Card>
   <Card title="Installing apps" icon="add-document">
     Everything comes from Flathub, sandboxed and independent from the OS.
-    [Install apps →](/guides/apps/)
+    [Install apps →](./guides/apps/)
   </Card>
   <Card title="Aurora Shell" icon="puzzle">
     The modular GNOME extension that ships with Workstation.
-    [Explore modules →](/guides/aurora-shell/)
+    [Explore modules →](./aurora-shell/overview/)
+  </Card>
+  <Card title="Sirius installer" icon="rocket">
+    The diagnostic-first, distro-agnostic installer that ships on the live ISO.
+    [How it works →](./sirius/overview/)
   </Card>
 </CardGrid>
 

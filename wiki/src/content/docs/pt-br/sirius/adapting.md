@@ -6,7 +6,7 @@ sidebar:
 ---
 
 O Sirius não tem o LuminusOS fixado em nenhum lugar do código. Qual imagem é
-instalada, como o disco é particionado e como o instalador é personalizado —
+instalada, como o disco é particionado e como o instalador é personalizado,
 tudo isso vem de um único arquivo de configuração: `/etc/sirius/distro.toml`.
 Uma distro que empacota o Sirius fornece sua própria cópia desse arquivo.
 
@@ -37,17 +37,17 @@ repart_dir = "/usr/share/sirius/repart.d"
 # icon = "starred-symbolic"
 ```
 
-- **`[bootc] image`** — a imagem de contêiner que o `bootc install` instala.
+- **`[bootc] image`**: a imagem de contêiner que o `bootc install` instala.
   Obrigatório.
-- **`target_imgref`**, **`enforce_sigpolicy`**, **`kargs`**, **`args`** —
+- **`target_imgref`**, **`enforce_sigpolicy`**, **`kargs`**, **`args`**:
   repassados para o `bootc install`, para os casos em que a referência de
   imagem instalada é diferente da imagem de origem, a política de assinatura
   precisa ser relaxada, ou você precisa de argumentos extras de kernel/instalação.
-- **`[disk] repart_dir`** — onde o Sirius procura o layout de partições, veja
+- **`[disk] repart_dir`**: onde o Sirius procura o layout de partições, veja
   abaixo.
-- **`[[bento]]`** — até três cartões de link opcionais mostrados na tela de
+- **`[[bento]]`**: até três cartões de link opcionais mostrados na tela de
   progresso da instalação (título, descrição, link, ícone).
-- **`[branding]`** — logo ou ícone da tela de boas-vindas. `logo` (um caminho
+- **`[branding]`**: logo ou ícone da tela de boas-vindas. `logo` (um caminho
   de imagem) tem prioridade sobre `icon` (um nome de ícone do tema) se os
   dois estiverem definidos.
 
@@ -55,14 +55,14 @@ repart_dir = "/usr/share/sirius/repart.d"
 
 `repart_dir` aponta para um diretório de arquivos `.conf` de definição de
 partição do `systemd-repart`. Eles definem o layout que o modo automático de
-particionamento do Sirius cria (veja [Armazenamento](/pt-br/sirius/storage/)).
+particionamento do Sirius cria (veja [Armazenamento](../storage/)).
 O LuminusOS fornece dois, como exemplo para você partir: `10-esp.conf` (a
 partição EFI) e `20-root.conf` (a partição raiz).
 
 :::caution[As opções de MountPoint são opções de montagem cruas do kernel]
 Tudo que vem depois do `:` na linha `MountPoint=` de uma configuração do
 repart é passado **cru** para a chamada de sistema `mount(2)` pela biblioteca
-por trás disso. Só opções reais de montagem do kernel funcionam ali —
+por trás disso. Só opções reais de montagem do kernel funcionam ali:
 palavras-chave de espaço de usuário como `defaults`, `auto` ou `nofail` (do
 tipo que você colocaria no `/etc/fstab`) **não** são entendidas pelo
 `mount(2)` e vão fazer a montagem falhar com `EINVAL`. Use só opções de nível
@@ -85,5 +85,5 @@ live/de destino:
 
 Um agente de autenticação polkit precisa estar rodando na sessão (ou uma
 regra polkit que conceda a ação `io.sirius.Installer.run-playbook`
-diretamente) — senão o `pkexec` falha. Veja
-[Solução de problemas](/pt-br/sirius/troubleshooting/).
+diretamente), senão o `pkexec` falha. Veja
+[Solução de problemas](../troubleshooting/).
