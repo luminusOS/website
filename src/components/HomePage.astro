@@ -15,10 +15,11 @@ const t = translations[lang];
 const p = langPrefix(lang);
 const auroraHref = subHref(p, 'aurora', '/aurora', links.auroraSite);
 
-const editionOrder = ['workstation', 'play', 'mobile', 'tablet', 'cast'] as const;
+const editionOrder = ['workstation', 'education', 'play', 'mobile', 'tablet', 'cast'] as const;
 
 const editionIcons: Record<(typeof editionOrder)[number], string> = {
   workstation: 'M3 5h18v11H3zM1 19h22v1.5H1z',
+  education: 'M12 4L2 9l10 5 10-5zM6 11.5V16c0 1.7 2.7 3 6 3s6-1.3 6-3v-4.5M22 9v5',
   play: 'M6 8h12a4 4 0 0 1 4 4v3a3 3 0 0 1-5.4 1.8L15 15H9l-1.6 1.8A3 3 0 0 1 2 15v-3a4 4 0 0 1 4-4z',
   mobile: 'M8 2h8a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm2 17h4',
   tablet: 'M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z',
@@ -170,10 +171,13 @@ const editionIcons: Record<(typeof editionOrder)[number], string> = {
       <div class="container download-inner">
         <h2>{t.download.title}</h2>
         <p>{t.download.subtitle}</p>
-        <a class="btn btn-primary btn-lg" href={links.releasesLatest} target="_blank" rel="noopener">
-          ⬇ {t.download.button}
-          <span class="release-tag mono" data-release-tag hidden></span>
-        </a>
+        <div class="download-actions">
+          <a class="btn btn-primary btn-lg" data-sf-iso href={links.sfFiles} target="_blank" rel="noopener">
+            ⬇ {t.download.button}
+            <span class="release-tag mono" data-release-tag hidden></span>
+          </a>
+          <a class="btn btn-ghost" href={links.releasesLatest} target="_blank" rel="noopener">{t.download.notes} ↗</a>
+        </div>
         <p class="download-note">{t.download.note}</p>
       </div>
     </section>
@@ -199,17 +203,20 @@ const editionIcons: Record<(typeof editionOrder)[number], string> = {
 
 <script>
   const tagEl = document.querySelector('[data-release-tag]');
-  if (tagEl) {
+  const isoEl = document.querySelector('[data-sf-iso]');
+  if (tagEl && isoEl) {
     fetch('https://api.github.com/repos/luminusOS/images/releases/latest')
       .then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
       .then((release) => {
-        if (release?.tag_name) {
+        const tag = release?.tag_name?.replace(/^v/, '');
+        if (tag) {
           tagEl.textContent = release.tag_name;
           tagEl.removeAttribute('hidden');
+          isoEl.href = `https://sourceforge.net/projects/luminusos/files/${tag}/luminusos-workstation-${tag}.iso/download`;
         }
       })
       .catch(() => {
-        /* no releases yet — button still points at /releases/latest */
+        /* no releases yet — button still points at the SourceForge files page */
       });
   }
 </script>
@@ -385,7 +392,7 @@ const editionIcons: Record<(typeof editionOrder)[number], string> = {
 
   @media (min-width: 1100px) {
     .edition-grid {
-      grid-template-columns: repeat(5, 1fr);
+      grid-template-columns: repeat(3, 1fr);
     }
   }
 
@@ -528,6 +535,14 @@ const editionIcons: Record<(typeof editionOrder)[number], string> = {
     background: rgba(0, 0, 0, 0.12);
     border-radius: 999px;
     padding: 0.2rem 0.7rem;
+  }
+
+  .download-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.9rem;
+    justify-content: center;
+    align-items: center;
   }
 
   .download-note {

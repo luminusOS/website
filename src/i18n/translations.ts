@@ -126,6 +126,11 @@ const en = {
         device: 'PCs & notebooks',
         body: 'The flagship. A GNOME desktop refined with Aurora Shell, ready for work, study and everything in between.',
       },
+      education: {
+        name: 'Education',
+        device: 'Classrooms & labs',
+        body: 'A Workstation-derived edition for schools and student devices, with curated educational apps and easy fleet management.',
+      },
       play: {
         name: 'Play',
         device: 'Gaming handhelds',
@@ -160,7 +165,8 @@ const en = {
     subtitle:
       'Grab the latest Workstation ISO, flash it to a USB drive and install. That is the last update you will ever do by hand.',
     button: 'Download latest ISO',
-    note: 'Downloads are served from GitHub Releases. The button always points to the most recent version.',
+    notes: 'Release notes',
+    note: 'Downloads are served from SourceForge mirrors worldwide. The button always points to the most recent version.',
     checking: 'checking latest version…',
     latest: 'Latest release',
   },
@@ -206,7 +212,7 @@ const en = {
       {
         tag: 'Clipboard History',
         title: 'Your clipboard finally remembers',
-        body: 'Everything you copy, searchable and one shortcut away. Pin what matters, navigate with the keyboard, and rest easy — history never leaves your machine.',
+        body: 'Everything you copy, searchable and one shortcut away. Pin what matters, navigate with the keyboard, and rest easy. History never leaves your machine.',
         file: 'clipboard.png',
       },
       {
@@ -218,7 +224,7 @@ const en = {
       {
         tag: 'Weather & Meeting Clock',
         title: 'Your day, right next to the clock',
-        body: 'Current weather on one side, your next meeting on the other. Alerts before calls start, snooze when you need five more minutes — all in the panel you already look at.',
+        body: 'Current weather on one side, your next meeting on the other. Alerts before calls start, snooze when you need five more minutes, all in the panel you already look at.',
         file: 'clock.png',
       },
       {
@@ -467,6 +473,11 @@ const ptBr: typeof en = {
         device: 'PCs e notebooks',
         body: 'A edição principal. Um desktop GNOME refinado com o Aurora Shell, pronto para trabalho, estudo e tudo no meio do caminho.',
       },
+      education: {
+        name: 'Education',
+        device: 'Salas de aula e laboratórios',
+        body: 'Uma edição derivada da Workstation para escolas e dispositivos de estudantes, com apps educacionais selecionados e gestão fácil de frota.',
+      },
       play: {
         name: 'Play',
         device: 'Portáteis de jogos',
@@ -501,7 +512,8 @@ const ptBr: typeof en = {
     subtitle:
       'Baixe a ISO mais recente da Workstation, grave em um pendrive e instale. Essa é a última atualização que você vai fazer na mão.',
     button: 'Baixar ISO mais recente',
-    note: 'Os downloads vêm do GitHub Releases. O botão sempre aponta para a versão mais recente.',
+    notes: 'Notas da versão',
+    note: 'Os downloads vêm de mirrors do SourceForge no mundo todo. O botão sempre aponta para a versão mais recente.',
     checking: 'verificando última versão…',
     latest: 'Última versão',
   },
@@ -547,7 +559,7 @@ const ptBr: typeof en = {
       {
         tag: 'Clipboard History',
         title: 'Sua área de transferência finalmente lembra',
-        body: 'Tudo que você copia, pesquisável e a um atalho de distância. Fixe o que importa, navegue pelo teclado e fique tranquilo — o histórico nunca sai da sua máquina.',
+        body: 'Tudo que você copia, pesquisável e a um atalho de distância. Fixe o que importa, navegue pelo teclado e fique tranquilo. O histórico nunca sai da sua máquina.',
         file: 'clipboard.png',
       },
       {
@@ -559,7 +571,7 @@ const ptBr: typeof en = {
       {
         tag: 'Weather & Meeting Clock',
         title: 'O seu dia, ao lado do relógio',
-        body: 'O clima de um lado, a próxima reunião do outro. Alertas antes das chamadas começarem, soneca quando você precisa de mais cinco minutos — tudo no painel que você já olha.',
+        body: 'O clima de um lado, a próxima reunião do outro. Alertas antes das chamadas começarem, soneca quando você precisa de mais cinco minutos, tudo no painel que você já olha.',
         file: 'clock.png',
       },
       {
@@ -721,6 +733,7 @@ export const links = {
   releasesLatest: 'https://github.com/luminusOS/images/releases/latest',
   releasesAll: 'https://github.com/luminusOS/images/releases',
   releasesApi: 'https://api.github.com/repos/luminusOS/images/releases/latest',
+  sfFiles: 'https://sourceforge.net/projects/luminusos/files/',
   org: 'https://github.com/luminusOS',
   discord: 'https://discord.gg/eVmXsqkvkw',
   imagesRepo: 'https://github.com/luminusOS/images',
