@@ -28,9 +28,29 @@ const t = translations[lang];
 
   <div class="device laptop">
     <div class="laptop-lid">
-      <div class="screen aurora-screen">
-        <span class="edition mono">{t.editions.items.workstation.name}</span>
-        <span class="pill">{t.hero.available}</span>
+      <div class="screen ws-screen">
+        <div class="ws-wall" aria-hidden="true"></div>
+        <header class="ws-panel">
+          <svg viewBox="-0.3 -0.3 567.4 567.4" class="ws-logo"><path d="m 153.1551,567.1446 c -32.904,0 -59.6863,-4.1826 -80.3472,-12.6417 C 52.0379,546.0435 35.6403,532.5463 23.5063,514.0117 14.7611,500.8 8.6391,483.8811 5.0321,463.2557 1.5338,442.7249 -0.2154,407.9367 -0.2154,358.8911 V 128.0166 h 116.75 v 268.7992 c 0,40.5862 2.9511,65.7743 8.854,75.4693 5.7943,9.6001 16.1793,14.4474 31.1553,14.4474 12.8069,0 22.1972,-3.5791 28.3014,-10.6793 V 0.2151 h 152.2451 v 451.2816 h 182.5217 c 0,38.5492 0,77.0987 0,115.6479 z M 424.7524,46.0406 h 96.2782 c 25.1257,0 45.6834,20.5574 45.6834,45.6834 v 71.7886 c 0,25.126 -20.5577,45.6834 -45.6834,45.6834 H 379.0689 V 91.724 c 0,-25.126 20.5575,-45.6834 45.6835,-45.6834 z" fill="currentColor" fill-rule="evenodd"/></svg>
+          <span class="ws-pill"><i class="ws-ws-bar"></i><i></i><i></i><i></i><i></i></span>
+          <span class="ws-clock" data-ws-clock>Aug 4&ensp;8:32 PM</span>
+          <span class="ws-status">
+            <svg viewBox="0 0 16 16" fill="currentColor"><use href="/spotlight-icons.svg#gi-clipboard" /></svg>
+            <svg viewBox="0 0 16 16" fill="currentColor"><use href="/spotlight-icons.svg#gi-mic" /></svg>
+            <svg viewBox="0 0 16 16" fill="currentColor"><use href="/spotlight-icons.svg#gi-volume" /></svg>
+          </span>
+        </header>
+        <div class="ws-dock">
+          <img src="/img/demos/firefox.png" alt="" />
+          <img src="/img/demos/files.svg" alt="" />
+          <img src="/img/demos/software.svg" alt="" />
+          <img src="/img/demos/thunderbird.png" alt="" />
+          <img src="/img/demos/calendar.svg" alt="" />
+          <span class="ws-dock-sep"></span>
+          <img src="/img/demos/removable.svg" alt="" />
+          <img src="/img/demos/trash.svg" alt="" />
+          <svg viewBox="0 0 16 16" class="ws-grid" fill="#f4f4f4"><use href="/spotlight-icons.svg#gi-grid" /></svg>
+        </div>
       </div>
     </div>
     <div class="laptop-base"></div>
@@ -61,6 +81,25 @@ const t = translations[lang];
 
   <div class="stage-glow" aria-hidden="true"></div>
 </div>
+
+<script>
+  const clockEl = document.querySelector('[data-ws-clock]');
+  if (clockEl) {
+    const locale = document.documentElement.lang === 'pt-BR' ? 'pt-BR' : 'en-US';
+    const tick = () => {
+      const now = new Date();
+      const date = new Intl.DateTimeFormat(locale, { month: 'short', day: 'numeric' }).format(now);
+      const time = new Intl.DateTimeFormat(locale, {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: locale === 'en-US',
+      }).format(now);
+      clockEl.textContent = `${date} ${time}`;
+    };
+    tick();
+    setInterval(tick, 30_000);
+  }
+</script>
 
 <style>
   .stage {
@@ -176,6 +215,136 @@ const t = translations[lang];
   .laptop .screen {
     aspect-ratio: 827 / 469;
     border-radius: 8px 8px 0 0;
+  }
+
+  /* ---------- Workstation desktop illustration ---------- */
+
+  .ws-screen {
+    display: block;
+    background: #141318;
+    color: #f4f4f4;
+  }
+
+  .ws-wall {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(90cqw 55cqw at 12% -10%, rgba(53, 132, 228, 0.4), transparent 62%),
+      radial-gradient(70cqw 50cqw at 95% 108%, rgba(145, 65, 172, 0.42), transparent 60%),
+      radial-gradient(45cqw 32cqw at 78% 8%, rgba(46, 194, 126, 0.2), transparent 65%),
+      linear-gradient(158deg, #1d1b24, #141318 55%, #100f14);
+  }
+
+  .ws-panel {
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    height: 6.2cqw;
+    display: flex;
+    align-items: center;
+    gap: 1.4cqw;
+    padding-inline: 2.2cqw;
+    background: #333336;
+  }
+
+  .ws-logo {
+    width: 2.4cqw;
+    height: 2.4cqw;
+    color: #f4f4f4;
+  }
+
+  .ws-pill {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.7cqw;
+    padding: 0.7cqw 1.1cqw;
+    border-radius: 999px;
+    background: #4a4a4e;
+  }
+
+  .ws-pill i {
+    width: 0.6cqw;
+    height: 0.6cqw;
+    border-radius: 50%;
+    background: #c7c7c7;
+  }
+
+  .ws-ws-bar {
+    position: absolute;
+    left: 1.1cqw;
+    width: 1.8cqw !important;
+    border-radius: 999px !important;
+    background: #f4f4f4 !important;
+    animation: ws-switch 8s ease-in-out infinite;
+  }
+
+  @keyframes ws-switch {
+    0%, 22% { transform: translateX(0); }
+    30%, 52% { transform: translateX(1.3cqw); }
+    60%, 82% { transform: translateX(2.6cqw); }
+    90%, 100% { transform: translateX(0); }
+  }
+
+  .ws-clock {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.8cqw;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ws-status {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 1.5cqw;
+    color: #e8e8ea;
+  }
+
+  .ws-status svg {
+    width: 2.3cqw;
+    height: 2.3cqw;
+    display: block;
+  }
+
+  .ws-dock {
+    position: absolute;
+    left: 50%;
+    bottom: 2.4cqw;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 1.5cqw;
+    padding: 1.4cqw 1.9cqw;
+    background: #333336;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 2.6cqw;
+    box-shadow: 0 1cqw 3cqw rgba(0, 0, 0, 0.5);
+  }
+
+  .ws-dock img {
+    width: 6cqw;
+    height: auto;
+    display: block;
+  }
+
+  .ws-dock-sep {
+    width: 1px;
+    height: 5.4cqw;
+    background: rgba(255, 255, 255, 0.16);
+  }
+
+  .ws-grid {
+    width: 5.2cqw;
+    height: 5.2cqw;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ws-ws-bar {
+      animation: none;
+    }
   }
 
   .laptop-base {
