@@ -34,7 +34,7 @@ export default defineConfig({
   integrations: [
     starlight({
       title: 'Wiki',
-      logo: { src: './src/assets/brand.svg' },
+      logo: { src: './src/assets/brand.svg', replacesTitle: true },
       favicon: '/favicon.svg',
       customCss: ['./src/styles/custom.css'],
       components: {
