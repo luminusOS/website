@@ -27,6 +27,19 @@ intentional: it stops you from accidentally partitioning the media you're
 running the installer off of. If a disk you expect is missing, check that
 it isn't mounted or otherwise in use by the live session.
 
+## The language list is nearly empty, or the time zone map is blank
+
+Both pages depend on runtime pieces that are not linked libraries, so a
+distro packaging Sirius has to include them explicitly (see
+[Adapting → runtime requirements](../adapting/#runtime-requirements)):
+
+- **Nearly empty language list**: the language page lists the locales
+  installed on the system. Images built with only the C locales (for example
+  `glibc-minimal-langpack`) need `glibc-all-langpacks`.
+- **Blank time zone map**: the map is decoded by glycin inside a
+  `bubblewrap` sandbox. Install `bubblewrap` (and `glycin-loaders`) or the
+  map area stays empty.
+
 ## Why does install need so much RAM?
 
 LuminusOS's live ISO runs entirely from RAM; the root filesystem is a

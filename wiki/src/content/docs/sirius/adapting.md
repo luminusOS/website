@@ -33,8 +33,11 @@ repart_dir = "/usr/share/sirius/repart.d"
 
 # Optional: welcome-page branding. `logo` (image path) wins over `icon` (themed icon name).
 # [branding]
+# name = "Example OS"
 # logo = "/usr/share/sirius/logo.png"
 # icon = "starred-symbolic"
+# welcome_button = "Install {name}"
+# welcome_banner = "/usr/share/sirius/welcome-banner.png"
 ```
 
 - **`[bootc] image`**: the container image `bootc install` deploys.
@@ -47,8 +50,10 @@ repart_dir = "/usr/share/sirius/repart.d"
   below.
 - **`[[bento]]`**: up to three optional link cards shown on the install
   progress page (title, description, link, icon).
-- **`[branding]`**: the welcome page's logo or icon. `logo` (an image path)
-  takes priority over `icon` (a themed icon name) if both are set.
+- **`[branding]`**: the welcome page's identity. `name` feeds `{name}`
+  templates; `logo` (an image path) takes priority over `icon` (a themed
+  icon name); `welcome_button` is the action's label template;
+  `welcome_banner` is the large artwork shown on the welcome page.
 
 ## Partition layout: repart.d
 
@@ -79,6 +84,13 @@ Sirius expects these tools to be present on the live/target system:
 - `lsblk`
 - `udisks2`
 - `NetworkManager`
+
+Two more are easy to miss because they are not linked libraries:
+
+- `glibc-all-langpacks` — the language page lists the locales installed on
+  the system; images shipping only the C locales leave it nearly empty.
+- `bubblewrap` — sandboxes the glycin decoder that renders the time zone
+  map; without it the map area stays blank.
 
 A polkit authentication agent needs to be running in the session (or a polkit
 rule granting the `io.sirius.Installer.run-playbook` action outright),

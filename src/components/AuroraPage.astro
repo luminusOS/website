@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from './Header.astro';
 import Footer from './Footer.astro';
+import SpotlightDemo from './SpotlightDemo.astro';
 import type { Lang } from '../i18n/translations';
 import { translations, langPrefix, links, mainSite } from '../i18n/translations';
 
@@ -28,6 +29,14 @@ try {
 }
 
 const readySpotlights = new Set<string>([]);
+
+const spotlightDemos: Record<string, 'dock' | 'clipboard' | 'mixer' | 'clock' | 'tray'> = {
+  'dock.png': 'dock',
+  'clipboard.png': 'clipboard',
+  'mixer.png': 'mixer',
+  'clock.png': 'clock',
+  'tray-icons.png': 'tray',
+};
 
 const spotlightColors = [
   { main: '0, 255, 135', alt: '96, 239, 255' },
@@ -102,6 +111,8 @@ const spotlightColors = [
                 <div class="spot-window">
                   {readySpotlights.has(s.file) ? (
                     <img src={`/img/aurora/${s.file}`} alt={s.title} loading="lazy" />
+                  ) : spotlightDemos[s.file] ? (
+                    <SpotlightDemo demo={spotlightDemos[s.file]} title={s.title} />
                   ) : (
                     <div class="spot-placeholder">
                       <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -374,6 +385,13 @@ const spotlightColors = [
     justify-items: center;
     max-width: 100%;
     transition: none;
+  }
+
+  /* demo scenes use container queries (size containment), so they cannot
+     size the window intrinsically — stretch the window and let the demo
+     center itself inside it */
+  .spot-window:has(.sd) {
+    justify-self: stretch;
   }
 
   .spot-frame:hover .spot-window {

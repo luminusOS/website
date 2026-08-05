@@ -33,8 +33,11 @@ repart_dir = "/usr/share/sirius/repart.d"
 
 # Opcional: identidade visual da tela de boas-vindas. `logo` (caminho de imagem) tem prioridade sobre `icon` (nome de ícone do tema).
 # [branding]
+# name = "Example OS"
 # logo = "/usr/share/sirius/logo.png"
 # icon = "starred-symbolic"
+# welcome_button = "Instalar {name}"
+# welcome_banner = "/usr/share/sirius/welcome-banner.png"
 ```
 
 - **`[bootc] image`**: a imagem de contêiner que o `bootc install` instala.
@@ -47,9 +50,10 @@ repart_dir = "/usr/share/sirius/repart.d"
   abaixo.
 - **`[[bento]]`**: até três cartões de link opcionais mostrados na tela de
   progresso da instalação (título, descrição, link, ícone).
-- **`[branding]`**: logo ou ícone da tela de boas-vindas. `logo` (um caminho
-  de imagem) tem prioridade sobre `icon` (um nome de ícone do tema) se os
-  dois estiverem definidos.
+- **`[branding]`**: a identidade da tela de boas-vindas. `name` alimenta os
+  templates com `{name}`; `logo` (um caminho de imagem) tem prioridade sobre
+  `icon` (um nome de ícone do tema); `welcome_button` é o template do rótulo
+  da ação; `welcome_banner` é a arte grande exibida na tela de boas-vindas.
 
 ## Layout de partições: repart.d
 
@@ -82,6 +86,13 @@ live/de destino:
 - `lsblk`
 - `udisks2`
 - `NetworkManager`
+
+Mais dois são fáceis de esquecer porque não são bibliotecas linkadas:
+
+- `glibc-all-langpacks` — a tela de idioma lista os locales instalados no
+  sistema; imagens que trazem só os locales C deixam a lista quase vazia.
+- `bubblewrap` — isola o decodificador glycin que renderiza o mapa de fuso
+  horário; sem ele a área do mapa fica em branco.
 
 Um agente de autenticação polkit precisa estar rodando na sessão (ou uma
 regra polkit que conceda a ação `io.sirius.Installer.run-playbook`

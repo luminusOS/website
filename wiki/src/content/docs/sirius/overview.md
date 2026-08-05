@@ -27,15 +27,21 @@ Sirius walks you through a fixed set of pages, in an order controlled by
 `/etc/sirius/sirius.toml`. The default order is:
 
 1. **Welcome**
-2. **Diagnostics**: hardware checks, see [Diagnostics](../diagnostics/)
-3. **Network** (auto-hidden if NetworkManager reports no Wi-Fi device)
-4. **Keyboard**
-5. **Timezone**
-6. **Storage**: disk and partitioning, see [Storage](../storage/)
-7. **User**
-8. **Summary**
-9. **Progress**
-10. **Finished**
+2. **Language**: every displayable locale on the system, with the common ones
+   pinned up front and the rest following in the same scrollable list;
+   switching languages re-translates the installer live (English and
+   Brazilian Portuguese catalogs ship today)
+3. **Diagnostics**: hardware checks, see [Diagnostics](../diagnostics/)
+4. **Network** (auto-hidden if NetworkManager reports no Wi-Fi device)
+5. **Keyboard**: layouts matching your language pinned up front, followed by
+   every other layout in the same scrollable list, with a type-to-test field
+6. **Timezone**: search for a city or click the world map; auto-detected from
+   the running system and shown with a pin on the map
+7. **Storage**: disk and partitioning, see [Storage](../storage/)
+8. **User**
+9. **Summary**
+10. **Progress**
+11. **Finished**
 
 Any page in that list can be turned off entirely with a `disabled = [...]` entry
 in the same config file. A distro that, say, always uses DHCP and doesn't need

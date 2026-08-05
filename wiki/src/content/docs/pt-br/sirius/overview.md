@@ -29,15 +29,21 @@ O Sirius te guia por um conjunto fixo de telas, numa ordem controlada por
 `/etc/sirius/sirius.toml`. A ordem padrão é:
 
 1. **Boas-vindas**
-2. **Diagnóstico**: verificações de hardware, veja [Diagnóstico](../diagnostics/)
-3. **Rede** (some automaticamente se o NetworkManager não reportar um dispositivo Wi-Fi)
-4. **Teclado**
-5. **Fuso horário**
-6. **Armazenamento**: disco e particionamento, veja [Armazenamento](../storage/)
-7. **Usuário**
-8. **Resumo**
-9. **Progresso**
-10. **Concluído**
+2. **Idioma**: todos os locales utilizáveis do sistema, com os mais comuns
+   fixados no topo e os demais na sequência da mesma lista rolável; trocar de
+   idioma retraduz o instalador na hora (hoje há catálogos em inglês e
+   português brasileiro)
+3. **Diagnóstico**: verificações de hardware, veja [Diagnóstico](../diagnostics/)
+4. **Rede** (some automaticamente se o NetworkManager não reportar um dispositivo Wi-Fi)
+5. **Teclado**: layouts que combinam com o seu idioma fixados no topo, seguidos
+   por todos os outros na mesma lista rolável, com um campo para testar a digitação
+6. **Fuso horário**: busque uma cidade ou clique no mapa-múndi; detectado
+   automaticamente a partir do sistema e mostrado com um alfinete no mapa
+7. **Armazenamento**: disco e particionamento, veja [Armazenamento](../storage/)
+8. **Usuário**
+9. **Resumo**
+10. **Progresso**
+11. **Concluído**
 
 Qualquer tela dessa lista pode ser desligada por completo com uma entrada
 `disabled = [...]` no mesmo arquivo de configuração. Uma distro que, por

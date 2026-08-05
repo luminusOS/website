@@ -28,6 +28,20 @@ onde o instalador está rodando. Se um disco que você esperava não aparece,
 confira se ele não está montado ou em uso pela sessão live de alguma outra
 forma.
 
+## A lista de idiomas está quase vazia, ou o mapa de fuso horário fica em branco
+
+As duas telas dependem de peças de runtime que não são bibliotecas linkadas,
+então uma distro que empacota o Sirius precisa incluí-las explicitamente
+(veja
+[Adaptando → requisitos de runtime](../adapting/#requisitos-de-runtime)):
+
+- **Lista de idiomas quase vazia**: a tela de idioma lista os locales
+  instalados no sistema. Imagens construídas só com os locales C (por
+  exemplo `glibc-minimal-langpack`) precisam do `glibc-all-langpacks`.
+- **Mapa de fuso horário em branco**: o mapa é decodificado pelo glycin
+  dentro de um sandbox `bubblewrap`. Instale o `bubblewrap` (e o
+  `glycin-loaders`), senão a área do mapa fica vazia.
+
 ## Por que a instalação precisa de tanta RAM?
 
 A ISO live do LuminusOS roda inteira na RAM. O sistema de arquivos raiz é
