@@ -30,7 +30,9 @@ const altPt = new URL('/pt-br' + (path === '/' ? '' : path), Astro.site);
         const theme =
           saved === 'light' || saved === 'dark'
             ? saved
-            : 'light';
+            : window.matchMedia('(prefers-color-scheme: dark)').matches
+              ? 'dark'
+              : 'light';
         document.documentElement.dataset.theme = theme;
       })();
     </script>
@@ -53,8 +55,6 @@ const altPt = new URL('/pt-br' + (path === '/' ? '' : path), Astro.site);
     <meta name="generator" content={Astro.generator} />
   </head>
   <body>
-    <div class="starfield" aria-hidden="true"></div>
     <slot />
-    <div class="grain" aria-hidden="true"></div>
   </body>
 </html>

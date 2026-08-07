@@ -62,6 +62,11 @@ const en = {
     deviceNote: 'Workstation is available today. The other devices show where we are going.',
     soon: 'Soon',
     available: 'Available now',
+    facts: [
+      { label: 'Base', value: 'Fedora 44 · bootc' },
+      { label: 'Desktop', value: 'GNOME 50 · Aurora Shell' },
+      { label: 'License', value: 'MIT · LGPL' },
+    ],
   },
   pillars: {
     title: 'Why LuminusOS?',
@@ -119,6 +124,7 @@ const en = {
       'The same trustworthy core, adapted to each screen. Workstation ships today. The rest is the roadmap, already reserved in our build system and waiting for its turn.',
     downloadLatest: 'Download',
     comingSoon: 'Coming soon',
+    roadmapTitle: 'On the roadmap',
     viewAll: 'All releases on GitHub',
     items: {
       workstation: {
@@ -409,6 +415,11 @@ const ptBr: typeof en = {
     deviceNote: 'A edição Workstation já está disponível. Os outros aparelhos mostram para onde estamos indo.',
     soon: 'Em breve',
     available: 'Disponível agora',
+    facts: [
+      { label: 'Base', value: 'Fedora 44 · bootc' },
+      { label: 'Desktop', value: 'GNOME 50 · Aurora Shell' },
+      { label: 'Licença', value: 'MIT · LGPL' },
+    ],
   },
   pillars: {
     title: 'Por que LuminusOS?',
@@ -466,6 +477,7 @@ const ptBr: typeof en = {
       'O mesmo núcleo confiável, adaptado para cada tela. A Workstation já existe hoje. O resto é o roadmap, já reservado no nosso sistema de build esperando a vez.',
     downloadLatest: 'Baixar',
     comingSoon: 'Em breve',
+    roadmapTitle: 'No roadmap',
     viewAll: 'Todas as versões no GitHub',
     items: {
       workstation: {

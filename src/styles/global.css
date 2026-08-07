@@ -1,34 +1,59 @@
 :root {
+  color-scheme: light;
+
+  /* Brand — one blue, Adwaita */
   --accent: #3584e4;
-  --accent-deep: #1c71d8;
+  --accent-hover: #1c71d8;
+  --accent-active: #1a5fb4;
   --accent-sky: #62a0ea;
+  --accent-ink: #ffffff;
+  --accent-wash: #e7f0fd;
 
+  --destructive: #c01c28;
+  --destructive-hover: #a51d2d;
+
+  /* Aurora Shell product mark */
   --aurora-green: #2ec27e;
-  --aurora-cyan: #3584e4;
-  --aurora-violet: #9141ac;
-
-  --grad-brand: var(--accent);
-  --grad-aurora: var(--aurora-green);
 
   --font-display: 'Bricolage Grotesque', 'Instrument Sans', sans-serif;
   --font-body: 'Instrument Sans', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 
-  --radius: 8px;
-  --radius-lg: 10px;
-  --container: 1120px;
+  --radius-sm: 6px;
+  --radius: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 9999px;
 
-  --bg: #f6f5f4;
+  --container: 1120px;
+  --measure: 42rem;
+
+  --bg: #ffffff;
+  --band-tint: #f6f5f4;
+  --band-accent: #1a5fb4;
   --surface-1: #ffffff;
   --surface-2: #f0efed;
   --ink: #1d1d1f;
   --ink-dim: #55575c;
   --ink-faint: #8a8d92;
   --border-color: #deddda;
-  --header-bg: rgba(246, 245, 244, 0.94);
+  --header-bg: #ffffff;
   --ghost-bg: #ffffff;
-  --footer-bg: #f0efed;
-  --glow-strength: 0;
+  --footer-bg: #ffffff;
+
+  /* Ink and fills used inside the accent band */
+  --on-accent: #ffffff;
+  --on-accent-dim: rgba(255, 255, 255, 0.84);
+  --on-accent-faint: rgba(255, 255, 255, 0.64);
+  --on-accent-border: rgba(255, 255, 255, 0.26);
+  --on-accent-surface: rgba(255, 255, 255, 0.1);
+  --on-accent-hover: rgba(255, 255, 255, 0.88);
+
+  /* Terminal chrome — dark in both themes */
+  --term-bg: #1d1d20;
+  --term-bar: #2b2b2f;
+  --term-line: #3a3a3f;
+  --term-dim: #8f8f8f;
+
   --device-bezel: #deddda;
   --device-body: #f0efed;
   --screen-night: #ffffff;
@@ -37,16 +62,27 @@
 }
 
 html[data-theme='dark'] {
+  color-scheme: dark;
+
   --bg: #1e1e1e;
+  --band-tint: #262626;
+  --band-accent: #12325a;
   --surface-1: #2a2a2a;
   --surface-2: #242424;
   --ink: #f4f4f4;
   --ink-dim: #c7c7c7;
   --ink-faint: #8f8f8f;
   --border-color: #3f3f3f;
-  --header-bg: rgba(30, 30, 30, 0.94);
+  --header-bg: #1e1e1e;
   --ghost-bg: #2a2a2a;
-  --footer-bg: #242424;
+  --footer-bg: #1e1e1e;
+  --accent-wash: rgba(53, 132, 228, 0.16);
+
+  --on-accent-dim: rgba(255, 255, 255, 0.8);
+  --on-accent-faint: rgba(255, 255, 255, 0.58);
+  --on-accent-border: rgba(255, 255, 255, 0.18);
+  --on-accent-surface: rgba(255, 255, 255, 0.07);
+
   --device-bezel: #4a4a4a;
   --device-body: #2a2a2a;
   --screen-night: #242424;
@@ -60,7 +96,7 @@ html[data-theme='dark'] {
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 5rem;
+  scroll-padding-top: 4.75rem;
 }
 
 body {
@@ -82,8 +118,8 @@ body {
 
 h1, h2, h3, h4 {
   font-family: var(--font-display);
-  line-height: 1.08;
-  letter-spacing: 0;
+  line-height: 1.06;
+  letter-spacing: -0.025em;
   margin: 0;
   text-wrap: balance;
 }
@@ -107,28 +143,59 @@ img {
   margin-inline: auto;
 }
 
+/* Full-bleed section bands. A <section> is already full width, so no
+   negative-margin trick is needed. .band--accent re-points the ink tokens
+   once, and every child (.eyebrow, .btn, borders) follows automatically. */
+.band {
+  background: var(--band-bg, var(--bg));
+  color: var(--ink);
+}
+
+.band--plain {
+  --band-bg: var(--bg);
+}
+
+.band--tint {
+  --band-bg: var(--band-tint);
+}
+
+.band--accent {
+  --band-bg: var(--band-accent);
+  --ink: var(--on-accent);
+  --ink-dim: var(--on-accent-dim);
+  --ink-faint: var(--on-accent-faint);
+  --border-color: var(--on-accent-border);
+  --surface-1: var(--on-accent-surface);
+  --surface-2: var(--on-accent-surface);
+  --ghost-bg: transparent;
+  --accent: var(--on-accent);
+  --accent-hover: var(--on-accent-hover);
+  --accent-ink: var(--band-accent);
+  --accent-wash: var(--on-accent-surface);
+}
+
 .eyebrow {
   font-family: var(--font-mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.22em;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--accent);
 }
 
 .section {
-  padding-block: clamp(4rem, 9vw, 7.5rem);
+  padding-block: clamp(4rem, 8vw, 7rem);
   position: relative;
 }
 
 .section-head {
-  max-width: 38rem;
+  max-width: var(--measure);
   margin-bottom: clamp(2.5rem, 5vw, 4rem);
   display: grid;
-  gap: 1rem;
+  gap: 0.9rem;
 }
 
 .section-head h2 {
-  font-size: clamp(2rem, 4.5vw, 3.25rem);
+  font-size: clamp(2rem, 4vw, 3rem);
   font-weight: 700;
 }
 
@@ -137,103 +204,90 @@ img {
   font-size: 1.125rem;
 }
 
-.gradient-text {
-  color: var(--accent);
-}
-
-.gradient-text--aurora {
-  color: var(--aurora-green);
-}
-
 .btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.6rem;
-  padding: 0.85rem 1.6rem;
-  border-radius: var(--radius);
+  gap: 0.55rem;
+  padding: 0.7rem 1.4rem;
+  border-radius: var(--radius-pill);
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.975rem;
+  line-height: 1.2;
   text-decoration: none;
-  transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
   cursor: pointer;
-  border: none;
+  border: 1px solid transparent;
 }
 
 .btn-primary {
   background: var(--accent);
-  color: #fff;
+  color: var(--accent-ink);
 }
 
 .btn-primary:hover {
-  background: var(--accent-deep);
+  background: var(--accent-hover);
 }
 
 .btn-ghost {
-  border: 1px solid var(--border-color);
+  border-color: var(--border-color);
   color: var(--ink);
   background: var(--ghost-bg);
 }
 
 .btn-ghost:hover {
-  border-color: var(--accent);
-  color: var(--accent);
+  background: var(--surface-2);
+  border-color: var(--ink-faint);
 }
 
 .btn-donate {
-  background: #c01c28;
+  background: var(--destructive);
   color: #fff;
 }
 
 .btn-donate:hover {
-  background: #a51d2d;
+  background: var(--destructive-hover);
+}
+
+.btn-sm {
+  padding: 0.5rem 1.05rem;
+  font-size: 0.9rem;
+}
+
+.btn-lg {
+  padding: 0.95rem 2rem;
+  font-size: 1.05rem;
 }
 
 .card {
   background: var(--surface-1);
   border: 1px solid var(--border-color);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius);
   padding: 1.75rem;
-  position: relative;
-  overflow: hidden;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.8rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-color);
+  background: var(--surface-2);
+  color: var(--ink-dim);
+}
+
+.chip--accent {
+  border-color: transparent;
+  background: var(--accent-wash);
+  color: var(--accent);
 }
 
 .mono {
   font-family: var(--font-mono);
-}
-
-.starfield,
-.grain {
-  display: none;
-}
-
-.starfield {
-  z-index: -2;
-}
-
-html[data-theme='light'] .starfield {
-  display: none;
-}
-
-@keyframes star-drift {
-  to { background-position: 720px 0; }
-}
-
-.grain {
-  z-index: 50;
-}
-
-html[data-theme='light'] .grain {
-  opacity: 0.03;
-}
-
-@keyframes rise-in {
-  from { opacity: 0; transform: translateY(28px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.reveal {
-  opacity: 0;
-  animation: rise-in 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
 }
 
 @media (prefers-reduced-motion: reduce) {

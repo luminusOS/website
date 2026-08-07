@@ -29,53 +29,52 @@ const readyScreenshots = new Set<string>([
   <Header lang={lang} path={path} />
 
   <main class="aetheris-page">
-    <section class="k-hero">
-      <div class="k-aether" aria-hidden="true"></div>
+    <section class="band band--plain k-hero">
       <div class="container k-hero-inner">
         <img
-          class="k-logo reveal"
+          class="k-logo"
           src="/aetheris-logo.svg"
           alt="Aetheris logo"
-          width="160"
-          height="160"
+          width="128"
+          height="128"
         />
-        <p class="eyebrow reveal" style="animation-delay: 0.1s">{k.eyebrow}</p>
-        <h1 class="reveal" style="animation-delay: 0.2s">
-          <span class="gradient-text">{k.title}</span>
-        </h1>
-        <p class="k-sub reveal" style="animation-delay: 0.32s">{k.subtitle}</p>
-        <div class="k-ctas reveal" style="animation-delay: 0.45s">
-          <a
-            id="aetheris-download"
-            class="btn btn-primary"
-            href={links.aetherisReleases}
-            target="_blank"
-            rel="noopener"
-            data-download-generic={k.downloadGeneric}
-            data-download-linux={k.downloadLinux}
-            data-download-mac={k.downloadMac}
-            data-download-windows={k.downloadWindows}
-          >
-            {k.downloadGeneric}
-          </a>
-          <a class="btn btn-ghost" href={links.aetherisReleases} target="_blank" rel="noopener">
-            {k.allDownloads} ↗
-          </a>
+        <div class="k-copy">
+          <p class="eyebrow">{k.eyebrow}</p>
+          <h1>{k.title}</h1>
+          <p class="k-sub">{k.subtitle}</p>
+          <div class="k-ctas">
+            <a
+              id="aetheris-download"
+              class="btn btn-primary"
+              href={links.aetherisReleases}
+              target="_blank"
+              rel="noopener"
+              data-download-generic={k.downloadGeneric}
+              data-download-linux={k.downloadLinux}
+              data-download-mac={k.downloadMac}
+              data-download-windows={k.downloadWindows}
+            >
+              {k.downloadGeneric}
+            </a>
+            <a class="btn btn-ghost" href={links.aetherisReleases} target="_blank" rel="noopener">
+              {k.allDownloads} ↗
+            </a>
+          </div>
+          <p class="k-version mono">
+            {k.status}: <strong id="aetheris-release-version">{k.statusValue}</strong> · Linux · Windows · macOS
+          </p>
         </div>
-        <p class="k-version mono reveal" style="animation-delay: 0.55s">
-          {k.status}: <strong id="aetheris-release-version">{k.statusValue}</strong> · Linux · Windows · macOS
-        </p>
       </div>
     </section>
 
-    <section class="section">
+    <section class="band band--tint section">
       <div class="container meaning">
         <h2>{k.meaningTitle}</h2>
         <blockquote>“{k.meaning}”</blockquote>
       </div>
     </section>
 
-    <section class="section" id="screenshots">
+    <section class="band band--plain section" id="screenshots">
       <div class="container">
         <div class="section-head">
           <h2>{k.screenshotsTitle}</h2>
@@ -86,7 +85,7 @@ const readyScreenshots = new Set<string>([
           {k.screenshots.map((s) => (
             <article class="showcase">
               <div class="showcase-text">
-                <span class="showcase-tag mono">{s.tag}</span>
+                <span class="chip">{s.tag}</span>
                 <h3>{s.title}</h3>
                 <p>{s.body}</p>
               </div>
@@ -110,7 +109,7 @@ const readyScreenshots = new Set<string>([
       </div>
     </section>
 
-    <section class="section" id="features">
+    <section class="band band--tint section" id="features">
       <div class="container">
         <div class="section-head">
           <h2>{k.featuresTitle}</h2>
@@ -118,8 +117,8 @@ const readyScreenshots = new Set<string>([
         </div>
 
         <div class="feature-grid">
-          {k.features.map((f, i) => (
-            <article class="card feature" style={`--hue-shift: ${i * 12}deg`}>
+          {k.features.map((f) => (
+            <article class="card feature">
               <span class="feature-dot" aria-hidden="true"></span>
               <h3>{f.name}</h3>
               <p>{f.body}</p>
@@ -129,7 +128,7 @@ const readyScreenshots = new Set<string>([
       </div>
     </section>
 
-    <section class="section design">
+    <section class="band band--accent section design">
       <div class="container">
         <div class="section-head">
           <h2>{k.designTitle}</h2>
@@ -246,58 +245,42 @@ const readyScreenshots = new Set<string>([
     overflow: hidden;
   }
 
-  .k-aether {
-    display: none;
-  }
-
-  @keyframes k-drift {
-    from { transform: translateY(-2%) scale(1); }
-    to { transform: translateY(2%) scale(1.04); }
-  }
-
   .k-hero-inner {
-    position: relative;
-    text-align: center;
     display: grid;
-    justify-items: center;
-    gap: 1.1rem;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: clamp(1.75rem, 4vw, 3rem);
+    align-items: center;
+    text-align: start;
+  }
+
+  .k-copy {
+    display: grid;
+    gap: 1rem;
+    justify-items: start;
   }
 
   .k-logo {
-    border-radius: 12px;
-    filter: none;
-    animation: rise-in 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
-  }
-
-  @keyframes k-breathe {
-    0%, 100% { filter: none; }
-    50% { filter: none; }
+    border-radius: var(--radius);
   }
 
   .k-hero h1 {
-    font-size: clamp(2.6rem, 7vw, 5rem);
+    font-size: clamp(2.75rem, 6.5vw, 4.75rem);
     font-weight: 800;
     max-width: 18ch;
+    color: var(--ink);
   }
 
   .k-sub {
-    max-width: 42rem;
+    max-width: 46ch;
     color: var(--ink-dim);
     font-size: clamp(1.05rem, 1.6vw, 1.2rem);
   }
 
   .k-ctas {
     display: flex;
-    gap: 1rem;
+    gap: 0.75rem;
     flex-wrap: wrap;
-    justify-content: center;
-    margin-top: 0.8rem;
-  }
-
-  .btn-disabled {
-    opacity: 0.55;
-    cursor: default;
-    pointer-events: none;
+    margin-top: 0.5rem;
   }
 
   .k-version {
@@ -306,12 +289,11 @@ const readyScreenshots = new Set<string>([
   }
 
   .k-version strong {
-    color: var(--accent-sky);
+    color: var(--accent);
   }
 
   .meaning {
     max-width: 50rem;
-    text-align: center;
     display: grid;
     gap: 1.6rem;
   }
@@ -354,8 +336,6 @@ const readyScreenshots = new Set<string>([
     height: 10px;
     border-radius: 50%;
     background: var(--accent);
-    filter: none;
-    box-shadow: none;
   }
 
   .feature h3 {
@@ -393,15 +373,8 @@ const readyScreenshots = new Set<string>([
     align-content: center;
   }
 
-  .showcase-tag {
+  .showcase-text .chip {
     justify-self: start;
-    font-size: 0.72rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--accent-sky);
-    border: 1px solid rgba(96, 168, 255, 0.35);
-    border-radius: 999px;
-    padding: 0.25rem 0.7rem;
   }
 
   .showcase-text h3 {
@@ -425,6 +398,17 @@ const readyScreenshots = new Set<string>([
     }
   }
 
+  @media (max-width: 700px) {
+    .k-hero-inner {
+      grid-template-columns: 1fr;
+    }
+
+    .k-logo {
+      width: 96px;
+      height: 96px;
+    }
+  }
+
   .shot-window {
     position: relative;
   }
@@ -435,7 +419,6 @@ const readyScreenshots = new Set<string>([
     height: auto;
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
-    filter: none;
   }
 
   .shot-placeholder {
@@ -447,6 +430,7 @@ const readyScreenshots = new Set<string>([
     color: var(--ink-faint);
     font-size: 0.85rem;
     background: var(--surface-2);
+    border-radius: var(--radius-lg);
   }
 
   .design-grid {

@@ -4,9 +4,10 @@
  * instead of the stock Starlight theme. Keep in sync with global.css.
  *
  * Main site tokens:
- *   accent #3584e4 · accent-deep #1c71d8 · accent-sky #62a0ea
- *   dark:  bg #1e1e1e · surface #2a2a2a / #242424 · ink #f4f4f4 · border #3f3f3f
- *   light: bg #f6f5f4 · surface #ffffff / #f0efed · ink #1d1d1f · border #deddda
+ *   accent #3584e4 · accent-hover #1c71d8 · accent-active #1a5fb4 · accent-sky #62a0ea
+ *   dark:  bg #1e1e1e · band-tint #262626 · surface #2a2a2a / #242424 · ink #f4f4f4 · border #3f3f3f
+ *   light: bg #ffffff · band-tint #f6f5f4 · surface #ffffff / #f0efed · ink #1d1d1f · border #deddda
+ *   radii: sm 6px · base 12px · lg 16px · pill 9999px
  */
 
 /* Dark theme (Starlight default). */
@@ -28,8 +29,8 @@
 
   /* Surfaces. */
   --sl-color-bg: #1e1e1e;
-  --sl-color-bg-nav: #242424;
-  --sl-color-bg-sidebar: #242424;
+  --sl-color-bg-nav: #1e1e1e;
+  --sl-color-bg-sidebar: #262626;
   --sl-color-hairline: #3f3f3f;
 }
 
@@ -48,9 +49,9 @@
   --sl-color-gray-6: #f0efed;
   --sl-color-black: #ffffff;
 
-  --sl-color-bg: #f6f5f4;
-  --sl-color-bg-nav: #f6f5f4;
-  --sl-color-bg-sidebar: #f0efed;
+  --sl-color-bg: #ffffff;
+  --sl-color-bg-nav: #ffffff;
+  --sl-color-bg-sidebar: #f6f5f4;
   --sl-color-hairline: #deddda;
 }
 
@@ -82,5 +83,5 @@
 /* Rounded, main-site-like code blocks and asides. */
 .expressive-code,
 .starlight-aside {
-  border-radius: 8px;
+  border-radius: 12px;
 }

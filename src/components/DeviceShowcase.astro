@@ -79,7 +79,6 @@ const t = translations[lang];
     </div>
   </div>
 
-  <div class="stage-glow" aria-hidden="true"></div>
 </div>
 
 <script>
@@ -104,32 +103,22 @@ const t = translations[lang];
 <style>
   .stage {
     position: relative;
-    width: min(100%, 58rem);
+    width: 100%;
+    max-width: 64rem;
     aspect-ratio: 16 / 9.5;
-    margin-top: clamp(2rem, 5vw, 4rem);
-    margin-inline: auto;
-  }
-
-  .stage-glow {
-    display: none;
+    margin-top: 0;
+    margin-inline: 0;
   }
 
   .device {
     position: absolute;
     opacity: 0;
-    animation:
-      device-in 1s cubic-bezier(0.2, 0.7, 0.2, 1) forwards,
-      hover-float 7s ease-in-out infinite;
+    animation: device-in 1s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
   }
 
   @keyframes device-in {
     from { opacity: 0; transform: translateY(36px); }
     to { opacity: 1; transform: translateY(0); }
-  }
-
-  @keyframes hover-float {
-    0%, 100% { margin-top: 0; }
-    50% { margin-top: -8px; }
   }
 
   .screen {
@@ -175,7 +164,7 @@ const t = translations[lang];
     width: 56%;
     margin-left: -28%; /* keep centered: the entry animation owns `transform` */
     z-index: 1;
-    animation-delay: 0.05s, 1.1s;
+    animation-delay: 0.05s;
     container-type: inline-size;
   }
 
@@ -183,7 +172,6 @@ const t = translations[lang];
     aspect-ratio: 16 / 9;
     border-radius: 10px;
     border: 3px solid var(--device-bezel);
-    box-shadow: none;
   }
 
   .tv-stand {
@@ -200,7 +188,7 @@ const t = translations[lang];
     width: 44%;
     margin-left: -22%; /* keep centered: the entry animation owns `transform` */
     z-index: 3;
-    animation-delay: 0.25s, 1.3s;
+    animation-delay: 0.25s;
     container-type: inline-size;
   }
 
@@ -353,7 +341,6 @@ const t = translations[lang];
     border-radius: 0 0 14px 14px;
     width: 108%;
     margin-left: -4%;
-    box-shadow: none;
   }
 
   .tablet {
@@ -362,7 +349,7 @@ const t = translations[lang];
     width: 15%;
     z-index: 4;
     rotate: -4deg;
-    animation-delay: 0.45s, 1.6s;
+    animation-delay: 0.45s;
     container-type: inline-size;
   }
 
@@ -370,7 +357,6 @@ const t = translations[lang];
     aspect-ratio: 3 / 4;
     border-radius: 14px;
     border: 3px solid var(--device-bezel);
-    box-shadow: none;
   }
 
   .phone {
@@ -379,7 +365,7 @@ const t = translations[lang];
     width: 7.5%;
     z-index: 5;
     rotate: 4deg;
-    animation-delay: 0.6s, 1.9s;
+    animation-delay: 0.6s;
     container-type: inline-size;
   }
 
@@ -387,7 +373,6 @@ const t = translations[lang];
     aspect-ratio: 9 / 19;
     border-radius: 16px;
     border: 3px solid var(--device-bezel);
-    box-shadow: none;
   }
 
   .notch {
@@ -408,9 +393,8 @@ const t = translations[lang];
     z-index: 3;
     display: flex;
     align-items: stretch;
-    animation-delay: 0.75s, 2.2s;
+    animation-delay: 0.75s;
     container-type: inline-size;
-    filter: none;
   }
 
   .deck .screen {
