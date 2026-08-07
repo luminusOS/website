@@ -186,7 +186,6 @@ const workstation = t.editions.items.workstation;
           <div class="download-split">
             <a class="btn btn-primary btn-lg" data-download data-repo={repos.images} href={links.sfFiles} target="_blank" rel="noopener">
               {t.download.button}
-              <span class="release-tag mono" data-release-tag hidden></span>
             </a>
             <details class="format-menu" data-format-menu>
               <summary aria-label={t.download.format} title={t.download.format}>
@@ -201,6 +200,7 @@ const workstation = t.editions.items.workstation;
               </ul>
             </details>
           </div>
+          <p class="download-version mono" data-release-tag hidden></p>
           <a class="download-notes" href={links.releasesLatest} target="_blank" rel="noopener">{t.download.notes} ↗</a>
           <p class="download-note">{t.download.note}</p>
         </div>
@@ -228,7 +228,7 @@ const workstation = t.editions.items.workstation;
   import { links } from '../i18n/translations';
 
   const button = document.querySelector<HTMLAnchorElement>('[data-download]')!;
-  const tag = button.querySelector('[data-release-tag]')!;
+  const tag = document.querySelector('[data-release-tag]')!;
   const menu = document.querySelector<HTMLDetailsElement>('[data-format-menu]')!;
   const label = menu.querySelector('[data-format-label]')!;
   const options = menu.querySelectorAll<HTMLButtonElement>('[data-format]');
@@ -704,11 +704,10 @@ const workstation = t.editions.items.workstation;
     font-weight: 600;
   }
 
-  .release-tag {
-    font-size: 0.72rem;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: var(--radius-pill);
-    padding: 0.18rem 0.6rem;
+  .download-version {
+    margin-top: -0.35rem;
+    font-size: 0.78rem;
+    color: var(--ink-faint);
   }
 
   .download-notes {
