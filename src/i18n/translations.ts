@@ -171,7 +171,8 @@ const en = {
     title: 'Get LuminusOS',
     subtitle:
       'Grab the latest Workstation ISO, flash it to a USB drive and install. That is the last update you will ever do by hand.',
-    button: 'Download latest ISO',
+    button: 'Download',
+    format: 'Choose format',
     notes: 'Release notes',
     note: 'Downloads are served from SourceForge mirrors worldwide. The button always points to the most recent version.',
   },
@@ -518,7 +519,8 @@ const ptBr: typeof en = {
     title: 'Baixe o LuminusOS',
     subtitle:
       'Baixe a ISO mais recente da Workstation, grave em um pendrive e instale. Essa é a última atualização que você vai fazer na mão.',
-    button: 'Baixar ISO mais recente',
+    button: 'Baixar',
+    format: 'Escolher formato',
     notes: 'Notas da versão',
     note: 'Os downloads vêm de mirrors do SourceForge no mundo todo. O botão sempre aponta para a versão mais recente.',
   },
