@@ -20,7 +20,7 @@ const t = translations[lang];
   </div>
 
   <div class="device tablet">
-    <div class="screen aurora-screen vertical">
+    <div class="screen aurora-screen">
       <span class="edition mono">Tablet</span>
       <span class="pill">{t.hero.soon}</span>
     </div>
@@ -31,7 +31,7 @@ const t = translations[lang];
       <div class="screen ws-screen">
         <div class="ws-wall" aria-hidden="true"></div>
         <header class="ws-panel">
-          <svg viewBox="-0.3 -0.3 567.4 567.4" class="ws-logo"><path d="m 153.1551,567.1446 c -32.904,0 -59.6863,-4.1826 -80.3472,-12.6417 C 52.0379,546.0435 35.6403,532.5463 23.5063,514.0117 14.7611,500.8 8.6391,483.8811 5.0321,463.2557 1.5338,442.7249 -0.2154,407.9367 -0.2154,358.8911 V 128.0166 h 116.75 v 268.7992 c 0,40.5862 2.9511,65.7743 8.854,75.4693 5.7943,9.6001 16.1793,14.4474 31.1553,14.4474 12.8069,0 22.1972,-3.5791 28.3014,-10.6793 V 0.2151 h 152.2451 v 451.2816 h 182.5217 c 0,38.5492 0,77.0987 0,115.6479 z M 424.7524,46.0406 h 96.2782 c 25.1257,0 45.6834,20.5574 45.6834,45.6834 v 71.7886 c 0,25.126 -20.5577,45.6834 -45.6834,45.6834 H 379.0689 V 91.724 c 0,-25.126 20.5575,-45.6834 45.6835,-45.6834 z" fill="currentColor" fill-rule="evenodd"/></svg>
+          <svg viewBox="-0.3 -0.3 567.4 567.4" class="ws-logo"><use href="/spotlight-icons.svg#brand" /></svg>
           <span class="ws-pill"><i class="ws-ws-bar"></i><i></i><i></i><i></i><i></i></span>
           <span class="ws-clock" data-ws-clock>Aug 4&ensp;8:32 PM</span>
           <span class="ws-status">
@@ -57,7 +57,7 @@ const t = translations[lang];
   </div>
 
   <div class="device phone">
-    <div class="screen aurora-screen vertical">
+    <div class="screen aurora-screen">
       <span class="notch"></span>
       <span class="edition mono">Mobile</span>
       <span class="pill">{t.hero.soon}</span>
@@ -186,7 +186,7 @@ const t = translations[lang];
     left: 50%;
     bottom: 9%;
     width: 44%;
-    margin-left: -22%; /* keep centered: the entry animation owns `transform` */
+    margin-left: -22%;
     z-index: 3;
     animation-delay: 0.25s;
     container-type: inline-size;
@@ -205,7 +205,7 @@ const t = translations[lang];
     border-radius: 8px 8px 0 0;
   }
 
-  /* ---------- Workstation desktop illustration ---------- */
+  /* Workstation desktop illustration */
 
   .ws-screen {
     display: block;

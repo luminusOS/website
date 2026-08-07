@@ -1,6 +1,6 @@
 ---
 import type { Lang } from '../i18n/translations';
-import { translations, langPrefix, links, mainSite, subHref, siteHref } from '../i18n/translations';
+import { translations, langPrefix, links, mainSite, auroraHref, siteHref } from '../i18n/translations';
 
 interface Props {
   lang: Lang;
@@ -27,7 +27,7 @@ const year = new Date().getFullYear();
       <a href={`${mainSite}${p}/#why`}>{t.nav.overview}</a>
       <a href={`${mainSite}${p}/#how`}>{t.nav.how}</a>
       <a href={`${mainSite}${p}/#editions`}>{t.nav.editions}</a>
-      <a href={subHref(p, 'aurora', '/aurora', links.auroraSite)}>{t.nav.aurora}</a>
+      <a href={auroraHref(p)}>{t.nav.aurora}</a>
       <a href={`${mainSite}${p}/aetheris`}>{t.nav.aetheris}</a>
       <a href={siteHref('/wiki', links.wikiSite)}>{t.nav.wiki}</a>
       <a href={siteHref('/blog', links.blogSite)}>{t.nav.blog}</a>

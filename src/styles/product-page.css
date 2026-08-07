@@ -1,0 +1,301 @@
+/*
+ * Layout shared by the Aurora Shell and Aetheris pages, which are the same
+ * page section for section. Frontmatter-imported CSS is not Astro-scoped, so
+ * every selector sits under .product-page: names like .design-grid and
+ * .back-home are generic enough to be reinvented elsewhere.
+ *
+ * --product-accent is the only per-product knob. Anything that genuinely
+ * differs lives in the modifier blocks at the bottom.
+ */
+
+.product-page {
+  --product-accent: var(--accent);
+}
+
+.product-page--aurora {
+  --product-accent: var(--aurora-green);
+}
+
+.product-page .product-hero {
+  position: relative;
+  padding-block: clamp(4.5rem, 9vw, 7rem);
+  overflow: hidden;
+}
+
+.product-page .product-hero-inner {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: clamp(1.75rem, 4vw, 3rem);
+  align-items: center;
+  text-align: start;
+}
+
+.product-page .product-hero-copy {
+  display: grid;
+  gap: 1rem;
+  justify-items: start;
+}
+
+.product-page .product-hero h1 {
+  font-size: clamp(2.75rem, 6.5vw, 4.75rem);
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.product-page .product-hero-sub {
+  max-width: 46ch;
+  color: var(--ink-dim);
+  font-size: clamp(1.05rem, 1.6vw, 1.2rem);
+}
+
+.product-page .product-hero-ctas {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+
+.product-page .product-version {
+  font-size: 0.8rem;
+  color: var(--ink-faint);
+}
+
+.product-page .product-version strong {
+  color: var(--product-accent);
+}
+
+.product-page .product-quote {
+  max-width: 50rem;
+  display: grid;
+  gap: 1.6rem;
+}
+
+.product-page .product-quote h2 {
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+}
+
+.product-page .product-quote blockquote {
+  margin: 0;
+  font-size: clamp(1.15rem, 2vw, 1.45rem);
+  line-height: 1.55;
+  color: var(--ink-dim);
+  font-style: italic;
+  border-inline-start: 3px solid var(--product-accent);
+  padding-inline-start: 1.5rem;
+  text-align: start;
+}
+
+.product-page .showcase-list {
+  display: grid;
+}
+
+.product-page .showcase {
+  display: grid;
+  grid-template-columns: minmax(16rem, 2fr) 3fr;
+  gap: clamp(1.6rem, 4vw, 3.5rem);
+  align-items: center;
+}
+
+.product-page .showcase:nth-child(even) {
+  grid-template-columns: 3fr minmax(16rem, 2fr);
+}
+
+.product-page .showcase:nth-child(even) .showcase-text {
+  order: 2;
+}
+
+.product-page .showcase-text {
+  display: grid;
+  gap: 0.8rem;
+  align-content: center;
+}
+
+.product-page .showcase-text .chip {
+  justify-self: start;
+}
+
+.product-page .showcase-text h3 {
+  font-size: clamp(1.4rem, 2.6vw, 1.9rem);
+  line-height: 1.2;
+}
+
+.product-page .showcase-text p {
+  color: var(--ink-dim);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* Aurora's demo scenes are container-query sized, so they cannot size this
+   column from the inside. The column fills its track and the scene centres
+   itself within it. */
+.product-page .showcase-media {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  max-width: 100%;
+}
+
+.product-page .product-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(245px, 1fr));
+  gap: 1.3rem;
+}
+
+.product-page .product-card {
+  display: grid;
+  gap: 0.6rem;
+  align-content: start;
+  transition: border-color 0.2s ease;
+}
+
+.product-page .product-card:hover {
+  border-color: var(--accent);
+}
+
+.product-page .product-card p {
+  color: var(--ink-dim);
+  font-size: 0.93rem;
+}
+
+.product-page .product-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--product-accent);
+}
+
+.product-page .design-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 2.2rem;
+}
+
+.product-page .design-item h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0.6rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.6rem;
+}
+
+.product-page .design-item p {
+  color: var(--ink-dim);
+  font-size: 0.97rem;
+}
+
+.product-page .back-home {
+  margin-top: 3.5rem;
+}
+
+.product-page .back-home a {
+  color: var(--ink-dim);
+  text-decoration: none;
+}
+
+.product-page .back-home a:hover {
+  color: var(--product-accent);
+}
+
+@media (max-width: 760px) {
+  .product-page .showcase,
+  .product-page .showcase:nth-child(even) {
+    grid-template-columns: 1fr;
+  }
+
+  .product-page .showcase:nth-child(even) .showcase-text {
+    order: 0;
+  }
+}
+
+@media (max-width: 700px) {
+  .product-page .product-hero-inner {
+    grid-template-columns: 1fr;
+  }
+
+  .product-page .product-logo {
+    width: 96px;
+    height: 96px;
+  }
+}
+
+/* Aurora Shell */
+
+.product-page--aurora .showcase-list {
+  gap: clamp(3.2rem, 7vw, 5rem);
+}
+
+.product-page--aurora .product-card h4 {
+  font-size: 1.15rem;
+}
+
+.product-page--aurora .product-version a {
+  text-decoration: none;
+}
+
+.product-page--aurora .product-version a:hover strong {
+  text-decoration: underline;
+}
+
+.product-page--aurora .module-groups {
+  display: grid;
+  gap: 2.6rem;
+}
+
+.product-page--aurora .module-group {
+  display: grid;
+  gap: 1.1rem;
+}
+
+.product-page--aurora .module-group-title {
+  font-size: 1.05rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--ink-dim);
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.55rem;
+}
+
+/* Spotlights fade in when AuroraPage's IntersectionObserver adds .in-view. */
+.product-page--aurora .showcase {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.product-page--aurora .showcase.in-view {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .product-page--aurora .showcase {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* Aetheris */
+
+.product-page--aetheris .showcase-list {
+  gap: clamp(3rem, 6vw, 4.5rem);
+}
+
+.product-page--aetheris .product-card h3 {
+  font-size: 1.2rem;
+}
+
+.product-page--aetheris .product-hero h1 {
+  max-width: 18ch;
+}
+
+.product-page--aetheris .product-logo {
+  border-radius: var(--radius);
+}
+
+.product-page--aetheris .showcase-media img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+}

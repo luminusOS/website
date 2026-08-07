@@ -1,10 +1,9 @@
 :root {
   color-scheme: light;
 
-  /* Brand — one blue, Adwaita */
+  /* Brand: one blue, Adwaita */
   --accent: #3584e4;
   --accent-hover: #1c71d8;
-  --accent-active: #1a5fb4;
   --accent-sky: #62a0ea;
   --accent-ink: #ffffff;
   --accent-wash: #e7f0fd;
@@ -12,7 +11,6 @@
   --destructive: #c01c28;
   --destructive-hover: #a51d2d;
 
-  /* Aurora Shell product mark */
   --aurora-green: #2ec27e;
 
   --font-display: 'Bricolage Grotesque', 'Instrument Sans', sans-serif;
@@ -48,7 +46,7 @@
   --on-accent-surface: rgba(255, 255, 255, 0.1);
   --on-accent-hover: rgba(255, 255, 255, 0.88);
 
-  /* Terminal chrome — dark in both themes */
+  /* Terminal chrome, dark in both themes */
   --term-bg: #1d1d20;
   --term-bar: #2b2b2f;
   --term-line: #3a3a3f;

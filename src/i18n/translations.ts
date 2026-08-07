@@ -19,10 +19,10 @@ export function langPrefix(lang: Lang): string {
 // the absolute URL.
 const useLocalPaths = import.meta.env.DEV;
 
-export function subHref(p: string, variant: SiteVariant, localPath: string, absolute: string): string {
-  if (siteVariant === variant) return p || '/';
-  if (siteVariant === '' && useLocalPaths) return `${p}${localPath}`;
-  return `${absolute}${p}`;
+export function auroraHref(p: string): string {
+  if (siteVariant === 'aurora') return p || '/';
+  if (useLocalPaths) return `${p}/aurora`;
+  return `${links.auroraSite}${p}`;
 }
 
 export function siteHref(localPath: string, absolute: string): string {
@@ -44,11 +44,13 @@ const en = {
     auroraShort: 'Aurora',
     aetheris: 'Aetheris',
     products: 'Products',
+    resources: 'Resources',
+    language: 'Language',
+    menu: 'Menu',
     wiki: 'Wiki',
     blog: 'Blog',
     download: 'Download',
     donate: 'Donate',
-    github: 'GitHub',
     themeToggle: 'Toggle light/dark theme',
   },
   hero: {
@@ -123,7 +125,6 @@ const en = {
     subtitle:
       'The same trustworthy core, adapted to each screen. Workstation ships today. The rest is the roadmap, already reserved in our build system and waiting for its turn.',
     downloadLatest: 'Download',
-    comingSoon: 'Coming soon',
     roadmapTitle: 'On the roadmap',
     viewAll: 'All releases on GitHub',
     items: {
@@ -173,8 +174,6 @@ const en = {
     button: 'Download latest ISO',
     notes: 'Release notes',
     note: 'Downloads are served from SourceForge mirrors worldwide. The button always points to the most recent version.',
-    checking: 'checking latest version…',
-    latest: 'Latest release',
   },
   support: {
     title: 'Like what we are building?',
@@ -207,7 +206,6 @@ const en = {
       'Aurora Shell is a proving ground. Over time, the aim is for some of its features to mature and make their way upstream into GNOME Shell itself. Modules here are meant to be useful on their own today, and good candidates for upstream tomorrow.',
     spotlightTitle: 'In the spotlight',
     spotlightSubtitle: 'The modules you will feel first, the moment Aurora is enabled.',
-    screenshotSoon: 'Screenshot coming soon',
     spotlights: [
       {
         tag: 'Dock',
@@ -310,15 +308,12 @@ const en = {
     title: 'Kubernetes, made native.',
     subtitle:
       'Aetheris brings Kubernetes into a fast native desktop app. Connect with your kubeconfig, organize clusters by project, inspect resources, edit YAML and handle large workloads without leaving your workflow.',
-    source: 'Source on GitHub',
-    flathub: 'Coming to Flathub',
     downloadGeneric: 'Download Aetheris',
     downloadLinux: 'Download for Linux',
     downloadMac: 'Download for macOS',
     downloadWindows: 'Download for Windows',
     allDownloads: 'All releases',
     status: 'Latest release',
-    statusValue: 'v1.2.0',
     meaningTitle: 'Why “Aetheris”?',
     meaning:
       'From Aether, the highest and brightest layer of the sky in classical mythology. That is the idea behind Aetheris: a clear, quiet place above the noise where your clusters stay readable and under control.',
@@ -337,7 +332,6 @@ const en = {
     ],
     screenshotsTitle: 'Built for real cluster work',
     screenshotsSubtitle: 'Aetheris keeps the daily Kubernetes loop close at hand: browse, inspect, edit and operate from one native interface, even when the cluster gets large.',
-    screenshotSoon: 'Screenshot coming soon',
     screenshots: [
       {
         tag: 'Overview',
@@ -397,11 +391,13 @@ const ptBr: typeof en = {
     auroraShort: 'Aurora',
     aetheris: 'Aetheris',
     products: 'Produtos',
+    resources: 'Recursos',
+    language: 'Idioma',
+    menu: 'Menu',
     wiki: 'Wiki',
     blog: 'Blog',
     download: 'Baixar',
     donate: 'Doar',
-    github: 'GitHub',
     themeToggle: 'Alternar tema claro/escuro',
   },
   hero: {
@@ -476,7 +472,6 @@ const ptBr: typeof en = {
     subtitle:
       'O mesmo núcleo confiável, adaptado para cada tela. A Workstation já existe hoje. O resto é o roadmap, já reservado no nosso sistema de build esperando a vez.',
     downloadLatest: 'Baixar',
-    comingSoon: 'Em breve',
     roadmapTitle: 'No roadmap',
     viewAll: 'Todas as versões no GitHub',
     items: {
@@ -526,8 +521,6 @@ const ptBr: typeof en = {
     button: 'Baixar ISO mais recente',
     notes: 'Notas da versão',
     note: 'Os downloads vêm de mirrors do SourceForge no mundo todo. O botão sempre aponta para a versão mais recente.',
-    checking: 'verificando última versão…',
-    latest: 'Última versão',
   },
   support: {
     title: 'Curtiu o que estamos construindo?',
@@ -560,7 +553,6 @@ const ptBr: typeof en = {
       'O Aurora Shell é um campo de provas. Com o tempo, a ideia é que alguns dos seus recursos amadureçam e subam para o próprio GNOME Shell. Os módulos daqui são úteis por conta própria hoje, e bons candidatos a upstream amanhã.',
     spotlightTitle: 'Em destaque',
     spotlightSubtitle: 'Os módulos que você sente primeiro, assim que o Aurora é ativado.',
-    screenshotSoon: 'Captura de tela em breve',
     spotlights: [
       {
         tag: 'Dock',
@@ -663,15 +655,12 @@ const ptBr: typeof en = {
     title: 'Kubernetes, do jeito nativo.',
     subtitle:
       'Aetheris traz Kubernetes para um app desktop rápido e nativo. Conecte pelo kubeconfig, organize clusters por projeto, inspecione recursos, edite YAML e lide com workloads grandes sem sair do fluxo.',
-    source: 'Código no GitHub',
-    flathub: 'Em breve no Flathub',
     downloadGeneric: 'Baixar Aetheris',
     downloadLinux: 'Baixar para Linux',
     downloadMac: 'Baixar para macOS',
     downloadWindows: 'Baixar para Windows',
     allDownloads: 'Todas as releases',
     status: 'Última release',
-    statusValue: 'v1.2.0',
     meaningTitle: 'Por que “Aetheris”?',
     meaning:
       'Vem de Éter, a camada mais alta e brilhante do céu na mitologia clássica. Essa é a ideia por trás do Aetheris: um lugar claro e silencioso acima do ruído, onde seus clusters continuam legíveis e sob controle.',
@@ -690,7 +679,6 @@ const ptBr: typeof en = {
     ],
     screenshotsTitle: 'Feito para o trabalho real com clusters',
     screenshotsSubtitle: 'O Aetheris mantém o ciclo diário de Kubernetes por perto: navegue, inspecione, edite e opere em uma interface nativa, mesmo quando o cluster cresce.',
-    screenshotSoon: 'Captura de tela em breve',
     screenshots: [
       {
         tag: 'Visão geral',
@@ -744,19 +732,20 @@ export const translations: Record<Lang, typeof en> = {
 export const links = {
   releasesLatest: 'https://github.com/luminusOS/images/releases/latest',
   releasesAll: 'https://github.com/luminusOS/images/releases',
-  releasesApi: 'https://api.github.com/repos/luminusOS/images/releases/latest',
   sfFiles: 'https://sourceforge.net/projects/luminusos/files/',
   org: 'https://github.com/luminusOS',
   discord: 'https://discord.gg/eVmXsqkvkw',
-  imagesRepo: 'https://github.com/luminusOS/images',
   auroraRepo: 'https://github.com/luminusOS/aurora-shell',
-  aetherisRepo: 'https://github.com/luminusOS/aetheris',
   aetherisReleases: 'https://github.com/luminusOS/aetheris/releases',
-  aetherisReleasesApi: 'https://api.github.com/repos/luminusOS/aetheris/releases/latest',
   auroraEgo: 'https://extensions.gnome.org/extension/9389/aurora-shell/',
   auroraSite: 'https://aurora.luminusos.org',
   wikiSite: 'https://wiki.luminusos.org',
   blogSite: 'https://blog.luminusos.org',
-  websiteRepo: 'https://github.com/luminusOS/website',
   donate: 'https://opencollective.com/luminusos',
+};
+
+export const repos = {
+  images: 'luminusOS/images',
+  aurora: 'luminusOS/aurora-shell',
+  aetheris: 'luminusOS/aetheris',
 };

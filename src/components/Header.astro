@@ -1,6 +1,6 @@
 ---
 import type { Lang } from '../i18n/translations';
-import { translations, langPrefix, languages, links, mainSite, siteVariant, subHref, siteHref } from '../i18n/translations';
+import { translations, langPrefix, languages, links, mainSite, siteVariant, auroraHref, siteHref } from '../i18n/translations';
 
 interface Props {
   lang: Lang;
@@ -10,48 +10,58 @@ interface Props {
 const { lang, path } = Astro.props;
 const t = translations[lang];
 const p = langPrefix(lang);
-const current = languages.find((l) => l.code === lang) ?? languages[0];
+const current = languages.find((l) => l.code === lang)!;
 
-const nav = [
-  { href: `${mainSite}${p}/#why`, label: t.nav.overview },
-  { href: `${mainSite}${p}/#how`, label: t.nav.how },
-  { href: `${mainSite}${p}/#editions`, label: t.nav.editions },
-  { href: subHref(p, 'aurora', '/aurora', links.auroraSite), label: t.nav.auroraShort },
+const link = {
+  overview: { href: `${mainSite}${p}/#why`, label: t.nav.overview },
+  how: { href: `${mainSite}${p}/#how`, label: t.nav.how },
+  editions: { href: `${mainSite}${p}/#editions`, label: t.nav.editions },
+  aurora: { href: auroraHref(p), label: t.nav.auroraShort },
+  aetheris: { href: `${mainSite}${p}/aetheris`, label: t.nav.aetheris },
+  wiki: { href: siteHref('/wiki', links.wikiSite), label: t.nav.wiki },
+  blog: { href: siteHref('/blog', links.blogSite), label: t.nav.blog },
+};
+
+// The bar keeps Aurora flat while the panel files it under Products, so both
+// arrangements are written out rather than sliced out of one another.
+const desktopNav = [link.overview, link.how, link.editions, link.aurora];
+const desktopProducts = [link.aetheris];
+const desktopResources = [link.wiki, link.blog];
+
+const mobileGroups = [
+  { label: null, items: [link.overview, link.how, link.editions] },
+  { label: t.nav.products, items: [link.aurora, link.aetheris] },
+  { label: t.nav.resources, items: [link.wiki, link.blog] },
 ];
 
-const products = [
-  { href: `${mainSite}${p}/aetheris`, label: t.nav.aetheris },
-];
-
-const navAfter = [
-  { href: siteHref('/wiki', links.wikiSite), label: t.nav.wiki },
-  { href: siteHref('/blog', links.blogSite), label: t.nav.blog },
-];
+const chevronPath = 'm6 9 6 6 6-6';
+const heartPath =
+  'M12 21s-7.5-4.7-10-9.3C.4 8.6 2.4 5 5.8 5c2 0 3.4 1.1 4.2 2.4l2 .1 2-.1C14.8 6.1 16.2 5 18.2 5c3.4 0 5.4 3.6 3.8 6.7C19.5 16.3 12 21 12 21z';
 ---
 
 <header class="site-header">
   <div class="container header-inner">
-    <a class="brand" href={siteVariant ? `${mainSite}${p}` || mainSite : p || '/'}>
+    <a class="brand" href={siteVariant ? `${mainSite}${p}` : p || '/'}>
       <img src="/logos/brand.svg" alt="" width="28" height="28" />
       <span>Luminus<strong>OS</strong></span>
     </a>
 
     <nav class="main-nav" aria-label="Main">
-      {nav.map((item) => <a href={item.href}>{item.label}</a>)}
+      {desktopNav.map((item) => <a href={item.href}>{item.label}</a>)}
       <details class="nav-menu" data-nav-menu>
         <summary>
           {t.nav.products}
           <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
+            <path d={chevronPath} />
           </svg>
         </summary>
         <ul role="list">
-          {products.map((item) => (
+          {desktopProducts.map((item) => (
             <li><a href={item.href}>{item.label}</a></li>
           ))}
         </ul>
       </details>
-      {navAfter.map((item) => <a href={item.href}>{item.label}</a>)}
+      {desktopResources.map((item) => <a href={item.href}>{item.label}</a>)}
     </nav>
 
     <div class="header-actions">
@@ -70,7 +80,7 @@ const navAfter = [
           <span class="flag" aria-hidden="true">{current.flag}</span>
           {lang === 'pt-br' ? 'PT' : 'EN'}
           <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
+            <path d={chevronPath} />
           </svg>
         </summary>
         <ul role="list">
@@ -89,35 +99,56 @@ const navAfter = [
       </details>
 
       <details class="mobile-menu" data-mobile-menu>
-        <summary aria-label="Menu">
-          <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+        <summary aria-label={t.nav.menu}>
+          <svg class="icon-burger" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
             <path d="M4 7h16M4 12h16M4 17h16" />
+          </svg>
+          <svg class="icon-close" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <path d="M6 6l12 12M18 6L6 18" />
           </svg>
         </summary>
         <div class="mobile-panel">
-          <nav aria-label="Mobile">
-            {nav.map((item) => <a href={item.href}>{item.label}</a>)}
-            {products.map((item) => <a href={item.href}>{item.label}</a>)}
-            {navAfter.map((item) => <a href={item.href}>{item.label}</a>)}
-          </nav>
-          <div class="mobile-langs">
-            {languages.map((l) => (
-              <a
-                href={(langPrefix(l.code) + path) || '/'}
-                aria-current={l.code === lang ? 'true' : undefined}
-              >
-                <span class="flag" aria-hidden="true">{l.flag}</span>
-                {l.name}
-              </a>
-            ))}
+          {mobileGroups.map((group) => (
+            <nav class="mobile-group" aria-label={group.label ?? t.nav.menu}>
+              {group.label && <p class="mobile-group-title mono">{group.label}</p>}
+              {group.items.map((item) => (
+                <a href={item.href}>{item.label}</a>
+              ))}
+            </nav>
+          ))}
+
+          <div class="mobile-group">
+            <p class="mobile-group-title mono">{t.nav.language}</p>
+            <div class="mobile-langs">
+              {languages.map((l) => (
+                <a
+                  href={(langPrefix(l.code) + path) || '/'}
+                  aria-current={l.code === lang ? 'true' : undefined}
+                >
+                  <span class="flag" aria-hidden="true">{l.flag}</span>
+                  {l.name}
+                </a>
+              ))}
+            </div>
           </div>
+
           <div class="mobile-actions">
-            <a class="btn btn-primary btn-sm" href={`${mainSite}${p}/#download`}>{t.nav.download}</a>
-            <a class="btn btn-ghost btn-sm" href={links.donate} target="_blank" rel="noopener">{t.nav.donate}</a>
+            <a class="btn btn-primary" href={`${mainSite}${p}/#download`}>{t.nav.download}</a>
+            <a class="btn btn-donate" href={links.donate} target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true">
+                <path d={heartPath} />
+              </svg>
+              {t.nav.donate}
+            </a>
           </div>
         </div>
       </details>
 
+      <a class="donate-icon" href={links.donate} target="_blank" rel="noopener" aria-label={t.nav.donate} title={t.nav.donate}>
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true">
+          <path d={heartPath} />
+        </svg>
+      </a>
       <a class="btn btn-primary btn-sm" href={`${mainSite}${p}/#download`}>{t.nav.download}</a>
     </div>
   </div>
@@ -132,12 +163,19 @@ const navAfter = [
     });
   });
 
+  const openMenus = () =>
+    document.querySelectorAll('[data-lang-menu][open], [data-nav-menu][open], [data-mobile-menu][open]');
+
   document.addEventListener('click', (e) => {
-    document.querySelectorAll('[data-lang-menu][open], [data-nav-menu][open], [data-mobile-menu][open]').forEach((menu) => {
+    openMenus().forEach((menu) => {
       if (e.target instanceof Node && !menu.contains(e.target)) {
         menu.removeAttribute('open');
       }
     });
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') openMenus().forEach((menu) => menu.removeAttribute('open'));
   });
 
   document.querySelectorAll('[data-mobile-menu] a').forEach((link) => {
@@ -146,18 +184,22 @@ const navAfter = [
     });
   });
 
+  const mobileMenu = document.querySelector<HTMLDetailsElement>('[data-mobile-menu]');
+  mobileMenu?.addEventListener('toggle', () => {
+    document.body.classList.toggle('has-open-menu', mobileMenu.open);
+  });
+
   // The header shares the page background, so the hairline only appears once
   // the content has scrolled under it.
-  const header = document.querySelector('.site-header');
-  if (header) {
-    const sync = () => header.classList.toggle('is-scrolled', window.scrollY > 4);
-    sync();
-    window.addEventListener('scroll', sync, { passive: true });
-  }
+  const header = document.querySelector('.site-header')!;
+  const updateHairline = () => header.classList.toggle('is-scrolled', window.scrollY > 4);
+  updateHairline();
+  window.addEventListener('scroll', updateHairline, { passive: true });
 </script>
 
 <style>
   .site-header {
+    --header-h: 3.75rem;
     position: sticky;
     top: 0;
     z-index: 40;
@@ -175,7 +217,7 @@ const navAfter = [
     align-items: center;
     justify-content: space-between;
     gap: 1.25rem;
-    min-height: 3.75rem;
+    min-height: var(--header-h);
     padding-block: 0.55rem;
   }
 
@@ -287,7 +329,6 @@ const navAfter = [
     gap: 0.4rem;
   }
 
-  /* Headerbar separator between navigation and actions. */
   .header-actions::before {
     content: '';
     width: 1px;
@@ -298,6 +339,22 @@ const navAfter = [
 
   .theme-toggle {
     width: 2.25rem;
+  }
+
+  .donate-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    min-height: 2.25rem;
+    border-radius: var(--radius-sm);
+    color: var(--destructive);
+    transition: background 0.12s ease, color 0.12s ease;
+  }
+
+  .donate-icon:hover {
+    background: var(--surface-2);
+    color: var(--destructive-hover);
   }
 
   .theme-toggle .icon-sun { display: none; }
@@ -313,7 +370,6 @@ const navAfter = [
     position: relative;
   }
 
-  /* Flat headerbar controls — no outlined box. */
   .theme-toggle,
   .lang-menu summary,
   .mobile-menu summary {
@@ -355,71 +411,107 @@ const navAfter = [
     display: none;
   }
 
+  .mobile-menu .icon-close { display: none; }
+  .mobile-menu[open] .icon-burger { display: none; }
+  .mobile-menu[open] .icon-close { display: block; }
+
+  /* Starts below the bar: covering it would hide the close button and fight
+     the sticky header's stacking context. */
   .mobile-panel {
-    position: absolute;
-    right: 0;
-    top: calc(100% + 0.5rem);
-    width: min(18rem, calc(100vw - 2rem));
-    padding: 0.375rem;
-    display: grid;
-    gap: 0.45rem;
-    background: var(--surface-1);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius);
-    box-shadow: 0 1px 2px rgb(0 0 0 / 0.06), 0 10px 28px rgb(0 0 0 / 0.14);
-    z-index: 60;
+    position: fixed;
+    inset: var(--header-h) 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+    padding: 1.75rem 1.25rem calc(1.25rem + env(safe-area-inset-bottom));
+    background: var(--bg);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    animation: mobile-panel-in 0.18s ease-out;
   }
 
-  .mobile-panel nav {
-    display: grid;
-    gap: 0.1rem;
+  @keyframes mobile-panel-in {
+    from { opacity: 0; transform: translateY(-0.5rem); }
+    to { opacity: 1; transform: none; }
   }
 
-  .mobile-panel a {
+  .mobile-group {
+    display: grid;
+    gap: 0.15rem;
+    width: min(34rem, 100%);
+    margin-inline: auto;
+  }
+
+  .mobile-group-title {
+    margin: 0 0 0.4rem;
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  /* Scoped to the groups so the action buttons keep their pill shape. */
+  .mobile-group a {
     display: flex;
     align-items: center;
-    gap: 0.6rem;
-    min-height: 2.35rem;
-    padding: 0.55rem 0.7rem;
-    border-radius: var(--radius-sm);
-    color: var(--ink-dim);
-    text-decoration: none;
-    font-size: 0.95rem;
-  }
-
-  .mobile-panel a:hover {
-    background: var(--surface-2);
+    gap: 0.7rem;
+    min-height: 3.25rem;
+    padding: 0.6rem 0.85rem;
+    margin-inline: -0.85rem;
+    border-radius: var(--radius);
     color: var(--ink);
+    text-decoration: none;
+    font-size: 1.15rem;
+    font-weight: 500;
   }
 
-  /* Only surfaces below 560px, where the header lang menu is hidden. */
+  .mobile-group a:hover,
+  .mobile-group a:active {
+    background: var(--surface-2);
+  }
+
+  /* The language pair never needs full rows. */
   .mobile-langs {
-    display: none;
-    gap: 0.1rem;
-    padding-top: 0.45rem;
-    border-top: 1px solid var(--border-color);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+
+  .mobile-langs a {
+    justify-content: center;
+    gap: 0.45rem;
+    margin-inline: 0;
+    font-size: 1rem;
+    border: 1px solid var(--border-color);
   }
 
   .mobile-langs a[aria-current='true'] {
     color: var(--accent);
-    font-weight: 600;
+    border-color: var(--accent);
+    background: var(--accent-wash);
   }
 
   .mobile-actions {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.45rem;
-    padding-top: 0.45rem;
-    border-top: 1px solid var(--border-color);
+    gap: 0.6rem;
+    width: min(34rem, 100%);
+    margin-inline: auto;
+    margin-top: auto;
+    padding-top: 1.5rem;
   }
 
   .mobile-actions .btn {
     justify-content: center;
-    color: inherit;
+    min-height: 3.25rem;
+    font-size: 1.05rem;
   }
 
   .mobile-actions .btn-primary {
     color: var(--accent-ink);
+  }
+
+  .mobile-actions .btn-donate {
+    color: #fff;
   }
 
   .lang-menu ul {
@@ -465,29 +557,36 @@ const navAfter = [
     line-height: 1;
   }
 
+  /* Once the hamburger appears, language and donate live in the panel so the
+     bar keeps a single primary action instead of five competing controls. */
   @media (max-width: 980px) {
-    .main-nav {
+    .main-nav,
+    .lang-menu,
+    .donate-icon {
       display: none;
     }
 
     .mobile-menu {
       display: block;
     }
-  }
 
-  @media (max-width: 560px) {
-    .lang-menu {
-      display: none;
+    :global(body.has-open-menu) {
+      overflow: hidden;
     }
 
-    .mobile-langs {
-      display: grid;
+    .theme-toggle,
+    .mobile-menu summary {
+      width: 2.5rem;
+      min-height: 2.5rem;
     }
 
+    /* The separator divides nav from actions; with the nav gone it is noise. */
     .header-actions::before {
       display: none;
     }
+  }
 
+  @media (max-width: 560px) {
     .header-actions > .btn-primary {
       padding-inline: 1rem;
     }
@@ -503,7 +602,7 @@ const navAfter = [
     }
 
     .header-actions {
-      gap: 0.25rem;
+      gap: 0.15rem;
     }
   }
 </style>

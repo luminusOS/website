@@ -4,7 +4,7 @@ import Header from './Header.astro';
 import Footer from './Footer.astro';
 import DeviceShowcase from './DeviceShowcase.astro';
 import type { Lang } from '../i18n/translations';
-import { translations, langPrefix, links, subHref } from '../i18n/translations';
+import { translations, langPrefix, links, repos, auroraHref } from '../i18n/translations';
 
 interface Props {
   lang: Lang;
@@ -13,11 +13,11 @@ interface Props {
 const { lang } = Astro.props;
 const t = translations[lang];
 const p = langPrefix(lang);
-const auroraHref = subHref(p, 'aurora', '/aurora', links.auroraSite);
+const aurora = auroraHref(p);
 
-const editionOrder = ['workstation', 'education', 'play', 'mobile', 'tablet', 'cast'] as const;
+const roadmap = ['education', 'play', 'mobile', 'tablet', 'cast'] as const;
 
-const editionIcons: Record<(typeof editionOrder)[number], string> = {
+const editionIcons: Record<'workstation' | (typeof roadmap)[number], string> = {
   workstation: 'M3 5h18v11H3zM1 19h22v1.5H1z',
   education: 'M12 4L2 9l10 5 10-5zM6 11.5V16c0 1.7 2.7 3 6 3s6-1.3 6-3v-4.5M22 9v5',
   play: 'M6 8h12a4 4 0 0 1 4 4v3a3 3 0 0 1-5.4 1.8L15 15H9l-1.6 1.8A3 3 0 0 1 2 15v-3a4 4 0 0 1 4-4z',
@@ -26,7 +26,6 @@ const editionIcons: Record<(typeof editionOrder)[number], string> = {
   cast: 'M2 5h20v12h-8M2 21l5-.02A5 5 0 0 0 2 16zm0-4a9 9 0 0 1 9 9',
 };
 
-const roadmap = editionOrder.filter((key) => key !== 'workstation');
 const workstation = t.editions.items.workstation;
 ---
 
@@ -37,7 +36,7 @@ const workstation = t.editions.items.workstation;
     <section class="band band--plain hero">
       <div class="container">
         <div class="hero-top">
-          <div class="hero-copy">
+          <div>
             <p class="eyebrow">{t.hero.eyebrow}</p>
             <h1>{t.hero.title}<em>{t.hero.titleAccent}</em></h1>
             <p class="hero-sub">{t.hero.subtitle}</p>
@@ -45,7 +44,7 @@ const workstation = t.editions.items.workstation;
               <a class="btn btn-primary btn-lg" href={links.releasesLatest} target="_blank" rel="noopener">
                 {t.hero.cta}
               </a>
-              <a class="btn btn-ghost btn-lg" href={auroraHref}>{t.hero.ctaSecondary}</a>
+              <a class="btn btn-ghost btn-lg" href={aurora}>{t.hero.ctaSecondary}</a>
             </div>
           </div>
 
@@ -84,7 +83,7 @@ const workstation = t.editions.items.workstation;
       </div>
     </section>
 
-    <section class="band band--plain section how" id="how">
+    <section class="band band--plain section" id="how">
       <div class="container how-grid">
         <div>
           <div class="section-head">
@@ -163,13 +162,13 @@ const workstation = t.editions.items.workstation;
       </div>
     </section>
 
-    <section class="band band--accent section aurora-teaser">
+    <section class="band band--accent section">
       <div class="container teaser-grid">
         <div class="teaser-text">
           <p class="eyebrow">{t.aurora.eyebrow}</p>
           <h2>{t.aurora.title}</h2>
           <p>{t.aurora.subtitle}</p>
-          <a class="btn btn-ghost" href={auroraHref}>{t.aurora.cta} →</a>
+          <a class="btn btn-ghost" href={aurora}>{t.aurora.cta} →</a>
         </div>
         <div class="teaser-mark">
           <img src="/aurora-logo.svg" alt="Aurora Shell logo" width="180" height="180" loading="lazy" />
@@ -177,14 +176,14 @@ const workstation = t.editions.items.workstation;
       </div>
     </section>
 
-    <section class="band band--plain section download" id="download">
+    <section class="band band--plain section" id="download">
       <div class="container download-grid">
         <div class="download-copy">
           <h2>{t.download.title}</h2>
           <p>{t.download.subtitle}</p>
         </div>
         <div class="download-panel">
-          <a class="btn btn-primary btn-lg" data-sf-iso href={links.sfFiles} target="_blank" rel="noopener">
+          <a class="btn btn-primary btn-lg" data-sf-iso data-repo={repos.images} href={links.sfFiles} target="_blank" rel="noopener">
             {t.download.button}
             <span class="release-tag mono" data-release-tag hidden></span>
           </a>
@@ -194,7 +193,7 @@ const workstation = t.editions.items.workstation;
       </div>
     </section>
 
-    <section class="band band--tint section support" id="support">
+    <section class="band band--tint section" id="support">
       <div class="container support-row">
         <div>
           <h2>{t.support.title}</h2>
@@ -211,23 +210,19 @@ const workstation = t.editions.items.workstation;
 </BaseLayout>
 
 <script>
-  const tagEl = document.querySelector('[data-release-tag]');
-  const isoEl = document.querySelector('[data-sf-iso]');
-  if (tagEl && isoEl) {
-    fetch('https://api.github.com/repos/luminusOS/images/releases/latest')
-      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
-      .then((release) => {
-        const tag = release?.tag_name?.replace(/^v/, '');
-        if (tag) {
-          tagEl.textContent = release.tag_name;
-          tagEl.removeAttribute('hidden');
-          isoEl.href = `https://sourceforge.net/projects/luminusos/files/${tag}/luminusos-workstation-${tag}.iso/download`;
-        }
-      })
-      .catch(() => {
-        /* no releases yet — button still points at the SourceForge files page */
-      });
-  }
+  import { latestRelease } from '../scripts/latest-release';
+  import { links } from '../i18n/translations';
+
+  const button = document.querySelector<HTMLAnchorElement>('[data-sf-iso]')!;
+  const tag = button.querySelector('[data-release-tag]')!;
+
+  latestRelease(button.dataset.repo!).then((release) => {
+    if (!release) return;
+    const version = release.tag_name.replace(/^v/, '');
+    tag.textContent = release.tag_name;
+    tag.removeAttribute('hidden');
+    button.href = `${links.sfFiles}${version}/luminusos-workstation-${version}.iso/download`;
+  });
 </script>
 
 <style>
@@ -270,7 +265,7 @@ const workstation = t.editions.items.workstation;
     margin-top: 2rem;
   }
 
-  /* The rail is what makes the hero read asymmetric — the device stage below
+  /* The rail is what makes the hero read asymmetric. The device stage below
      stays full width because its 5 devices are positioned in percentages. */
   .hero-facts {
     margin: 0;
@@ -463,7 +458,7 @@ const workstation = t.editions.items.workstation;
     color: var(--ink-faint);
   }
 
-  /* Hairline columns instead of five dimmed cards — reads as roadmap, not broken. */
+  /* Hairline columns, not cards: the roadmap should read as planned, not disabled. */
   .roadmap {
     list-style: none;
     margin: 1.25rem 0 0;

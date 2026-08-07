@@ -14,7 +14,7 @@ let shuttingDown = false;
 let children = [];
 
 const server = http.createServer((request, response) => {
-  const target = targetFor(request.url ?? '/', request.headers);
+  const target = resolveTarget(request.url ?? '/', request.headers);
   const proxy = http.request(
     {
       host,
@@ -38,7 +38,7 @@ const server = http.createServer((request, response) => {
 });
 
 server.on('upgrade', (request, socket, head) => {
-  const target = targetFor(request.url ?? '/', request.headers);
+  const target = resolveTarget(request.url ?? '/', request.headers);
   const upstream = net.connect(target.port, host, () => {
     upstream.write(`${request.method} ${request.url} HTTP/${request.httpVersion}\r\n`);
     for (const [name, value] of Object.entries(request.headers)) {
@@ -62,12 +62,12 @@ server.listen(publicPort, '0.0.0.0', () => {
   console.log(`routes: / -> site, /aurora -> site, /blog -> blog, /wiki -> wiki`);
   ensureWikiSearchIndex();
   children = [
-    start('site', ['exec', 'astro', '--', 'dev', '--host', host, '--port', String(targets.site.port)]),
-    start('blog', ['exec', 'astro', '--', 'dev', '--root', 'blog', '--host', host, '--port', String(targets.blog.port)], {
+    startDevServer('site', ['exec', 'astro', '--', 'dev', '--host', host, '--port', String(targets.site.port)]),
+    startDevServer('blog', ['exec', 'astro', '--', 'dev', '--root', 'blog', '--host', host, '--port', String(targets.blog.port)], {
       SITE_BASE: '/blog',
       SITE_URL: `http://localhost:${publicPort}`,
     }),
-    start('wiki', ['exec', 'astro', '--', 'dev', '--root', 'wiki', '--host', host, '--port', String(targets.wiki.port)], {
+    startDevServer('wiki', ['exec', 'astro', '--', 'dev', '--root', 'wiki', '--host', host, '--port', String(targets.wiki.port)], {
       SITE_BASE: '/wiki',
       SITE_URL: `http://localhost:${publicPort}`,
     }),
@@ -83,15 +83,15 @@ for (const signal of ['SIGINT', 'SIGTERM']) {
   process.on(signal, () => shutdown(signal));
 }
 
-function start(label, args, env = {}) {
+function startDevServer(label, args, env = {}) {
   const child = spawn('npm', args, {
     cwd: new URL('..', import.meta.url),
     env: { ...process.env, ...env },
     stdio: ['ignore', 'pipe', 'pipe'],
   });
 
-  child.stdout.on('data', (chunk) => write(label, chunk));
-  child.stderr.on('data', (chunk) => write(label, chunk));
+  child.stdout.on('data', (chunk) => forwardOutput(label, chunk));
+  child.stderr.on('data', (chunk) => forwardOutput(label, chunk));
   child.on('exit', (code) => {
     if (code !== 0 && !shuttingDown) {
       console.error(`[${label}] exited with code ${code}`);
@@ -109,7 +109,7 @@ function start(label, args, env = {}) {
  * an index exists: build the wiki once (with the same /wiki base the dev
  * proxy uses, so result URLs resolve) and copy the index into
  * wiki/public/pagefind/, which `astro dev` then serves. Gitignored; stale is
- * fine for local development — rebuilds refresh it.
+ * fine for local development, since rebuilds refresh it.
  */
 function ensureWikiSearchIndex() {
   const root = new URL('..', import.meta.url).pathname;
@@ -131,7 +131,7 @@ function ensureWikiSearchIndex() {
   console.log('[wiki] dev search index ready');
 }
 
-function targetFor(rawUrl, headers = {}) {
+function resolveTarget(rawUrl, headers = {}) {
   const pathname = new URL(rawUrl, `http://localhost:${publicPort}`).pathname;
 
   if (pathname === targets.blog.prefix || pathname.startsWith(`${targets.blog.prefix}/`)) {
@@ -170,7 +170,7 @@ function isSharedDevPath(pathname) {
   ].some((prefix) => pathname.startsWith(prefix));
 }
 
-function write(label, chunk) {
+function forwardOutput(label, chunk) {
   for (const line of String(chunk).split('\n')) {
     if (line) {
       console.log(`[${label}] ${line}`);

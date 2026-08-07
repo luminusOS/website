@@ -1,12 +1,12 @@
 ---
 /**
- * SpotlightDemo — animated, pure-CSS mockups of Aurora Shell modules.
+ * SpotlightDemo renders animated, pure-CSS mockups of Aurora Shell modules.
  * Each scene imitates GNOME Shell chrome as shipped by Aurora (solid panel,
  * GNOME-style windows and shell menus) and loops a short story of how the
  * feature behaves.
  *
- * Animations only run while the parent `.spot` block is in view
- * (`.spot.in-view`, toggled by AuroraPage's IntersectionObserver) and are
+ * Animations only run while the parent `.showcase` block is in view
+ * (`.showcase.in-view`, toggled by AuroraPage's IntersectionObserver) and are
  * disabled under `prefers-reduced-motion`, where the static base styles
  * double as a representative still frame.
  */
@@ -17,6 +17,26 @@ interface Props {
 }
 
 const { demo, title } = Astro.props;
+// volume: null means the slider is animated by CSS (.sd-slider--game).
+const mixerStreams: { app: string; level: number; volume: number | null }[] = [
+  { app: 'firefox', level: 68, volume: 82 },
+  { app: 'firefox', level: 84, volume: null },
+  { app: 'kdenlive', level: 46, volume: 88 },
+];
+
+const clipboardRows = [
+  { modifier: 'sd-clip-row--new', text: 'sudo dnf upgrade --refresh', pinned: false },
+  { modifier: 'sd-clip-row--k1', text: 'https://luminusos.org/aurora', pinned: true },
+  { modifier: 'sd-clip-row--k2', text: 'maria.souza@example.com', pinned: false },
+  { modifier: 'sd-clip-row--k3', text: '192.0.2.10', pinned: false },
+];
+
+const fileRows = [
+  { name: 52, size: 14 },
+  { name: 68, size: 11 },
+  { name: 41, size: 16 },
+  { name: 59, size: 12 },
+];
 ---
 
 <div class={`sd sd-${demo}`} role="img" aria-label={title}>
@@ -24,7 +44,7 @@ const { demo, title } = Astro.props;
 
   <header class="sd-panel">
     <span class="sd-panel-left">
-      <svg viewBox="-0.3 -0.3 567.4 567.4" class="sd-ic"><path d="m 153.1551,567.1446 c -32.904,0 -59.6863,-4.1826 -80.3472,-12.6417 C 52.0379,546.0435 35.6403,532.5463 23.5063,514.0117 14.7611,500.8 8.6391,483.8811 5.0321,463.2557 1.5338,442.7249 -0.2154,407.9367 -0.2154,358.8911 V 128.0166 h 116.75 v 268.7992 c 0,40.5862 2.9511,65.7743 8.854,75.4693 5.7943,9.6001 16.1793,14.4474 31.1553,14.4474 12.8069,0 22.1972,-3.5791 28.3014,-10.6793 V 0.2151 h 152.2451 v 451.2816 h 182.5217 c 0,38.5492 0,77.0987 0,115.6479 z M 424.7524,46.0406 h 96.2782 c 25.1257,0 45.6834,20.5574 45.6834,45.6834 v 71.7886 c 0,25.126 -20.5577,45.6834 -45.6834,45.6834 H 379.0689 V 91.724 c 0,-25.126 20.5575,-45.6834 45.6835,-45.6834 z" fill="currentColor" fill-rule="evenodd"/></svg>
+      <svg viewBox="-0.3 -0.3 567.4 567.4" class="sd-ic"><use href="/spotlight-icons.svg#brand" /></svg>
       <span class="sd-ws-pill"><i class="sd-ws-dot sd-ws-dot--bar"></i><i class="sd-ws-dot"></i><i class="sd-ws-dot"></i><i class="sd-ws-dot"></i></span>
     </span>
     {demo === 'clock' ? (
@@ -33,7 +53,7 @@ const { demo, title } = Astro.props;
           <svg viewBox="0 0 16 16" class="sd-clock-sun" fill="currentColor"><use href="/spotlight-icons.svg#gi-sun" /></svg>
           21°
         </span>
-        <span class="sd-clock-time">Aug 4&ensp;8:32 PM</span>
+        <span>Aug 4&ensp;8:32 PM</span>
         <span class="sd-clock-meet">
           <i></i>Standup 10:00
         </span>
@@ -52,7 +72,7 @@ const { demo, title } = Astro.props;
           <span class="sd-tI sd-t1">
             <i class="sd-tray-mini"><img src="/img/demos/steam.png" alt="" /></i>
           </span>
-          <span class="sd-tI sd-t2">
+          <span class="sd-tI">
             <i class="sd-tray-mini"><img src="/img/demos/safeeyes.png" alt="" /></i>
           </span>
           <span class="sd-tI sd-t3">
@@ -97,22 +117,12 @@ const { demo, title } = Astro.props;
           </em>
         </div>
         <div class="sd-win-body">
-          <div class="sd-win-row">
-            <svg viewBox="0 0 16 16" class="sd-win-folder" fill="#62a0ea"><use href="/spotlight-icons.svg#gi-folder" /></svg>
-            <b style="width: 52%"></b><u style="width: 14%"></u>
-          </div>
-          <div class="sd-win-row">
-            <svg viewBox="0 0 16 16" class="sd-win-folder" fill="#62a0ea"><use href="/spotlight-icons.svg#gi-folder" /></svg>
-            <b style="width: 68%"></b><u style="width: 11%"></u>
-          </div>
-          <div class="sd-win-row">
-            <svg viewBox="0 0 16 16" class="sd-win-folder" fill="#62a0ea"><use href="/spotlight-icons.svg#gi-folder" /></svg>
-            <b style="width: 41%"></b><u style="width: 16%"></u>
-          </div>
-          <div class="sd-win-row">
-            <svg viewBox="0 0 16 16" class="sd-win-folder" fill="#62a0ea"><use href="/spotlight-icons.svg#gi-folder" /></svg>
-            <b style="width: 59%"></b><u style="width: 12%"></u>
-          </div>
+          {fileRows.map((row) => (
+            <div class="sd-win-row">
+              <svg viewBox="0 0 16 16" class="sd-win-folder" fill="#62a0ea"><use href="/spotlight-icons.svg#gi-folder" /></svg>
+              <b style={`width: ${row.name}%`}></b><u style={`width: ${row.size}%`}></u>
+            </div>
+          ))}
         </div>
       </div>
 
@@ -129,7 +139,7 @@ const { demo, title } = Astro.props;
         <span class="sd-dock-sep"></span>
         <i class="sd-dock-icon"><img src="/img/demos/removable.svg" alt="" /></i>
         <i class="sd-dock-icon"><img src="/img/demos/trash.svg" alt="" /></i>
-        <i class="sd-dock-icon sd-dock-icon--grid">
+        <i class="sd-dock-icon">
           <svg viewBox="-2 -2 20 20" fill="#f4f4f4"><use href="/spotlight-icons.svg#gi-grid" /></svg>
         </i>
       </div>
@@ -143,40 +153,18 @@ const { demo, title } = Astro.props;
         <span class="sd-clip-typed">lumi</span><span class="sd-clip-caret"></span>
       </div>
       <div class="sd-clip-list">
-        <div class="sd-clip-row sd-clip-row--new">
-          <span class="sd-clip-txt">sudo dnf upgrade --refresh</span>
-          <span class="sd-clip-actions">
-            <i class="sd-clip-act"><svg viewBox="0 0 16 16" fill="currentColor"><use href="/spotlight-icons.svg#gi-pin" /></svg></i>
-            <i class="sd-clip-act"><svg viewBox="0 0 16 16" fill="currentColor"><use href="/spotlight-icons.svg#gi-trash" /></svg></i>
-            <i class="sd-clip-act"><svg viewBox="0 0 16 16" fill="currentColor"><use href="/spotlight-icons.svg#gi-more" /></svg></i>
-          </span>
-        </div>
-        <div class="sd-clip-row sd-clip-row--k1">
-          <span class="sd-clip-txt">https://luminusos.org/aurora</span>
-          <span class="sd-clip-actions">
-            <i class="sd-clip-act sd-clip-act--pin"><svg viewBox="0 0 16 16" fill="currentColor"><use href="/spotlight-icons.svg#gi-pin" /></svg></i>
-            <i class="sd-clip-act"><svg viewBox="0 0 16 16" fill="currentColor"><use href="/spotlight-icons.svg#gi-trash" /></svg></i>
-            <i class="sd-clip-act"><svg viewBox="0 0 16 16" fill="currentColor"><use href="/spotlight-icons.svg#gi-more" /></svg></i>
-          </span>
-        </div>
-        <div class="sd-clip-row sd-clip-row--k2">
-          <span class="sd-clip-txt">maria.souza@example.com</span>
-          <span class="sd-clip-actions">
-            <i class="sd-clip-act"><svg viewBox="0 0 16 16" fill="currentColor"><use href="/spotlight-icons.svg#gi-pin" /></svg></i>
-            <i class="sd-clip-act"><svg viewBox="0 0 16 16" fill="currentColor"><use href="/spotlight-icons.svg#gi-trash" /></svg></i>
-            <i class="sd-clip-act"><svg viewBox="0 0 16 16" fill="currentColor"><use href="/spotlight-icons.svg#gi-more" /></svg></i>
-          </span>
-        </div>
-        <div class="sd-clip-row sd-clip-row--k3">
-          <span class="sd-clip-txt">192.0.2.10</span>
-          <span class="sd-clip-actions">
-            <i class="sd-clip-act"><svg viewBox="0 0 16 16" fill="currentColor"><use href="/spotlight-icons.svg#gi-pin" /></svg></i>
-            <i class="sd-clip-act"><svg viewBox="0 0 16 16" fill="currentColor"><use href="/spotlight-icons.svg#gi-trash" /></svg></i>
-            <i class="sd-clip-act"><svg viewBox="0 0 16 16" fill="currentColor"><use href="/spotlight-icons.svg#gi-more" /></svg></i>
-          </span>
-        </div>
+        {clipboardRows.map((row) => (
+          <div class={`sd-clip-row ${row.modifier}`}>
+            <span class="sd-clip-txt">{row.text}</span>
+            <span class="sd-clip-actions">
+              <i class={row.pinned ? 'sd-clip-act sd-clip-act--pin' : 'sd-clip-act'}><svg viewBox="0 0 16 16" fill="currentColor"><use href="/spotlight-icons.svg#gi-pin" /></svg></i>
+              <i class="sd-clip-act"><svg viewBox="0 0 16 16" fill="currentColor"><use href="/spotlight-icons.svg#gi-trash" /></svg></i>
+              <i class="sd-clip-act"><svg viewBox="0 0 16 16" fill="currentColor"><use href="/spotlight-icons.svg#gi-more" /></svg></i>
+            </span>
+          </div>
+        ))}
         <div class="sd-clip-row">
-          <span class="sd-clip-txt">Rua Exemplo, 123 — Cidade</span>
+          <span class="sd-clip-txt">Rua Exemplo, 123 - Cidade</span>
         </div>
       </div>
       <i class="sd-scrollbar" style="--sb: 34%"></i>
@@ -200,38 +188,22 @@ const { demo, title } = Astro.props;
         </div>
 
         <div class="sd-mix-streams">
-          <div class="sd-mix-stream">
-            <div class="sd-mix-name">
-              <i class="sd-mix-app"><img src="/img/demos/firefox.png" alt="" /></i>
-              <i class="sd-mix-bar" style="width: 68%"></i>
+          {mixerStreams.map((stream) => (
+            <div class="sd-mix-stream">
+              <div class="sd-mix-name">
+                <i class="sd-mix-app"><img src={`/img/demos/${stream.app}.png`} alt="" /></i>
+                <i class="sd-mix-bar" style={`width: ${stream.level}%`}></i>
+              </div>
+              <div class="sd-mix-sliderow">
+                <svg viewBox="0 0 16 16" class="sd-mix-ic" fill="currentColor"><use href="/spotlight-icons.svg#gi-volume" /></svg>
+                {stream.volume === null ? (
+                  <span class="sd-slider sd-slider--game"><i class="sd-slider-fill"></i><i class="sd-slider-knob"></i></span>
+                ) : (
+                  <span class="sd-slider"><i class="sd-slider-fill" style={`width: ${stream.volume}%`}></i><i class="sd-slider-knob" style={`left: ${stream.volume}%`}></i></span>
+                )}
+              </div>
             </div>
-            <div class="sd-mix-sliderow">
-              <svg viewBox="0 0 16 16" class="sd-mix-ic" fill="currentColor"><use href="/spotlight-icons.svg#gi-volume" /></svg>
-              <span class="sd-slider"><i class="sd-slider-fill" style="width: 82%"></i><i class="sd-slider-knob" style="left: 82%"></i></span>
-            </div>
-          </div>
-
-          <div class="sd-mix-stream">
-            <div class="sd-mix-name">
-              <i class="sd-mix-app"><img src="/img/demos/firefox.png" alt="" /></i>
-              <i class="sd-mix-bar" style="width: 84%"></i>
-            </div>
-            <div class="sd-mix-sliderow">
-              <svg viewBox="0 0 16 16" class="sd-mix-ic" fill="currentColor"><use href="/spotlight-icons.svg#gi-volume" /></svg>
-              <span class="sd-slider sd-slider--game"><i class="sd-slider-fill"></i><i class="sd-slider-knob"></i></span>
-            </div>
-          </div>
-
-          <div class="sd-mix-stream">
-            <div class="sd-mix-name">
-              <i class="sd-mix-app"><img src="/img/demos/kdenlive.png" alt="" /></i>
-              <i class="sd-mix-bar" style="width: 46%"></i>
-            </div>
-            <div class="sd-mix-sliderow">
-              <svg viewBox="0 0 16 16" class="sd-mix-ic" fill="currentColor"><use href="/spotlight-icons.svg#gi-volume" /></svg>
-              <span class="sd-slider"><i class="sd-slider-fill" style="width: 88%"></i><i class="sd-slider-knob" style="left: 88%"></i></span>
-            </div>
-          </div>
+          ))}
         </div>
         <i class="sd-scrollbar" style="--sb: 22%"></i>
 
@@ -261,16 +233,16 @@ const { demo, title } = Astro.props;
         </span>
       </div>
       <div class="sd-banner-actions">
-        <em class="sd-btn sd-btn--join">Join</em>
+        <em class="sd-btn">Join</em>
         <em class="sd-btn sd-btn--snooze">Snooze</em>
-        <em class="sd-btn sd-btn--dismiss">Dismiss</em>
+        <em class="sd-btn">Dismiss</em>
       </div>
     </div>
   )}
 </div>
 
 <style>
-  /* ---------- shared scene chrome ---------- */
+  /* shared scene chrome */
 
   .sd {
     container-type: inline-size;
@@ -296,7 +268,7 @@ const { demo, title } = Astro.props;
       linear-gradient(158deg, #1d1b24, #141318 55%, #100f14);
   }
 
-  /* Aurora ships a solid-color panel — no blur, no transparency */
+  /* Aurora ships a solid-color panel: no blur, no transparency */
   .sd-panel {
     position: absolute;
     inset-inline: 0;
@@ -319,7 +291,6 @@ const { demo, title } = Astro.props;
     gap: 1.4cqw;
   }
 
-  .sd-ic--logo { color: #f4f4f4; }
 
   .sd-ws-pill {
     display: flex;
@@ -364,7 +335,7 @@ const { demo, title } = Astro.props;
     display: block;
   }
 
-  /* panel items are symbolic — strictly black & white, tray icons aside */
+  /* panel items are symbolic: strictly black & white, tray icons aside */
   .sd-panel .sd-ic { color: #f4f4f4; }
 
   .sd-panel-clip {
@@ -377,7 +348,7 @@ const { demo, title } = Astro.props;
     color: #ffffff;
   }
 
-  /* GNOME-shell-style popup menu — solid, no blur */
+  /* GNOME-shell-style popup menu: solid, no blur */
   .sd-menu {
     position: absolute;
     top: 9.4cqw;
@@ -391,7 +362,6 @@ const { demo, title } = Astro.props;
     z-index: 4;
   }
 
-  /* thin GNOME scrollbar used by scrollable menus */
   .sd-scrollbar {
     position: absolute;
     top: 18%;
@@ -413,7 +383,7 @@ const { demo, title } = Astro.props;
     background: rgba(255, 255, 255, 0.3);
   }
 
-  /* ---------- Dock ---------- */
+  /* Dock */
 
   .sd-dock-window {
     position: absolute;
@@ -429,7 +399,6 @@ const { demo, title } = Astro.props;
     z-index: 2;
   }
 
-  /* GNOME header bar: centered title, single close button on the right */
   .sd-win-titlebar {
     position: relative;
     display: flex;
@@ -508,7 +477,7 @@ const { demo, title } = Astro.props;
     z-index: 3;
   }
 
-  /* GNOME app icons have no backing tile — the glyph stands on its own */
+  /* GNOME app icons have no backing tile, so the glyph stands on its own */
   .sd-dock-icon {
     width: 5.4cqw;
     height: 5.4cqw;
@@ -564,7 +533,7 @@ const { demo, title } = Astro.props;
     64%, 100% { opacity: 0; top: 88%; }
   }
 
-  /* ---------- Clipboard ---------- */
+  /* Clipboard */
 
   .sd-clip-search {
     display: flex;
@@ -713,7 +682,7 @@ const { demo, title } = Astro.props;
     95%, 100% { opacity: 0; transform: translateY(-1.2cqw); max-height: 0; min-height: 0; padding-block: 0; border-width: 0; }
   }
 
-  /* ---------- Volume Mixer ---------- */
+  /* Volume Mixer */
 
   .sd-mix-menu {
     width: 54cqw;
@@ -878,7 +847,7 @@ const { demo, title } = Astro.props;
     80%, 100% { left: 86%; }
   }
 
-  /* ---------- Weather & Meeting Clock ---------- */
+  /* Weather & Meeting Clock */
 
   .sd-panel-clock--rich {
     display: flex;
@@ -1032,7 +1001,7 @@ const { demo, title } = Astro.props;
     to { transform: rotate(360deg); }
   }
 
-  /* ---------- Tray Icons ---------- */
+  /* Tray Icons */
 
   .sd-tray-clip {
     display: flex;
@@ -1129,48 +1098,48 @@ const { demo, title } = Astro.props;
     86%, 100% { box-shadow: none; }
   }
 
-  /* ---------- animation wiring (in-view only) ---------- */
+  /* animation wiring (in-view only) */
 
-  :global(.spot.in-view) .sd-dock-window { animation: sd-dock-window-grow 9s ease-in-out infinite; }
-  :global(.spot.in-view) .sd-dock-bar { animation: sd-dock-hide 9s cubic-bezier(0.6, 0, 0.3, 1) infinite; }
-  :global(.spot.in-view) .sd-dock-cursor { animation: sd-dock-peek 9s ease-in-out infinite; }
+  :global(.showcase.in-view) .sd-dock-window { animation: sd-dock-window-grow 9s ease-in-out infinite; }
+  :global(.showcase.in-view) .sd-dock-bar { animation: sd-dock-hide 9s cubic-bezier(0.6, 0, 0.3, 1) infinite; }
+  :global(.showcase.in-view) .sd-dock-cursor { animation: sd-dock-peek 9s ease-in-out infinite; }
 
-  :global(.spot.in-view) .sd-clip-menu { animation: sd-clip-menu-loop 11s ease-in-out infinite; }
-  :global(.spot.in-view) .sd-clip-typed { animation: sd-clip-typing 11s steps(4, end) infinite; }
-  :global(.spot.in-view) .sd-clip-caret { animation: sd-clip-caret-blink 1.1s steps(1) infinite; }
-  :global(.spot.in-view) .sd-clip-row--k1 { animation: sd-clip-hl-1 11s linear infinite; }
-  :global(.spot.in-view) .sd-clip-row--k2 { animation: sd-clip-hl-2 11s linear infinite; }
-  :global(.spot.in-view) .sd-clip-row--k3 { animation: sd-clip-hl-3 11s linear infinite; }
-  :global(.spot.in-view) .sd-clip-row--k1 .sd-clip-actions { animation: sd-clip-act-1 11s linear infinite; }
-  :global(.spot.in-view) .sd-clip-row--k2 .sd-clip-actions { animation: sd-clip-act-2 11s linear infinite; }
-  :global(.spot.in-view) .sd-clip-row--k3 .sd-clip-actions { animation: sd-clip-act-3 11s linear infinite; }
-  :global(.spot.in-view) .sd-clip-row--new { animation: sd-clip-new 11s ease-out infinite; }
+  :global(.showcase.in-view) .sd-clip-menu { animation: sd-clip-menu-loop 11s ease-in-out infinite; }
+  :global(.showcase.in-view) .sd-clip-typed { animation: sd-clip-typing 11s steps(4, end) infinite; }
+  :global(.showcase.in-view) .sd-clip-caret { animation: sd-clip-caret-blink 1.1s steps(1) infinite; }
+  :global(.showcase.in-view) .sd-clip-row--k1 { animation: sd-clip-hl-1 11s linear infinite; }
+  :global(.showcase.in-view) .sd-clip-row--k2 { animation: sd-clip-hl-2 11s linear infinite; }
+  :global(.showcase.in-view) .sd-clip-row--k3 { animation: sd-clip-hl-3 11s linear infinite; }
+  :global(.showcase.in-view) .sd-clip-row--k1 .sd-clip-actions { animation: sd-clip-act-1 11s linear infinite; }
+  :global(.showcase.in-view) .sd-clip-row--k2 .sd-clip-actions { animation: sd-clip-act-2 11s linear infinite; }
+  :global(.showcase.in-view) .sd-clip-row--k3 .sd-clip-actions { animation: sd-clip-act-3 11s linear infinite; }
+  :global(.showcase.in-view) .sd-clip-row--new { animation: sd-clip-new 11s ease-out infinite; }
 
-  :global(.spot.in-view) .sd-mix-menu { animation: sd-mix-menu-loop 8s ease-in-out infinite; }
-  :global(.spot.in-view) .sd-slider--game .sd-slider-fill { animation: sd-mix-game-fill 8s ease-in-out infinite; }
-  :global(.spot.in-view) .sd-slider--game .sd-slider-knob { animation: sd-mix-game-knob 8s ease-in-out infinite; }
+  :global(.showcase.in-view) .sd-mix-menu { animation: sd-mix-menu-loop 8s ease-in-out infinite; }
+  :global(.showcase.in-view) .sd-slider--game .sd-slider-fill { animation: sd-mix-game-fill 8s ease-in-out infinite; }
+  :global(.showcase.in-view) .sd-slider--game .sd-slider-knob { animation: sd-mix-game-knob 8s ease-in-out infinite; }
 
-  :global(.spot.in-view) .sd-banner { animation: sd-clock-banner 10s cubic-bezier(0.5, 0, 0.2, 1) infinite; }
-  :global(.spot.in-view) .sd-btn--snooze { animation: sd-clock-snooze 10s ease-in-out infinite; }
-  :global(.spot.in-view) .sd-clock-sun { animation: sd-clock-sun-spin 24s linear infinite; }
+  :global(.showcase.in-view) .sd-banner { animation: sd-clock-banner 10s cubic-bezier(0.5, 0, 0.2, 1) infinite; }
+  :global(.showcase.in-view) .sd-btn--snooze { animation: sd-clock-snooze 10s ease-in-out infinite; }
+  :global(.showcase.in-view) .sd-clock-sun { animation: sd-clock-sun-spin 24s linear infinite; }
 
-  :global(.spot.in-view) .sd-t1 { animation: sd-t-i1 12s ease-in-out infinite; }
-  :global(.spot.in-view) .sd-t4 { animation: sd-t-i4 12s ease-in-out infinite; }
-  :global(.spot.in-view) .sd-t5 { animation: sd-t-i5 12s ease-in-out infinite; }
-  :global(.spot.in-view) .sd-tC { animation: sd-t-chev 12s ease-in-out infinite; }
-  :global(.spot.in-view) .sd-tray-chev-ic { animation: sd-t-chev-rot 12s ease-in-out infinite; }
-  :global(.spot.in-view) .sd-tD { animation: sd-t-dup 12s ease-in-out infinite; }
-  :global(.spot.in-view) .sd-t3 .sd-tray-mini { animation: sd-t-i3-pulse 12s ease-in-out infinite; }
+  :global(.showcase.in-view) .sd-t1 { animation: sd-t-i1 12s ease-in-out infinite; }
+  :global(.showcase.in-view) .sd-t4 { animation: sd-t-i4 12s ease-in-out infinite; }
+  :global(.showcase.in-view) .sd-t5 { animation: sd-t-i5 12s ease-in-out infinite; }
+  :global(.showcase.in-view) .sd-tC { animation: sd-t-chev 12s ease-in-out infinite; }
+  :global(.showcase.in-view) .sd-tray-chev-ic { animation: sd-t-chev-rot 12s ease-in-out infinite; }
+  :global(.showcase.in-view) .sd-tD { animation: sd-t-dup 12s ease-in-out infinite; }
+  :global(.showcase.in-view) .sd-t3 .sd-tray-mini { animation: sd-t-i3-pulse 12s ease-in-out infinite; }
 
   @media (prefers-reduced-motion: reduce) {
-    :global(.spot.in-view) .sd * {
+    :global(.showcase.in-view) .sd * {
       animation: none !important;
     }
 
     /* keep a representative still frame instead of mid-animation chaos */
-    :global(.spot.in-view) .sd-tD,
-    :global(.spot.in-view) .sd-dock-cursor,
-    :global(.spot.in-view) .sd-clip-caret {
+    :global(.showcase.in-view) .sd-tD,
+    :global(.showcase.in-view) .sd-dock-cursor,
+    :global(.showcase.in-view) .sd-clip-caret {
       display: none;
     }
   }
