@@ -12,7 +12,7 @@ is an independent module you can toggle on its own, and everything is stored
 in GSettings, so you can configure it from the preferences window or from the
 command line.
 
-The extension exposes 69 settings keys: 21 module switches plus 48 per-module
+The extension exposes 73 settings keys: 22 module switches plus 51 per-module
 options. The full reference lives in [Settings](../settings/).
 
 ## Preferences window
@@ -24,12 +24,13 @@ schema, so you can mix both freely.
 ## The modules
 
 Each module has a `module-*` boolean key. All modules default to `true`
-except Auto Theme Switcher.
+except Auto Theme Switcher and Vela VPN Quick Settings.
 
 | Key | Default | Module |
 | --- | --- | --- |
 | `module-dock` | `true` | Per-monitor dock with auto-hide, intellihide, and edge reveal |
 | `module-aurora-menu` | `true` | Aurora panel menu with recent items and shortcuts |
+| `module-power-menu-avatar` | `true` | Current user's avatar and name in the power menu |
 | `module-volume-mixer` | `true` | Per-app volume sliders in Quick Settings |
 | `module-tray-icons` | `true` | System tray with SNI icons and background apps |
 | `module-weather-clock` | `true` | GNOME Weather next to the panel clock |
@@ -48,7 +49,7 @@ except Auto Theme Switcher.
 | `module-xwayland-indicator` | `true` | X11 badge on XWayland apps in the Alt+Tab switcher |
 | `module-icon-weave` | `true` | Fix missing app icons automatically, in memory only |
 | `module-app-search-tooltip` | `true` | App name tooltips in overview search results |
-| `module-vela-vpn-quick-settings` | `true` | Route VPN Quick Settings through Vela |
+| `module-vela-vpn-quick-settings` | `false` | Route VPN Quick Settings through Vela |
 
 ### Modules without extra settings
 
@@ -58,7 +59,7 @@ These modules only have their `module-*` switch:
 - **Pip On Top** (`module-pip-on-top`): keeps Picture-in-Picture windows above everything.
 - **Focus Launched Windows** (`module-focus-launched-windows`): focuses newly launched windows instead of showing window-ready notifications.
 - **Theme Changer** (`module-theme-changer`): keeps GNOME's color scheme in sync.
-- **Volume Mixer** (`module-volume-mixer`): per-app volume in Quick Settings.
+- **Power Menu Avatar** (`module-power-menu-avatar`): shows the current user's avatar and name in the power menu.
 - **Bluetooth Menu** (`module-bluetooth-menu`): battery levels and animated icons in Bluetooth Quick Settings.
 - **Low Battery Percentage** (`module-low-battery-percentage`): battery percentage in the panel while discharging below 20%, without overriding users who already enabled GNOME's own setting.
 - **Lock Key Indicators** (`module-lock-key-indicators`): Caps Lock and Num Lock indicators in the panel.
@@ -66,7 +67,7 @@ These modules only have their `module-*` switch:
 - **Icon Weave** (`module-icon-weave`): matches untracked windows to their apps in memory; writes no files.
 - **App Search Tooltip** (`module-app-search-tooltip`): app name tooltips in overview search results.
 
-The other ten modules have their own options, documented in
+The other eleven modules have their own options, documented in
 [Settings](../settings/).
 
 ## Beyond the preferences window

@@ -12,8 +12,8 @@ Workstation. Cada recurso é um módulo independente que você liga e desliga
 separadamente, e tudo fica salvo no GSettings, então dá para configurar
 tanto pela janela de preferências quanto pela linha de comando.
 
-A extensão expõe 69 chaves de configuração: 21 interruptores de módulo mais
-48 opções por módulo. A referência completa está em
+A extensão expõe 73 chaves de configuração: 22 interruptores de módulo mais
+51 opções por módulo. A referência completa está em
 [Configurações](../settings/).
 
 ## Janela de preferências
@@ -25,12 +25,13 @@ no mesmo schema, então você pode misturar os dois sem problema.
 ## Os módulos
 
 Cada módulo tem uma chave booleana `module-*`. Todos os módulos vêm ligados
-por padrão, exceto o Auto Theme Switcher.
+por padrão, exceto o Auto Theme Switcher e as Configurações Rápidas da VPN Vela.
 
 | Chave | Padrão | Módulo |
 | --- | --- | --- |
 | `module-dock` | `true` | Dock por monitor com auto-hide, intellihide e revelação na borda |
 | `module-aurora-menu` | `true` | Menu Aurora no painel, com itens recentes e atalhos |
+| `module-power-menu-avatar` | `true` | Avatar e nome do usuário atual no menu de energia |
 | `module-volume-mixer` | `true` | Volume por aplicativo nas Configurações Rápidas |
 | `module-tray-icons` | `true` | Bandeja de sistema com ícones SNI e apps em segundo plano |
 | `module-weather-clock` | `true` | GNOME Clima ao lado do relógio do painel |
@@ -49,7 +50,7 @@ por padrão, exceto o Auto Theme Switcher.
 | `module-xwayland-indicator` | `true` | Selo X11 em apps XWayland no alternador Alt+Tab |
 | `module-icon-weave` | `true` | Conserta ícones de apps ausentes automaticamente, só em memória |
 | `module-app-search-tooltip` | `true` | Tooltip com o nome do app nos resultados de busca |
-| `module-vela-vpn-quick-settings` | `true` | Encaminha a VPN das Configurações Rápidas pelo Vela |
+| `module-vela-vpn-quick-settings` | `false` | Encaminha a VPN das Configurações Rápidas pelo Vela |
 
 ### Módulos sem opções extras
 
@@ -59,7 +60,7 @@ Estes módulos têm apenas o interruptor `module-*`:
 - **Pip On Top** (`module-pip-on-top`): mantém janelas Picture-in-Picture acima de tudo.
 - **Focus Launched Windows** (`module-focus-launched-windows`): foca janelas recém-abertas em vez de mostrar notificações de "janela pronta".
 - **Theme Changer** (`module-theme-changer`): mantém o esquema de cores do GNOME sincronizado.
-- **Volume Mixer** (`module-volume-mixer`): volume por aplicativo nas Configurações Rápidas.
+- **Avatar no Menu de Energia** (`module-power-menu-avatar`): mostra o avatar e o nome do usuário atual no menu de energia.
 - **Bluetooth Menu** (`module-bluetooth-menu`): nível de bateria e ícones animados no painel Bluetooth.
 - **Low Battery Percentage** (`module-low-battery-percentage`): porcentagem de bateria no painel enquanto descarrega abaixo de 20%, sem sobrescrever quem já ativou a opção nativa do GNOME.
 - **Lock Key Indicators** (`module-lock-key-indicators`): indicadores de Caps Lock e Num Lock no painel.
@@ -67,7 +68,7 @@ Estes módulos têm apenas o interruptor `module-*`:
 - **Icon Weave** (`module-icon-weave`): associa janelas sem rastreio aos respectivos apps em memória; não grava nenhum arquivo.
 - **App Search Tooltip** (`module-app-search-tooltip`): tooltips com o nome do app nos resultados de busca da visão geral.
 
-Os outros dez módulos têm opções próprias, documentadas em
+Os outros onze módulos têm opções próprias, documentadas em
 [Configurações](../settings/).
 
 ## Além da janela de preferências

@@ -79,6 +79,8 @@ other modes; if both are off, the default auto-hide applies. If both are on,
 | `dock-show-on-all-monitors` | boolean | `false` | Show the dock on every eligible monitor, not just the primary one |
 | `dock-show-trash` | boolean | `true` | Show a trash icon; click opens the trash, right-click empties it |
 | `dock-show-external-storage` | boolean | `true` | Show removable drives in the dock while connected |
+| `dock-motion-enabled` | boolean | `true` | Animate dock icons on hover and click |
+| `dock-motion-profile` | string | `'subtle'` | Intensity of hover and press effects: `subtle`, `balanced`, or `expressive` |
 
 ## Aurora Menu
 
@@ -107,6 +109,12 @@ Custom items use a `Label | Command` format, one per list entry. When
 gsettings --schemadir "$SCHEMADIR" set "$SCHEMA" aurora-menu-custom-items \
   "['Terminal | ptyxis', 'Files | nautilus']"
 ```
+
+## Volume Mixer
+
+| Key | Type | Default | Effect |
+| --- | --- | --- | --- |
+| `volume-mixer-always-show` | boolean | `false` | Show the Volume Mixer button even when no applications are playing audio |
 
 ## Meeting Clock
 

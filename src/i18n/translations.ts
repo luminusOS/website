@@ -240,13 +240,14 @@ const en = {
       },
     ],
     modulesTitle: 'The modules',
-    modulesSubtitle: 'Nineteen independent modules, in four groups. Toggle each one in preferences.',
+    modulesSubtitle: 'Twenty-two independent modules, in four groups. Toggle each one in preferences.',
     moduleGroups: [
       {
         name: 'Dock & Panel',
         modules: [
           { name: 'Dock', body: 'Replaces the stock dash with a smart per-monitor dock: intellihide, edge reveal, always-visible mode, Trash and drive shortcuts.' },
           { name: 'Aurora Menu', body: 'A panel menu with recent items, useful shortcuts, a configurable icon and a custom command slot.' },
+          { name: 'Power Menu Avatar', body: "Shows the current user's avatar and name in the power menu." },
           { name: 'Volume Mixer', body: 'Per-application volume sliders right in Quick Settings, with fast access to Sound Settings.' },
           { name: 'Low Battery Percentage', body: 'Shows the native battery percentage automatically while discharging below 20%.' },
           { name: 'Lock Key Indicators', body: 'Caps Lock and Num Lock indicators in the top panel.' },
@@ -271,7 +272,9 @@ const en = {
           { name: 'Skip Overview on Login', body: 'Boot straight to your desktop. Skips the overview on startup.' },
           { name: 'PiP On Top', body: 'Keeps Picture-in-Picture windows above everything else, automatically.' },
           { name: 'Focus Launched Windows', body: 'Focuses newly launched windows instead of “is ready” notifications.' },
+          { name: 'Capture Tools', body: "Adds annotation tools and optional local OCR to GNOME's screenshot interface." },
           { name: 'XWayland Indicator', body: 'Adds an X11 badge to XWayland apps in the Alt+Tab switcher.' },
+          { name: 'Vela VPN Quick Settings', body: 'Routes VPN activation in Quick Settings through Vela, with an optional GNOME Shell fallback.' },
         ],
       },
       {
@@ -588,13 +591,14 @@ const ptBr: typeof en = {
       },
     ],
     modulesTitle: 'Os módulos',
-    modulesSubtitle: 'Dezenove módulos independentes, em quatro grupos. Ative cada um nas preferências.',
+    modulesSubtitle: 'Vinte e dois módulos independentes, em quatro grupos. Ative cada um nas preferências.',
     moduleGroups: [
       {
         name: 'Dock e Painel',
         modules: [
           { name: 'Dock', body: 'Substitui o dash padrão por um dock inteligente por monitor: intellihide, revelação na borda, modo sempre visível, Lixeira e atalhos de unidades removíveis.' },
           { name: 'Aurora Menu', body: 'Um menu no painel com itens recentes, atalhos úteis, ícone configurável e um espaço para comando personalizado.' },
+          { name: 'Avatar no Menu de Energia', body: 'Mostra o avatar e o nome do usuário atual no menu de energia.' },
           { name: 'Volume Mixer', body: 'Controle de volume por aplicativo direto nas Configurações Rápidas, com atalho para as Configurações de Som.' },
           { name: 'Low Battery Percentage', body: 'Mostra a porcentagem nativa da bateria automaticamente quando ela descarrega abaixo de 20%.' },
           { name: 'Lock Key Indicators', body: 'Indicadores de Caps Lock e Num Lock no painel superior.' },
@@ -619,7 +623,9 @@ const ptBr: typeof en = {
           { name: 'Skip Overview on Login', body: 'Inicie direto na área de trabalho. Pula a visão geral no boot.' },
           { name: 'PiP On Top', body: 'Mantém janelas Picture-in-Picture acima de tudo, automaticamente.' },
           { name: 'Focus Launched Windows', body: 'Foca janelas recém-abertas em vez de mostrar notificações de “está pronto”.' },
+          { name: 'Ferramentas de Captura', body: 'Adiciona ferramentas de anotação e OCR local opcional à interface de captura de tela do GNOME.' },
           { name: 'XWayland Indicator', body: 'Adiciona um selo X11 aos apps XWayland no alternador Alt+Tab.' },
+          { name: 'Configurações Rápidas da VPN Vela', body: 'Direciona a ativação de VPN nas Configurações Rápidas pelo Vela, com alternativa opcional do GNOME Shell.' },
         ],
       },
       {

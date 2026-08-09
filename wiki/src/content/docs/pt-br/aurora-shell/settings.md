@@ -81,6 +81,8 @@ padrão. Se as duas estiverem ligadas, `dock-always-show` vence.
 | `dock-show-on-all-monitors` | booleano | `false` | Mostra a dock em todos os monitores elegíveis, não só no principal |
 | `dock-show-trash` | booleano | `true` | Mostra o ícone da lixeira; clique abre, botão direito esvazia |
 | `dock-show-external-storage` | booleano | `true` | Mostra drives removíveis na dock enquanto conectados |
+| `dock-motion-enabled` | booleano | `true` | Anima os ícones da dock ao passar o ponteiro e clicar |
+| `dock-motion-profile` | texto | `'subtle'` | Intensidade dos efeitos de interação: `subtle`, `balanced` ou `expressive` |
 
 ## Aurora Menu
 
@@ -109,6 +111,12 @@ sobre o trio `custom-item-*`, que existe para configurações simples.
 gsettings --schemadir "$SCHEMADIR" set "$SCHEMA" aurora-menu-custom-items \
   "['Terminal | ptyxis', 'Arquivos | nautilus']"
 ```
+
+## Mixer de Volume
+
+| Chave | Tipo | Padrão | Efeito |
+| --- | --- | --- | --- |
+| `volume-mixer-always-show` | booleano | `false` | Mostra o botão do Mixer de Volume mesmo quando nenhum aplicativo está reproduzindo áudio |
 
 ## Meeting Clock
 
