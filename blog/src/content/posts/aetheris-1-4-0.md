@@ -3,6 +3,7 @@ title: 'Aetheris 1.4.0 and 1.4.1: faster resource switching, favorites, richer o
 description: Aetheris 1.4.0 improves day-to-day Kubernetes browsing with object caching, favorite objects, better status filters, clearer container resource metrics and cleaner Windows packaging. 1.4.1 follows up with Deployment pod states, Service/Ingress detail, and an internal refactor.
 date: 2026-07-11
 tag: Aetheris
+image: /img/aetheris/aetheris-1-4-0-workspace.png
 ---
 
 [Aetheris 1.4.0](https://github.com/luminusOS/aetheris/releases/tag/v1.4.0)

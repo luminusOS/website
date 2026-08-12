@@ -20,7 +20,7 @@ const homeHref = `${mainSite}${p}` || '/';
 const fallbackVersion = 'v1.2.0';
 ---
 
-<BaseLayout lang={lang} title={page.meta.title} description={page.meta.description} path={path} ogImage="/aetheris-logo.svg">
+<BaseLayout lang={lang} title={page.meta.title} description={page.meta.description} path={path}>
   <Header lang={lang} path={path} />
 
   <main class="product-page product-page--aetheris">
@@ -202,4 +202,3 @@ const fallbackVersion = 'v1.2.0';
 
   applyLatestRelease();
 </script>
-

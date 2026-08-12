@@ -3,6 +3,7 @@ title: 'Aurora Shell 50.11: a more natural dock, better capture tools and strong
 description: Aurora Shell 50.11 polishes dock interactions, adds a user avatar to the power menu, improves screenshot and clipboard behavior, and makes the extension safer to maintain and distribute.
 date: 2026-08-09
 tag: Aurora Shell
+image: /img/aurora-shell/aurora-shell-50-11-power-menu-avatar.png
 ---
 
 [Aurora Shell 50.11](https://github.com/luminusOS/aurora-shell/releases/tag/v50.11)

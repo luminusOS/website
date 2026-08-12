@@ -8,6 +8,7 @@ const posts = defineCollection({
     description: z.string(),
     date: z.coerce.date(),
     tag: z.string().default('News'),
+    image: z.string().optional(),
   }),
 });
 

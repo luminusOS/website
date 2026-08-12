@@ -3,6 +3,7 @@ title: 'Aetheris 1.2.0: faster resource tables and fixed metrics'
 description: Aetheris 1.2.0 replaces the old resource list with a virtualized GtkColumnView and fixes Kubernetes CPU and memory metrics for Pods and Nodes.
 date: 2026-07-05
 tag: Aetheris
+image: /img/aetheris/aetheris-1-2-0-overview.png
 ---
 
 [Aetheris 1.2.0](https://github.com/luminusOS/aetheris/tree/v1.2.0)

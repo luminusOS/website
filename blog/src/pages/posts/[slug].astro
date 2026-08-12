@@ -16,7 +16,13 @@ const { Content } = await render(post);
 
 ---
 
-<BlogLayout title={`${post.data.title} · LuminusOS Blog`} description={post.data.description}>
+<BlogLayout
+  title={`${post.data.title} · LuminusOS Blog`}
+  description={post.data.description}
+  image={post.data.image ? `/og/${post.id}.png` : undefined}
+  type="article"
+  publishedTime={post.data.date}
+>
   <article>
     <header class="post-head">
       <span class="tag mono">{post.data.tag}</span>

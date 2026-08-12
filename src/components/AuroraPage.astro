@@ -29,7 +29,7 @@ const spotlightScene: Record<string, 'dock' | 'clipboard' | 'mixer' | 'clock' | 
 };
 ---
 
-<BaseLayout lang={lang} title={page.meta.title} description={page.meta.description} path={path} ogImage="/aurora-logo.svg">
+<BaseLayout lang={lang} title={page.meta.title} description={page.meta.description} path={path}>
   <Header lang={lang} path={path} />
 
   <main class="product-page product-page--aurora">
@@ -167,4 +167,3 @@ const spotlightScene: Record<string, 'dock' | 'clipboard' | 'mixer' | 'clock' | 
     spots.forEach((spot) => spot.classList.add('in-view'));
   }
 </script>
-

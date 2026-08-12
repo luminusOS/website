@@ -3,6 +3,7 @@ title: 'Aetheris 1.3.0: a clearer workspace, better namespaces and Brazilian Por
 description: Aetheris 1.3.0 improves the cluster workspace with a reworked sidebar, a clearer first-run flow, better namespace management and the first Brazilian Portuguese translation.
 date: 2026-07-06
 tag: Aetheris
+image: /img/aetheris/aetheris-1-3-0-first-run.png
 ---
 
 [Aetheris 1.3.0](https://github.com/luminusOS/aetheris/releases/tag/v1.3.0)

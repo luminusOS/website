@@ -5,10 +5,15 @@ import '../styles/global.css';
 interface Props {
   title: string;
   description: string;
+  image?: string;
+  type?: 'website' | 'article';
+  publishedTime?: Date;
 }
 
-const { title, description } = Astro.props;
+const { title, description, image = '/social-card.png', type = 'website', publishedTime } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
+const assetOrigin = import.meta.env.DEV ? Astro.url.origin : Astro.site;
+const socialImage = new URL(withBase(image), assetOrigin);
 const embedded = basePath === '/blog';
 const mainHref = embedded ? '/' : 'https://luminusos.org';
 const wikiHref = embedded ? '/wiki' : 'https://wiki.luminusos.org';
@@ -57,7 +62,20 @@ const translateLangs = [
     <link rel="canonical" href={canonical} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:type" content="article" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content="LuminusOS Blog" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content={socialImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={title} />
+    <meta property="og:type" content={type} />
+    {type === 'article' && publishedTime && <meta property="article:published_time" content={publishedTime.toISOString()} />}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImage} />
+    <meta name="twitter:image:alt" content={title} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
