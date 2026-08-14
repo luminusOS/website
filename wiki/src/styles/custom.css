@@ -1,23 +1,9 @@
-/*
- * LuminusOS wiki theme. Maps the main site's palette (src/styles/global.css)
- * onto Starlight's CSS variables so the wiki reads as part of luminusos.org
- * instead of the stock Starlight theme. Keep in sync with global.css.
- *
- * Main site tokens:
- *   accent #3584e4 · accent-hover #1c71d8 · accent-sky #62a0ea
- *   dark:  bg #1e1e1e · band-tint #262626 · surface #2a2a2a / #242424 · ink #f4f4f4 · border #3f3f3f
- *   light: bg #ffffff · band-tint #f6f5f4 · surface #ffffff / #f0efed · ink #1d1d1f · border #deddda
- *   radii: sm 6px · base 12px · lg 16px · pill 9999px
- */
-
-/* Dark theme (Starlight default). */
+/* Keep these palette tokens aligned with ../../../src/styles/global.css. */
 :root {
-  /* Accent ramp: the GNOME blue used across luminusos.org. */
   --sl-color-accent-low: #1c71d8;
   --sl-color-accent: #3584e4;
   --sl-color-accent-high: #62a0ea;
 
-  /* Grayscale: main site's dark surfaces and ink. */
   --sl-color-white: #f4f4f4;
   --sl-color-gray-1: #c7c7c7;
   --sl-color-gray-2: #a3a3a3;
@@ -27,14 +13,12 @@
   --sl-color-gray-6: #2a2a2a;
   --sl-color-black: #1e1e1e;
 
-  /* Surfaces. */
   --sl-color-bg: #1e1e1e;
   --sl-color-bg-nav: #1e1e1e;
   --sl-color-bg-sidebar: #262626;
   --sl-color-hairline: #3f3f3f;
 }
 
-/* Light theme. */
 :root[data-theme='light'] {
   --sl-color-accent-low: #dbe9fb;
   --sl-color-accent: #3584e4;
@@ -60,10 +44,7 @@
   color: #ffffff;
 }
 
-/* Sidebar current page: a tinted wash with a solid accent bar instead of
-   Starlight's default full-accent background with inverted text, which
-   reads as blue-on-blue with this palette. Inset shadow, not border, so the
-   label doesn't shift 2px when the bar appears. */
+/* The inset accent avoids shifting the current-page label. */
 .sidebar-pane a[aria-current='page'],
 .sidebar-pane a[aria-current='page']:hover,
 .sidebar-pane a[aria-current='page']:focus {

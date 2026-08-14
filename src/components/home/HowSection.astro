@@ -1,0 +1,149 @@
+---
+import type { Translation } from '../../i18n/translations';
+
+interface Props {
+  t: Translation;
+}
+
+const { t } = Astro.props;
+---
+
+<section class="band band--plain section" id="how">
+  <div class="container how-grid">
+    <div>
+      <div class="section-head">
+        <h2>{t.how.title}</h2>
+        <p>{t.how.subtitle}</p>
+      </div>
+
+      <ol class="steps">
+        {t.how.steps.map((step) => (
+          <li>
+            <span class="step-num mono">{step.num}</span>
+            <div>
+              <h3>{step.title}</h3>
+              <p>{step.body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+
+    <aside class="terminal" aria-label={t.how.terminalTitle}>
+      <div class="terminal-bar">
+        <i></i><i></i><i></i>
+        <span class="mono">{t.how.terminalTitle}</span>
+      </div>
+      <pre class="mono"><code><span class="t-prompt">$</span> bootc status
+<span class="t-ok">●</span> booted&#58;   ghcr.io/luminusos/luminusos-workstation&#58;44
+  rollback&#58; 44.20260528
+
+<span class="t-prompt">$</span> sudo bootc upgrade
+<span class="t-dim">pulling image… layers cached</span>
+<span class="t-dim">staging 44.20260610</span>
+<span class="t-ok">✓</span> queued for next boot (rollback kept)</code></pre>
+    </aside>
+  </div>
+</section>
+
+<style>
+  .how-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: start;
+  }
+
+  .steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 2rem;
+  }
+
+  .steps li {
+    display: flex;
+    gap: 1.3rem;
+  }
+
+  .step-num {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 2rem;
+    height: 2rem;
+    margin-top: 0.1rem;
+    border-radius: var(--radius-pill);
+    background: var(--accent-wash);
+    color: var(--accent);
+    font-size: 0.72rem;
+    font-weight: 600;
+  }
+
+  .steps h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .steps p {
+    color: var(--ink-dim);
+    font-size: 0.97rem;
+  }
+
+  .terminal {
+    position: sticky;
+    top: 5.5rem;
+    color: #e8eefb;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    background: var(--term-bg);
+    overflow: hidden;
+  }
+
+  .terminal-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid var(--term-line);
+    background: var(--term-bar);
+  }
+
+  .terminal-bar i {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: var(--term-dim);
+    opacity: 0.45;
+  }
+
+  .terminal-bar span {
+    margin-left: auto;
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    color: var(--term-dim);
+  }
+
+  .terminal pre {
+    margin: 0;
+    padding: 1.2rem 1.3rem;
+    font-size: 0.8rem;
+    line-height: 1.75;
+    overflow-x: auto;
+  }
+
+  .t-prompt { color: var(--aurora-green); }
+  .t-ok { color: var(--accent-sky); }
+  .t-dim { color: var(--term-dim); }
+
+  @media (max-width: 860px) {
+    .how-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .terminal {
+      position: static;
+    }
+  }
+</style>

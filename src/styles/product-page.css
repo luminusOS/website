@@ -1,12 +1,5 @@
-/*
- * Layout shared by the Aurora Shell and Aetheris pages, which are the same
- * page section for section. Frontmatter-imported CSS is not Astro-scoped, so
- * every selector sits under .product-page: names like .design-grid and
- * .back-home are generic enough to be reinvented elsewhere.
- *
- * --product-accent is the only per-product knob. Anything that genuinely
- * differs lives in the modifier blocks at the bottom.
- */
+/* Shared imports are unscoped, so selectors stay under .product-page.
+   Product-specific differences belong in the modifier blocks. */
 
 .product-page {
   --product-accent: var(--accent);
@@ -217,8 +210,6 @@
   }
 }
 
-/* Aurora Shell */
-
 .product-page--aurora .showcase-list {
   gap: clamp(3.2rem, 7vw, 5rem);
 }
@@ -273,8 +264,6 @@
     transition: none;
   }
 }
-
-/* Aetheris */
 
 .product-page--aetheris .showcase-list {
   gap: clamp(3rem, 6vw, 4.5rem);

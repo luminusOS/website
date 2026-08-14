@@ -2,6 +2,7 @@
 import { defineConfig } from 'astro/config';
 import { fileURLToPath } from 'node:url';
 import { mkdirSync, writeFileSync } from 'node:fs';
+import { watchConfig } from '../scripts/astro-watch.mjs';
 
 const base = process.env.SITE_BASE ?? '';
 const site = process.env.SITE_URL ?? 'https://blog.luminusos.org';
@@ -24,28 +25,13 @@ writeFileSync(
 `,
 );
 process.env.FONTCONFIG_FILE = fontConfigPath;
-const ignoredWatchPaths = [
-  '**/.astro/**',
-  '**/.git/**',
-  '**/.wrangler/**',
-  '**/aurora/dist/**',
-  '**/dist/**',
-  '**/dist-aurora/**',
-  '**/node_modules/**',
-  '**/wiki/**',
-];
-
 export default defineConfig({
   site,
   base,
   trailingSlash: 'ignore',
   vite: {
     server: {
-      watch: {
-        ignored: ignoredWatchPaths,
-        usePolling: true,
-        interval: 300,
-      },
+      watch: watchConfig('**/wiki/**'),
     },
   },
 });

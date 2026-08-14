@@ -3,10 +3,6 @@ export interface Release {
   assets: { name: string; browser_download_url: string }[];
 }
 
-/**
- * Returns null when GitHub is unreachable or rate-limiting, so callers keep
- * whatever the page already rendered instead of blanking it.
- */
 export async function latestRelease(repo: string): Promise<Release | null> {
   try {
     const response = await fetch(`https://api.github.com/repos/${repo}/releases/latest`, {

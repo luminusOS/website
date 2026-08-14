@@ -1,0 +1,368 @@
+---
+import type { Translation } from '../../i18n/translations';
+import { links } from '../../i18n/translations';
+
+interface Props {
+  t: Translation;
+}
+
+const { t } = Astro.props;
+const roadmap = ['education', 'play', 'mobile', 'tablet', 'cast'] as const;
+const editionIcons: Record<'workstation' | (typeof roadmap)[number], string> = {
+  workstation: 'M3 5h18v11H3zM1 19h22v1.5H1z',
+  education: 'M12 4L2 9l10 5 10-5zM6 11.5V16c0 1.7 2.7 3 6 3s6-1.3 6-3v-4.5M22 9v5',
+  play: 'M6 8h12a4 4 0 0 1 4 4v3a3 3 0 0 1-5.4 1.8L15 15H9l-1.6 1.8A3 3 0 0 1 2 15v-3a4 4 0 0 1 4-4z',
+  mobile: 'M8 2h8a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm2 17h4',
+  tablet: 'M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z',
+  cast: 'M2 5h20v12h-8M2 21l5-.02A5 5 0 0 0 2 16zm0-4a9 9 0 0 1 9 9',
+};
+const workstation = t.editions.items.workstation;
+---
+
+<section class="band band--tint section" id="download">
+  <div class="container">
+    <div class="section-head">
+      <h2>{t.editions.title}</h2>
+      <p>{t.editions.subtitle}</p>
+    </div>
+
+    <article class="card edition-featured">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="edition-icon" aria-hidden="true">
+        <path d={editionIcons.workstation} stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+      <div class="edition-featured-body">
+        <span class="chip chip--accent">{t.hero.available}</span>
+        <h3>{workstation.name}</h3>
+        <p class="edition-device mono">{workstation.device}</p>
+        <p class="edition-body">{workstation.body}</p>
+      </div>
+      <div class="download-panel">
+        <div class="download-split">
+          <a class="btn btn-primary btn-lg" data-download href={links.sfLatest} target="_blank" rel="noopener">
+            {t.download.button}
+          </a>
+          <details class="format-menu" data-format-menu>
+            <summary aria-label={t.download.format} title={t.download.format}>
+              <span class="mono" data-format-label>ISO</span>
+              <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </summary>
+            <ul role="list">
+              <li><button type="button" class="mono" data-format="iso" aria-current="true">ISO</button></li>
+              <li><button type="button" class="mono" data-format="qcow2">qcow2</button></li>
+            </ul>
+          </details>
+        </div>
+        <p class="download-version mono" data-release-tag hidden></p>
+        <a class="download-notes" href={links.releasesLatest} target="_blank" rel="noopener">{t.download.notes} ↗</a>
+        <p class="download-note">{t.download.note}</p>
+      </div>
+    </article>
+
+    <h3 class="roadmap-title">{t.editions.roadmapTitle}</h3>
+    <ul class="roadmap" role="list">
+      {roadmap.map((key) => (
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="roadmap-icon" aria-hidden="true">
+            <path d={editionIcons[key]} stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <b>{t.editions.items[key].name}</b>
+          <span class="mono">{t.editions.items[key].device}</span>
+        </li>
+      ))}
+    </ul>
+
+    <p class="all-releases">
+      <a href={links.releasesAll} target="_blank" rel="noopener">{t.editions.viewAll} ↗</a>
+    </p>
+  </div>
+</section>
+
+<script>
+  const button = document.querySelector<HTMLAnchorElement>('[data-download]')!;
+  const tag = document.querySelector('[data-release-tag]')!;
+  const menu = document.querySelector<HTMLDetailsElement>('[data-format-menu]')!;
+  const label = menu.querySelector('[data-format-label]')!;
+  const options = menu.querySelectorAll<HTMLButtonElement>('[data-format]');
+  type Format = 'iso' | 'qcow2';
+  type Release = {
+    version: string;
+    assets: Record<Format, string>;
+  };
+  let release: Release | undefined;
+  let format: Format = 'iso';
+
+  const setHref = () => {
+    if (release) button.href = release.assets[format];
+  };
+
+  options.forEach((option) => {
+    option.addEventListener('click', () => {
+      format = option.dataset.format as Format;
+      label.textContent = option.textContent;
+      options.forEach((other) => other.setAttribute('aria-current', String(other === option)));
+      menu.open = false;
+      setHref();
+    });
+  });
+
+  document.addEventListener('click', (event) => {
+    if (event.target instanceof Node && !menu.contains(event.target)) menu.open = false;
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') menu.open = false;
+  });
+
+  fetch('/api/luminusos-release.json')
+    .then((response) => response.ok ? response.json() as Promise<Release> : undefined)
+    .then((latest) => {
+      if (!latest) return;
+      release = latest;
+      tag.textContent = latest.version;
+      tag.removeAttribute('hidden');
+      setHref();
+    })
+    .catch(() => undefined);
+</script>
+
+<style>
+  .edition-featured {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) minmax(19rem, 22rem);
+    gap: clamp(1.25rem, 3vw, 2.25rem);
+    align-items: center;
+    padding: clamp(1.75rem, 3vw, 2.5rem);
+  }
+
+  .edition-icon {
+    width: 44px;
+    height: 44px;
+    color: var(--accent);
+  }
+
+  .edition-featured-body {
+    display: grid;
+    gap: 0.5rem;
+    justify-items: start;
+  }
+
+  .edition-featured h3 {
+    font-size: 1.6rem;
+  }
+
+  .edition-device {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--ink-faint);
+  }
+
+  .edition-body {
+    color: var(--ink-dim);
+    font-size: 0.975rem;
+    max-width: 46ch;
+  }
+
+  .roadmap-title {
+    margin: clamp(2.5rem, 5vw, 3.5rem) 0 0;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  .roadmap {
+    list-style: none;
+    margin: 1.25rem 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .roadmap li {
+    display: grid;
+    gap: 0.45rem;
+    justify-items: start;
+    align-content: start;
+    padding: 1.25rem 1.1rem;
+    border-inline-start: 1px solid var(--border-color);
+  }
+
+  .roadmap li:first-child {
+    border-inline-start: 0;
+    padding-inline-start: 0;
+  }
+
+  .roadmap-icon {
+    width: 24px;
+    height: 24px;
+    color: var(--ink-faint);
+  }
+
+  .roadmap b {
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  .roadmap span {
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  .all-releases {
+    margin-top: 2.2rem;
+  }
+
+  .all-releases a,
+  .download-notes {
+    color: var(--ink-dim);
+    text-decoration: none;
+  }
+
+  .all-releases a:hover,
+  .download-notes:hover {
+    color: var(--accent);
+  }
+
+  .download-panel {
+    display: grid;
+    gap: 0.9rem;
+    justify-items: start;
+    padding: 1.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    background: var(--surface-2);
+  }
+
+  .download-split {
+    justify-self: stretch;
+    display: flex;
+  }
+
+  .download-split .btn {
+    flex: 1;
+    justify-content: center;
+    border-start-end-radius: 0;
+    border-end-end-radius: 0;
+  }
+
+  .format-menu {
+    position: relative;
+    display: flex;
+  }
+
+  .format-menu summary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding-inline: 0.9rem;
+    list-style: none;
+    cursor: pointer;
+    user-select: none;
+    background: var(--accent);
+    color: var(--accent-ink);
+    border-inline-start: 1px solid rgb(255 255 255 / 0.28);
+    border-radius: var(--radius-pill);
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: background 0.15s ease;
+  }
+
+  .format-menu summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .format-menu summary:hover,
+  .format-menu[open] summary {
+    background: var(--accent-hover);
+  }
+
+  .format-menu[open] summary svg {
+    transform: rotate(180deg);
+  }
+
+  .format-menu ul {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 0.5rem);
+    margin: 0;
+    padding: 0.375rem;
+    list-style: none;
+    min-width: 8rem;
+    display: grid;
+    gap: 0.15rem;
+    background: var(--surface-1);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.06), 0 10px 28px rgb(0 0 0 / 0.14);
+    z-index: 50;
+  }
+
+  .format-menu button {
+    width: 100%;
+    padding: 0.5rem 0.7rem;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--ink-dim);
+    font-family: inherit;
+    font-size: 0.9rem;
+    text-align: start;
+    cursor: pointer;
+  }
+
+  .format-menu button:hover {
+    background: var(--surface-2);
+    color: var(--ink);
+  }
+
+  .format-menu button[aria-current='true'] {
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .download-version {
+    margin-top: -0.35rem;
+    font-size: 0.78rem;
+    color: var(--ink-faint);
+  }
+
+  .download-notes {
+    font-size: 0.9rem;
+  }
+
+  .download-note {
+    font-size: 0.82rem;
+    color: var(--ink-faint);
+  }
+
+  @media (max-width: 860px) {
+    .edition-featured {
+      grid-template-columns: auto 1fr;
+    }
+
+    .edition-featured .download-panel {
+      grid-column: 1 / -1;
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .roadmap {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .roadmap li {
+      border-inline-start: 0;
+      border-top: 1px solid var(--border-color);
+      padding-inline: 0;
+    }
+  }
+</style>

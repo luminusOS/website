@@ -2,6 +2,7 @@
 import { defineConfig } from 'astro/config';
 
 import cloudflare from "@astrojs/cloudflare";
+import { watchConfig } from './scripts/astro-watch.mjs';
 
 // SITE_VARIANT=aurora builds the standalone aurora.luminusos.org variant:
 // the Aurora Shell page becomes the site root and links back to the main
@@ -15,18 +16,6 @@ const outDirs = {
   '': './dist',
   aurora: './aurora/dist',
 };
-const ignoredWatchPaths = [
-  '**/.astro/**',
-  '**/.git/**',
-  '**/.wrangler/**',
-  '**/aurora/dist/**',
-  '**/blog/**',
-  '**/dist/**',
-  '**/dist-aurora/**',
-  '**/node_modules/**',
-  '**/wiki/**',
-];
-
 if (!(variant in sites)) {
   throw new Error(`Unknown SITE_VARIANT "${variant}" (expected aurora)`);
 }
@@ -47,11 +36,7 @@ export default defineConfig({
   adapter: cloudflare(),
   vite: {
     server: {
-      watch: {
-        ignored: ignoredWatchPaths,
-        usePolling: true,
-        interval: 300,
-      },
+      watch: watchConfig('**/blog/**', '**/wiki/**'),
     },
   },
 });

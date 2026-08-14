@@ -26,7 +26,6 @@ const socialImage = new URL(ogImage, assetOrigin);
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="color-scheme" content="dark light" />
     <script is:inline>
-      // Apply the saved (or system) theme before first paint to avoid flashing.
       (() => {
         const saved = localStorage.getItem('theme');
         const theme =

@@ -102,15 +102,8 @@ function startDevServer(label, args, env = {}) {
   return child;
 }
 
-/**
- * Starlight's search needs a Pagefind index at `<base>/pagefind/`, which is
- * normally only produced by `astro build`. The local Search override
- * (wiki/src/components/Search.astro) enables search in dev too, so make sure
- * an index exists: build the wiki once (with the same /wiki base the dev
- * proxy uses, so result URLs resolve) and copy the index into
- * wiki/public/pagefind/, which `astro dev` then serves. Gitignored; stale is
- * fine for local development, since rebuilds refresh it.
- */
+// Starlight only builds the Pagefind index for production, so generate and
+// copy it into wiki/public/pagefind for local search.
 function ensureWikiSearchIndex() {
   const root = new URL('..', import.meta.url).pathname;
   const dest = `${root}wiki/public/pagefind`;

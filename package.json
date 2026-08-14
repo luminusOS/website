@@ -6,6 +6,12 @@
   "scripts": {
     "dev": "node scripts/dev.mjs",
     "dev:site": "astro dev",
+    "lint": "eslint .",
+    "check:site": "astro check --root . --minimumFailingSeverity warning",
+    "check:blog": "astro check --root blog --minimumFailingSeverity warning",
+    "check:wiki": "astro check --root wiki --minimumFailingSeverity warning",
+    "check": "npm run check:site && npm run check:blog && npm run check:wiki",
+    "validate": "npm run lint && npm run check && npm run build",
     "build": "npm run build:site && npm run build:blog:site && npm run build:wiki:site && node scripts/add-embedded-routes.mjs",
     "build:site": "astro build",
     "build:aurora": "SITE_VARIANT=aurora astro build && node scripts/clean-aurora-build.mjs",
@@ -32,6 +38,14 @@
     "simple-icons": "^16.28.0"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@eslint/js": "^9.39.5",
+    "eslint": "^9.39.5",
+    "eslint-plugin-astro": "^1.5.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "globals": "^17.11.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.67.0",
     "wrangler": "^4.107.0"
   }
 }

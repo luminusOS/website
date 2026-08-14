@@ -1,7 +1,6 @@
 :root {
   color-scheme: light;
 
-  /* Brand: one blue, Adwaita */
   --accent: #3584e4;
   --accent-hover: #1c71d8;
   --accent-sky: #62a0ea;
@@ -38,7 +37,6 @@
   --ghost-bg: #ffffff;
   --footer-bg: #ffffff;
 
-  /* Ink and fills used inside the accent band */
   --on-accent: #ffffff;
   --on-accent-dim: rgba(255, 255, 255, 0.84);
   --on-accent-faint: rgba(255, 255, 255, 0.64);
@@ -46,7 +44,6 @@
   --on-accent-surface: rgba(255, 255, 255, 0.1);
   --on-accent-hover: rgba(255, 255, 255, 0.88);
 
-  /* Terminal chrome, dark in both themes */
   --term-bg: #1d1d20;
   --term-bar: #2b2b2f;
   --term-line: #3a3a3f;
@@ -141,9 +138,6 @@ img {
   margin-inline: auto;
 }
 
-/* Full-bleed section bands. A <section> is already full width, so no
-   negative-margin trick is needed. .band--accent re-points the ink tokens
-   once, and every child (.eyebrow, .btn, borders) follows automatically. */
 .band {
   background: var(--band-bg, var(--bg));
   color: var(--ink);

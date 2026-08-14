@@ -149,16 +149,12 @@ const translateLangs = [
     </footer>
 
     <!-- The blog is a separate Astro root, so it cannot import the main site's
-         header code. Keep the theme toggle and hairline in sync with
-         ../../../src/components/Header.astro. -->
+         header component. Menu behavior stays local while shared controls are
+         imported from the main source tree. -->
     <script>
-      document.querySelectorAll('[data-theme-toggle]').forEach((btn) => {
-        btn.addEventListener('click', () => {
-          const next = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
-          document.documentElement.dataset.theme = next;
-          localStorage.setItem('theme', next);
-        });
-      });
+      import { setupSharedHeaderControls } from '../../../src/scripts/header-controls';
+
+      setupSharedHeaderControls();
 
       document.addEventListener('click', (e) => {
         document.querySelectorAll('[data-translate-menu][open]').forEach((menu) => {
@@ -168,10 +164,6 @@ const translateLangs = [
         });
       });
 
-      const header = document.querySelector('.site-header')!;
-      const updateHairline = () => header.classList.toggle('is-scrolled', window.scrollY > 4);
-      updateHairline();
-      window.addEventListener('scroll', updateHairline, { passive: true });
     </script>
   </body>
 </html>

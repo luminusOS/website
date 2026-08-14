@@ -155,13 +155,9 @@ const heartPath =
 </header>
 
 <script>
-  document.querySelectorAll('[data-theme-toggle]').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const next = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
-      document.documentElement.dataset.theme = next;
-      localStorage.setItem('theme', next);
-    });
-  });
+  import { setupSharedHeaderControls } from '../scripts/header-controls';
+
+  setupSharedHeaderControls();
 
   const openMenus = () =>
     document.querySelectorAll('[data-lang-menu][open], [data-nav-menu][open], [data-mobile-menu][open]');
@@ -189,12 +185,6 @@ const heartPath =
     document.body.classList.toggle('has-open-menu', mobileMenu.open);
   });
 
-  // The header shares the page background, so the hairline only appears once
-  // the content has scrolled under it.
-  const header = document.querySelector('.site-header')!;
-  const updateHairline = () => header.classList.toggle('is-scrolled', window.scrollY > 4);
-  updateHairline();
-  window.addEventListener('scroll', updateHairline, { passive: true });
 </script>
 
 <style>
@@ -415,8 +405,6 @@ const heartPath =
   .mobile-menu[open] .icon-burger { display: none; }
   .mobile-menu[open] .icon-close { display: block; }
 
-  /* Starts below the bar: covering it would hide the close button and fight
-     the sticky header's stacking context. */
   .mobile-panel {
     position: fixed;
     inset: var(--header-h) 0 0;
@@ -450,7 +438,6 @@ const heartPath =
     color: var(--ink-faint);
   }
 
-  /* Scoped to the groups so the action buttons keep their pill shape. */
   .mobile-group a {
     display: flex;
     align-items: center;
@@ -470,7 +457,6 @@ const heartPath =
     background: var(--surface-2);
   }
 
-  /* The language pair never needs full rows. */
   .mobile-langs {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -557,8 +543,6 @@ const heartPath =
     line-height: 1;
   }
 
-  /* Once the hamburger appears, language and donate live in the panel so the
-     bar keeps a single primary action instead of five competing controls. */
   @media (max-width: 980px) {
     .main-nav,
     .lang-menu,
@@ -580,7 +564,6 @@ const heartPath =
       min-height: 2.5rem;
     }
 
-    /* The separator divides nav from actions; with the nav gone it is noise. */
     .header-actions::before {
       display: none;
     }

@@ -1,20 +1,10 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import { watchConfig } from '../scripts/astro-watch.mjs';
 
 const base = process.env.SITE_BASE ?? '';
 const site = process.env.SITE_URL ?? 'https://wiki.luminusos.org';
-const ignoredWatchPaths = [
-  '**/.astro/**',
-  '**/.git/**',
-  '**/.wrangler/**',
-  '**/aurora/dist/**',
-  '**/blog/**',
-  '**/dist/**',
-  '**/dist-aurora/**',
-  '**/node_modules/**',
-];
-
 export default defineConfig({
   site,
   base,
@@ -24,11 +14,7 @@ export default defineConfig({
   },
   vite: {
     server: {
-      watch: {
-        ignored: ignoredWatchPaths,
-        usePolling: true,
-        interval: 300,
-      },
+      watch: watchConfig('**/blog/**'),
     },
   },
   integrations: [

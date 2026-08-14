@@ -140,23 +140,26 @@ const fallbackVersion = 'v1.2.0';
   import { latestRelease, type Release } from '../scripts/latest-release';
 
   type Platform = 'linux' | 'mac' | 'windows';
+  interface NavigatorUAData {
+    platform?: string;
+    getHighEntropyValues?: (hints: string[]) => Promise<{ architecture?: string }>;
+  }
 
   const button = document.querySelector<HTMLAnchorElement>('[data-aetheris-download]')!;
   const version = document.querySelector<HTMLElement>('[data-aetheris-version]')!;
+  const uaData = (navigator as Navigator & { userAgentData?: NavigatorUAData }).userAgentData;
 
   function currentPlatform(): Platform {
     const override = new URLSearchParams(location.search).get('platform')?.toLowerCase();
     if (override === 'linux' || override === 'mac' || override === 'windows') return override;
 
-    const fingerprint =
-      `${navigator.userAgentData?.platform ?? navigator.platform} ${navigator.userAgent}`.toLowerCase();
+    const fingerprint = `${uaData?.platform ?? ''} ${navigator.userAgent}`.toLowerCase();
     if (fingerprint.includes('win')) return 'windows';
     if (fingerprint.includes('mac')) return 'mac';
     return 'linux';
   }
 
   async function currentArchitecture(): Promise<string> {
-    const uaData = navigator.userAgentData;
     if (!uaData?.getHighEntropyValues) return '';
     try {
       const { architecture } = await uaData.getHighEntropyValues(['architecture']);

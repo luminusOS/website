@@ -1,16 +1,4 @@
 ---
-/**
- * SpotlightDemo renders animated, pure-CSS mockups of Aurora Shell modules.
- * Each scene imitates GNOME Shell chrome as shipped by Aurora (solid panel,
- * GNOME-style windows and shell menus) and loops a short story of how the
- * feature behaves.
- *
- * Animations only run while the parent `.showcase` block is in view
- * (`.showcase.in-view`, toggled by AuroraPage's IntersectionObserver) and are
- * disabled under `prefers-reduced-motion`, where the static base styles
- * double as a representative still frame.
- */
-
 interface Props {
   demo: 'dock' | 'clipboard' | 'mixer' | 'clock' | 'tray';
   title: string;
@@ -242,8 +230,6 @@ const fileRows = [
 </div>
 
 <style>
-  /* shared scene chrome */
-
   .sd {
     container-type: inline-size;
     position: relative;
@@ -268,7 +254,6 @@ const fileRows = [
       linear-gradient(158deg, #1d1b24, #141318 55%, #100f14);
   }
 
-  /* Aurora ships a solid-color panel: no blur, no transparency */
   .sd-panel {
     position: absolute;
     inset-inline: 0;
@@ -335,7 +320,6 @@ const fileRows = [
     display: block;
   }
 
-  /* panel items are symbolic: strictly black & white, tray icons aside */
   .sd-panel .sd-ic { color: #f4f4f4; }
 
   .sd-panel-clip {
@@ -348,7 +332,6 @@ const fileRows = [
     color: #ffffff;
   }
 
-  /* GNOME-shell-style popup menu: solid, no blur */
   .sd-menu {
     position: absolute;
     top: 9.4cqw;
@@ -382,8 +365,6 @@ const fileRows = [
     border-radius: inherit;
     background: rgba(255, 255, 255, 0.3);
   }
-
-  /* Dock */
 
   .sd-dock-window {
     position: absolute;
@@ -477,7 +458,6 @@ const fileRows = [
     z-index: 3;
   }
 
-  /* GNOME app icons have no backing tile, so the glyph stands on its own */
   .sd-dock-icon {
     width: 5.4cqw;
     height: 5.4cqw;
@@ -532,8 +512,6 @@ const fileRows = [
     58% { opacity: 1; top: 88%; }
     64%, 100% { opacity: 0; top: 88%; }
   }
-
-  /* Clipboard */
 
   .sd-clip-search {
     display: flex;
@@ -681,8 +659,6 @@ const fileRows = [
     78%, 90% { opacity: 1; transform: none; max-height: 9cqw; min-height: 6.4cqw; padding-block: 1.2cqw; border-width: 1px; }
     95%, 100% { opacity: 0; transform: translateY(-1.2cqw); max-height: 0; min-height: 0; padding-block: 0; border-width: 0; }
   }
-
-  /* Volume Mixer */
 
   .sd-mix-menu {
     width: 54cqw;
@@ -847,8 +823,6 @@ const fileRows = [
     80%, 100% { left: 86%; }
   }
 
-  /* Weather & Meeting Clock */
-
   .sd-panel-clock--rich {
     display: flex;
     align-items: center;
@@ -1001,8 +975,6 @@ const fileRows = [
     to { transform: rotate(360deg); }
   }
 
-  /* Tray Icons */
-
   .sd-tray-clip {
     display: flex;
     align-items: center;
@@ -1097,8 +1069,6 @@ const fileRows = [
     73%, 80% { box-shadow: 0 0 0 0.6cqw rgba(46, 194, 126, 0.7); }
     86%, 100% { box-shadow: none; }
   }
-
-  /* animation wiring (in-view only) */
 
   :global(.showcase.in-view) .sd-dock-window { animation: sd-dock-window-grow 9s ease-in-out infinite; }
   :global(.showcase.in-view) .sd-dock-bar { animation: sd-dock-hide 9s cubic-bezier(0.6, 0, 0.3, 1) infinite; }
