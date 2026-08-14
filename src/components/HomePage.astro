@@ -42,6 +42,21 @@ const aurora = auroraHref(langPrefix(lang));
       </div>
     </section>
 
+    <section class="band band--plain section" id="about">
+      <div class="container story-grid">
+        <div class="story-year">
+          <span>{t.story.since}</span>
+          <strong>2020</strong>
+        </div>
+
+        <div class="story-copy">
+          <p class="eyebrow">{t.story.eyebrow}</p>
+          <h2>{t.story.title}</h2>
+          <p>{t.story.body}</p>
+        </div>
+      </div>
+    </section>
+
     <HowSection t={t} />
     <DownloadSection t={t} />
 
@@ -100,6 +115,53 @@ const aurora = auroraHref(langPrefix(lang));
   .pillar p {
     color: var(--ink-dim);
     font-size: 0.975rem;
+  }
+
+  .story-grid {
+    display: grid;
+    grid-template-columns: minmax(12rem, 0.7fr) minmax(0, 1.5fr);
+    gap: clamp(2.5rem, 8vw, 7rem);
+    align-items: center;
+  }
+
+  .story-year {
+    border-left: 3px solid var(--accent);
+    display: grid;
+    gap: 0.25rem;
+    padding-left: clamp(1rem, 2.5vw, 1.75rem);
+  }
+
+  .story-year span {
+    color: var(--ink-dim);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .story-year strong {
+    color: var(--accent);
+    font-size: clamp(3.5rem, 8vw, 6.5rem);
+    font-weight: 800;
+    letter-spacing: -0.07em;
+    line-height: 0.9;
+  }
+
+  .story-copy {
+    display: grid;
+    gap: 1rem;
+    justify-items: start;
+  }
+
+  .story-copy h2 {
+    font-size: clamp(2rem, 4.5vw, 3.25rem);
+    max-width: 18ch;
+  }
+
+  .story-copy p:not(.eyebrow) {
+    color: var(--ink-dim);
+    font-size: 1.05rem;
+    max-width: 62ch;
   }
 
   .teaser-grid {
@@ -165,6 +227,7 @@ const aurora = auroraHref(langPrefix(lang));
 
   @media (max-width: 760px) {
     .pillar-grid,
+    .story-grid,
     .support-row {
       grid-template-columns: 1fr;
     }

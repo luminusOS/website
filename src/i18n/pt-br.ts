@@ -62,6 +62,12 @@ export const ptBr: typeof en = {
       },
     ],
   },
+  story: {
+    eyebrow: 'Nossa história',
+    since: 'Desde',
+    title: 'Feito para acolher quem está chegando ao Linux.',
+    body: 'O LuminusOS nasceu de uma ideia na faculdade, em meados de 2020: dar um primeiro passo seguro a quem nunca havia usado Linux. O projeto reúne um sistema operacional bonito, nativo e guiado pela filosofia KISS com softwares facilitadores que reduzem o atrito da instalação ao uso diário, sem esconder o que torna o Linux poderoso.',
+  },
   how: {
     title: 'Como funciona',
     subtitle:

@@ -60,6 +60,12 @@ export const en = {
       },
     ],
   },
+  story: {
+    eyebrow: 'Our story',
+    since: 'Since',
+    title: 'Made to welcome people into Linux.',
+    body: 'LuminusOS began as a college idea in mid-2020: give people with no previous Linux experience a confident first step. The project brings together a beautiful, native, KISS-focused operating system and helpful software that reduces friction from installation to everyday use, without hiding what makes Linux powerful.',
+  },
   how: {
     title: 'How it works',
     subtitle:
