@@ -5,6 +5,7 @@ import Footer from './Footer.astro';
 import DeviceShowcase from './DeviceShowcase.astro';
 import type { Lang } from '../i18n/translations';
 import { translations, langPrefix, links, repos, auroraHref } from '../i18n/translations';
+import { siDiscord, siMastodon, siOpencollective, siReddit, siX } from 'simple-icons';
 
 interface Props {
   lang: Lang;
@@ -27,6 +28,14 @@ const editionIcons: Record<'workstation' | (typeof roadmap)[number], string> = {
 };
 
 const workstation = t.editions.items.workstation;
+
+const communityLinks = [
+  { key: 'discord', href: links.discord, icon: siDiscord },
+  { key: 'reddit', href: links.reddit, icon: siReddit },
+  { key: 'mastodon', href: links.mastodon, icon: siMastodon },
+  { key: 'x', href: links.x, icon: siX },
+  { key: 'openCollective', href: links.donate, icon: siOpencollective },
+] as const;
 ---
 
 <BaseLayout lang={lang} title={t.meta.title} description={t.meta.description} path="/">
@@ -41,10 +50,18 @@ const workstation = t.editions.items.workstation;
             <h1>{t.hero.title}<em>{t.hero.titleAccent}</em></h1>
             <p class="hero-sub">{t.hero.subtitle}</p>
             <div class="hero-ctas">
-              <a class="btn btn-primary btn-lg" href={links.releasesLatest} target="_blank" rel="noopener">
+              <a class="btn btn-primary btn-lg" href="#download">
                 {t.hero.cta}
               </a>
-              <a class="btn btn-ghost btn-lg" href={aurora}>{t.hero.ctaSecondary}</a>
+              <a class="btn btn-community btn-lg" href="#community">
+                <svg class="community-button-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                  <circle cx="9" cy="8" r="3" />
+                  <circle cx="17" cy="9" r="2.25" />
+                  <path d="M3.5 19c.35-3.45 2.2-5.25 5.5-5.25s5.15 1.8 5.5 5.25M14.25 14.5c.75-.5 1.65-.75 2.75-.75 2.35 0 3.7 1.35 4 4" />
+                </svg>
+                {t.hero.ctaCommunity}
+                <span class="community-button-arrow" aria-hidden="true">→</span>
+              </a>
             </div>
           </div>
 
@@ -121,7 +138,7 @@ const workstation = t.editions.items.workstation;
       </div>
     </section>
 
-    <section class="band band--tint section" id="editions">
+    <section class="band band--tint section" id="download">
       <div class="container">
         <div class="section-head">
           <h2>{t.editions.title}</h2>
@@ -138,9 +155,28 @@ const workstation = t.editions.items.workstation;
             <p class="edition-device mono">{workstation.device}</p>
             <p class="edition-body">{workstation.body}</p>
           </div>
-          <a class="btn btn-primary" href={links.releasesLatest} target="_blank" rel="noopener">
-            {t.editions.downloadLatest}
-          </a>
+          <div class="download-panel">
+            <div class="download-split">
+              <a class="btn btn-primary btn-lg" data-download data-repo={repos.images} href={links.sfFiles} target="_blank" rel="noopener">
+                {t.download.button}
+              </a>
+              <details class="format-menu" data-format-menu>
+                <summary aria-label={t.download.format} title={t.download.format}>
+                  <span class="mono" data-format-label>ISO</span>
+                  <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
+                    <path d="m6 9 6 6 6-6" />
+                  </svg>
+                </summary>
+                <ul role="list">
+                  <li><button type="button" class="mono" data-format="iso" aria-current="true">ISO</button></li>
+                  <li><button type="button" class="mono" data-format="qcow2">qcow2</button></li>
+                </ul>
+              </details>
+            </div>
+            <p class="download-version mono" data-release-tag hidden></p>
+            <a class="download-notes" href={links.releasesLatest} target="_blank" rel="noopener">{t.download.notes} ↗</a>
+            <p class="download-note">{t.download.note}</p>
+          </div>
         </article>
 
         <h3 class="roadmap-title">{t.editions.roadmapTitle}</h3>
@@ -176,38 +212,42 @@ const workstation = t.editions.items.workstation;
       </div>
     </section>
 
-    <section class="band band--plain section" id="download">
-      <div class="container download-grid">
-        <div class="download-copy">
-          <h2>{t.download.title}</h2>
-          <p>{t.download.subtitle}</p>
+    <section class="band band--tint section" id="community">
+      <div class="container community-layout">
+        <div class="section-head community-head">
+          <h2>{t.community.title}</h2>
+          <p>{t.community.subtitle}</p>
         </div>
-        <div class="download-panel">
-          <div class="download-split">
-            <a class="btn btn-primary btn-lg" data-download data-repo={repos.images} href={links.sfFiles} target="_blank" rel="noopener">
-              {t.download.button}
-            </a>
-            <details class="format-menu" data-format-menu>
-              <summary aria-label={t.download.format} title={t.download.format}>
-                <span class="mono" data-format-label>ISO</span>
-                <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
-                  <path d="m6 9 6 6 6-6" />
-                </svg>
-              </summary>
-              <ul role="list">
-                <li><button type="button" class="mono" data-format="iso" aria-current="true">ISO</button></li>
-                <li><button type="button" class="mono" data-format="qcow2">qcow2</button></li>
-              </ul>
-            </details>
-          </div>
-          <p class="download-version mono" data-release-tag hidden></p>
-          <a class="download-notes" href={links.releasesLatest} target="_blank" rel="noopener">{t.download.notes} ↗</a>
-          <p class="download-note">{t.download.note}</p>
+
+        <div class="community-grid">
+          {communityLinks.map((community) => {
+            const item = t.community.items[community.key];
+            return (
+              <a
+                class="community-card"
+                href={community.href}
+                target="_blank"
+                rel="noopener"
+                style={`--brand: #${community.icon.hex}`}
+              >
+                <span class="community-logo">
+                  <svg viewBox="0 0 24 24" role="img" aria-label={community.icon.title}>
+                    <path d={community.icon.path} />
+                  </svg>
+                </span>
+                <span class="community-copy">
+                  <strong>{item.label}</strong>
+                  <span>{item.body}</span>
+                </span>
+                <span class="community-arrow" aria-hidden="true">↗</span>
+              </a>
+            );
+          })}
         </div>
       </div>
     </section>
 
-    <section class="band band--tint section" id="support">
+    <section class="band band--plain section" id="support">
       <div class="container support-row">
         <div>
           <h2>{t.support.title}</h2>
@@ -215,6 +255,9 @@ const workstation = t.editions.items.workstation;
         </div>
         <a class="btn btn-donate" href={links.donate} target="_blank" rel="noopener">
           {t.support.button}
+          <svg class="support-heart" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 21s-7.5-4.35-9.5-8.72C.88 8.73 2.74 5 6.5 5A5.45 5.45 0 0 1 12 8.1 5.45 5.45 0 0 1 17.5 5c3.76 0 5.62 3.73 4 7.28C19.5 16.65 12 21 12 21Z" />
+          </svg>
         </a>
       </div>
     </section>
@@ -307,6 +350,36 @@ const workstation = t.editions.items.workstation;
     gap: 0.75rem;
     flex-wrap: wrap;
     margin-top: 2rem;
+  }
+
+  .btn-community {
+    border-color: color-mix(in srgb, var(--accent) 45%, var(--border-color));
+    background: var(--accent-wash);
+    color: var(--accent);
+  }
+
+  .btn-community:hover {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: var(--accent-ink);
+  }
+
+  .community-button-icon {
+    width: 1.15rem;
+    height: 1.15rem;
+    flex-shrink: 0;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .community-button-arrow {
+    margin-inline-start: 0.15rem;
+    transition: transform 0.15s ease;
+  }
+
+  .btn-community:hover .community-button-arrow {
+    transform: translateX(2px);
   }
 
   /* The rail is what makes the hero read asymmetric. The device stage below
@@ -458,7 +531,7 @@ const workstation = t.editions.items.workstation;
 
   .edition-featured {
     display: grid;
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: auto minmax(0, 1fr) minmax(19rem, 22rem);
     gap: clamp(1.25rem, 3vw, 2.25rem);
     align-items: center;
     padding: clamp(1.75rem, 3vw, 2.5rem);
@@ -588,23 +661,6 @@ const workstation = t.editions.items.workstation;
     place-items: center;
   }
 
-  .download-grid {
-    display: grid;
-    grid-template-columns: 1fr minmax(19rem, 22rem);
-    gap: clamp(2rem, 5vw, 4rem);
-    align-items: start;
-  }
-
-  .download-copy h2 {
-    font-size: clamp(2.2rem, 4.5vw, 3rem);
-  }
-
-  .download-copy p {
-    margin-top: 1rem;
-    color: var(--ink-dim);
-    max-width: 44ch;
-  }
-
   .download-panel {
     display: grid;
     gap: 0.9rem;
@@ -725,6 +781,102 @@ const workstation = t.editions.items.workstation;
     color: var(--ink-faint);
   }
 
+  .community-head {
+    grid-column: 2;
+    grid-row: 1;
+    max-width: 34rem;
+    margin-bottom: 0;
+  }
+
+  .community-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(16rem, 0.8fr);
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: center;
+  }
+
+  .community-grid {
+    grid-column: 1;
+    grid-row: 1;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .community-card {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-width: 0;
+    min-height: 4.5rem;
+    padding: 0.8rem 0.9rem;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    background: var(--surface-1);
+    color: var(--ink);
+    text-decoration: none;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+  }
+
+  .community-card:hover {
+    border-color: color-mix(in srgb, var(--brand) 60%, var(--border-color));
+    box-shadow: 0 8px 22px rgb(0 0 0 / 0.08);
+    transform: translateY(-2px);
+  }
+
+  .community-card:last-child {
+    grid-column: span 2;
+  }
+
+  .community-logo {
+    display: grid;
+    width: 2.35rem;
+    height: 2.35rem;
+    flex-shrink: 0;
+    place-items: center;
+    border-radius: 0.7rem;
+    background: var(--brand);
+    box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.08);
+    color: #fff;
+  }
+
+  .community-logo svg {
+    width: 1.2rem;
+    height: 1.2rem;
+    fill: currentColor;
+  }
+
+  .community-copy {
+    display: grid;
+    min-width: 0;
+  }
+
+  .community-copy strong {
+    overflow: hidden;
+    font-size: 0.92rem;
+    letter-spacing: -0.005em;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .community-copy > span {
+    display: none;
+  }
+
+  .community-arrow {
+    margin-inline-start: auto;
+    color: var(--ink-faint);
+    font-size: 0.95rem;
+    transition: color 0.15s ease, transform 0.15s ease;
+  }
+
+  .community-card:hover .community-arrow {
+    color: var(--brand);
+    transform: translate(2px, -2px);
+  }
+
   .support-row {
     display: grid;
     grid-template-columns: 1fr auto;
@@ -740,6 +892,13 @@ const workstation = t.editions.items.workstation;
     margin-top: 0.8rem;
     color: var(--ink-dim);
     max-width: 52ch;
+  }
+
+  .support-heart {
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+    fill: #fff;
   }
 
   @media (max-width: 860px) {
@@ -769,9 +928,9 @@ const workstation = t.editions.items.workstation;
       grid-template-columns: auto 1fr;
     }
 
-    .edition-featured > .btn {
-      grid-column: 2;
-      justify-self: start;
+    .edition-featured .download-panel {
+      grid-column: 1 / -1;
+      width: 100%;
     }
 
     .teaser-grid {
@@ -779,8 +938,19 @@ const workstation = t.editions.items.workstation;
       justify-items: start;
     }
 
-    .download-grid {
+    .community-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .community-layout {
       grid-template-columns: 1fr;
+      align-items: start;
+    }
+
+    .community-head,
+    .community-grid {
+      grid-column: auto;
+      grid-row: auto;
     }
   }
 
@@ -808,6 +978,20 @@ const workstation = t.editions.items.workstation;
   @media (max-width: 560px) {
     .hero-facts {
       grid-auto-flow: row;
+    }
+
+    .community-layout {
+      gap: 1.5rem;
+    }
+  }
+
+  @media (max-width: 420px) {
+    .community-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .community-card:last-child {
+      grid-column: auto;
     }
   }
 </style>

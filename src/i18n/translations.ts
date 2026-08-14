@@ -59,8 +59,8 @@ const en = {
     titleAccent: 'Every screen.',
     subtitle:
       'LuminusOS is the operating system you install and forget. Updates land quietly in the background, and if one ever misbehaves, you just reboot into the previous version. No drama, no terminal rescue missions. Built for your PC today, dreaming of every other screen in your life.',
-    cta: 'Download for PC',
-    ctaSecondary: 'Meet Aurora Shell',
+    cta: 'Download',
+    ctaCommunity: 'Join the community',
     deviceNote: 'Workstation is available today. The other devices show where we are going.',
     soon: 'Soon',
     available: 'Available now',
@@ -121,9 +121,9 @@ const en = {
     terminalTitle: 'under the hood',
   },
   editions: {
-    title: 'One OS, many devices',
+    title: 'Get LuminusOS',
     subtitle:
-      'The same trustworthy core, adapted to each screen. Workstation ships today. The rest is the roadmap, already reserved in our build system and waiting for its turn.',
+      'Download Workstation today. The same trustworthy core is coming to more screens, with every other edition already mapped out on our roadmap.',
     downloadLatest: 'Download',
     roadmapTitle: 'On the roadmap',
     viewAll: 'All releases on GitHub',
@@ -181,6 +181,18 @@ const en = {
     subtitle:
       'LuminusOS is made by volunteers, for everyone. If it makes your life easier, consider fueling the project. Every bit helps us ship the next edition sooner.',
     button: 'Support the project',
+  },
+  community: {
+    title: 'Find your place in the community',
+    subtitle:
+      'Follow the project, ask questions, share what you are building, or help us keep LuminusOS moving forward.',
+    items: {
+      discord: { label: 'Discord', body: 'Chat with the community, ask for help, and exchange ideas.' },
+      reddit: { label: 'Reddit', body: 'Join discussions and share news, guides, and experiences.' },
+      mastodon: { label: 'Mastodon', body: 'Follow project updates across the open social web.' },
+      x: { label: 'X', body: 'Keep up with announcements and the latest project news.' },
+      openCollective: { label: 'Open Collective', body: 'Support LuminusOS and follow how community funds are used.' },
+    },
   },
   footer: {
     tagline: 'A Linux that just works, everywhere.',
@@ -410,8 +422,8 @@ const ptBr: typeof en = {
     titleAccent: 'Todas as telas.',
     subtitle:
       'LuminusOS é aquele sistema que você instala e esquece. As atualizações chegam quietinhas em segundo plano, e se alguma aprontar, é só reiniciar e voltar para a versão anterior. Sem drama, sem missão de resgate no terminal. Feito para o seu PC hoje, sonhando com todas as outras telas da sua vida.',
-    cta: 'Baixar para PC',
-    ctaSecondary: 'Conheça o Aurora Shell',
+    cta: 'Baixar',
+    ctaCommunity: 'Entrar na comunidade',
     deviceNote: 'A edição Workstation já está disponível. Os outros aparelhos mostram para onde estamos indo.',
     soon: 'Em breve',
     available: 'Disponível agora',
@@ -472,9 +484,9 @@ const ptBr: typeof en = {
     terminalTitle: 'por baixo do capô',
   },
   editions: {
-    title: 'Um SO, vários aparelhos',
+    title: 'Baixe o LuminusOS',
     subtitle:
-      'O mesmo núcleo confiável, adaptado para cada tela. A Workstation já existe hoje. O resto é o roadmap, já reservado no nosso sistema de build esperando a vez.',
+      'Baixe a Workstation hoje. O mesmo núcleo confiável está chegando a mais telas, com todas as outras edições já planejadas no nosso roadmap.',
     downloadLatest: 'Baixar',
     roadmapTitle: 'No roadmap',
     viewAll: 'Todas as versões no GitHub',
@@ -532,6 +544,18 @@ const ptBr: typeof en = {
     subtitle:
       'O LuminusOS é feito por voluntários, para todo mundo. Se ele facilita a sua vida, considere dar um combustível para o projeto. Cada ajuda nos aproxima da próxima edição.',
     button: 'Apoiar o projeto',
+  },
+  community: {
+    title: 'Encontre seu espaço na comunidade',
+    subtitle:
+      'Acompanhe o projeto, tire dúvidas, compartilhe o que você está construindo ou ajude o LuminusOS a seguir em frente.',
+    items: {
+      discord: { label: 'Discord', body: 'Converse com a comunidade, peça ajuda e troque ideias.' },
+      reddit: { label: 'Reddit', body: 'Participe das discussões e compartilhe notícias, guias e experiências.' },
+      mastodon: { label: 'Mastodon', body: 'Acompanhe as novidades do projeto na rede social aberta.' },
+      x: { label: 'X', body: 'Fique por dentro dos anúncios e das últimas notícias do projeto.' },
+      openCollective: { label: 'Open Collective', body: 'Apoie o LuminusOS e acompanhe o uso dos recursos da comunidade.' },
+    },
   },
   footer: {
     tagline: 'Um Linux que simplesmente funciona, em qualquer tela.',
@@ -743,6 +767,9 @@ export const links = {
   sfFiles: 'https://sourceforge.net/projects/luminusos/files/',
   org: 'https://github.com/luminusOS',
   discord: 'https://discord.gg/eVmXsqkvkw',
+  reddit: 'https://www.reddit.com/r/LuminusOS/',
+  mastodon: 'https://floss.social/@luminusOS',
+  x: 'https://x.com/@luminusOS',
   auroraRepo: 'https://github.com/luminusOS/aurora-shell',
   aetherisReleases: 'https://github.com/luminusOS/aetheris/releases',
   auroraEgo: 'https://extensions.gnome.org/extension/9389/aurora-shell/',
