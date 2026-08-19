@@ -160,6 +160,7 @@ export const ptBr: typeof en = {
       'Acompanhe o projeto, tire dúvidas, compartilhe o que você está construindo ou ajude o LuminusOS a seguir em frente.',
     items: {
       discord: { label: 'Discord' },
+      matrix: { label: 'Matrix' },
       reddit: { label: 'Reddit' },
       mastodon: { label: 'Mastodon' },
       x: { label: 'X' },

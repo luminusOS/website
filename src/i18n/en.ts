@@ -158,6 +158,7 @@ export const en = {
       'Follow the project, ask questions, share what you are building, or help us keep LuminusOS moving forward.',
     items: {
       discord: { label: 'Discord' },
+      matrix: { label: 'Matrix' },
       reddit: { label: 'Reddit' },
       mastodon: { label: 'Mastodon' },
       x: { label: 'X' },

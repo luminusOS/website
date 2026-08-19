@@ -45,6 +45,7 @@ export const links = {
   sfLatest: 'https://sourceforge.net/projects/luminusos/files/latest/download',
   org: 'https://github.com/luminusOS',
   discord: 'https://discord.gg/eVmXsqkvkw',
+  matrix: 'https://matrix.to/#/%23luminusos:matrix.org',
   reddit: 'https://www.reddit.com/r/LuminusOS/',
   mastodon: 'https://mastodon.social/@luminusos',
   x: 'https://x.com/LuminusOS',

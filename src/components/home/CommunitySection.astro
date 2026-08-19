@@ -1,5 +1,5 @@
 ---
-import { siDiscord, siMastodon, siOpencollective, siReddit, siX } from 'simple-icons';
+import { siDiscord, siMastodon, siMatrix, siOpencollective, siReddit, siX } from 'simple-icons';
 import type { Translation } from '../../i18n/translations';
 import { links } from '../../i18n/translations';
 
@@ -10,6 +10,7 @@ interface Props {
 const { t } = Astro.props;
 const communities = [
   { key: 'discord', href: links.discord, icon: siDiscord },
+  { key: 'matrix', href: links.matrix, icon: siMatrix },
   { key: 'reddit', href: links.reddit, icon: siReddit },
   { key: 'mastodon', href: links.mastodon, icon: siMastodon },
   { key: 'x', href: links.x, icon: siX },
@@ -97,10 +98,6 @@ const communities = [
     transform: translateY(-2px);
   }
 
-  .community-card:last-child {
-    grid-column: span 2;
-  }
-
   .community-logo {
     display: grid;
     width: 2.35rem;
@@ -172,8 +169,5 @@ const communities = [
       grid-template-columns: 1fr;
     }
 
-    .community-card:last-child {
-      grid-column: auto;
-    }
   }
 </style>
