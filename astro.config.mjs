@@ -21,7 +21,8 @@ if (!(variant in sites)) {
 }
 
 export default defineConfig({
-  site: sites[/** @type {keyof typeof sites} */ (variant)],
+  site: process.env.SITE_URL ?? sites[/** @type {keyof typeof sites} */ (variant)],
+  base: process.env.SITE_BASE ?? '',
   outDir: outDirs[/** @type {keyof typeof outDirs} */ (variant)],
   trailingSlash: 'ignore',
 

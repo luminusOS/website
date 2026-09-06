@@ -37,6 +37,19 @@ npm run build    # static output in dist/, including /blog and /wiki
 npm run preview  # serve dist/ locally
 ```
 
+## GitHub Pages fallback
+
+Cloudflare remains the primary host. GitHub Actions publishes a static fallback at
+https://luminusos.github.io/website/ on every push to `main` (or manual workflow run).
+In repository **Settings → Pages → Build and deployment**, keep **Source** set to
+**GitHub Actions**. Publishing the source branch invokes Jekyll, which cannot build Astro.
+
+Run `npm run build:pages` to build and check the fallback, including Aurora, blog and
+wiki under `/website/`. The final step fixes legacy root-relative HTML links and
+checks local link/asset targets. Cloudflare worker files are excluded from the Pages
+artifact. Pages has no release API: downloads use SourceForge directly, without the
+live version label or ISO/qcow2 selector. `npm run build` retains the Cloudflare build.
+
 ## Downloads
 
 Download buttons point at

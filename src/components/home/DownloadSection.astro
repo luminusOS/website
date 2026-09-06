@@ -41,7 +41,7 @@ const workstation = t.editions.items.workstation;
           <a class="btn btn-primary btn-lg" data-download href={links.sfLatest} target="_blank" rel="noopener">
             {t.download.button}
           </a>
-          <details class="format-menu" data-format-menu>
+          <details class="format-menu" data-format-menu hidden={Boolean(process.env.SITE_BASE)}>
             <summary aria-label={t.download.format} title={t.download.format}>
               <span class="mono" data-format-label>ISO</span>
               <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
@@ -115,7 +115,7 @@ const workstation = t.editions.items.workstation;
     if (event.key === 'Escape') menu.open = false;
   });
 
-  fetch('/api/luminusos-release.json')
+  if (import.meta.env.BASE_URL === '/') fetch('/api/luminusos-release.json')
     .then((response) => response.ok ? response.json() as Promise<Release> : undefined)
     .then((latest) => {
       if (!latest) return;
@@ -247,6 +247,9 @@ const workstation = t.editions.items.workstation;
   .download-split .btn {
     flex: 1;
     justify-content: center;
+  }
+
+  .download-split .btn:has(+ details:not([hidden])) {
     border-start-end-radius: 0;
     border-end-end-radius: 0;
   }
@@ -254,6 +257,10 @@ const workstation = t.editions.items.workstation;
   .format-menu {
     position: relative;
     display: flex;
+  }
+
+  .format-menu[hidden] {
+    display: none;
   }
 
   .format-menu summary {

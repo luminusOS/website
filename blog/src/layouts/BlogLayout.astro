@@ -14,7 +14,7 @@ const { title, description, image = '/social-card.png', type = 'website', publis
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const assetOrigin = import.meta.env.DEV ? Astro.url.origin : Astro.site;
 const socialImage = new URL(withBase(image), assetOrigin);
-const embedded = basePath === '/blog';
+const embedded = basePath.endsWith('/blog');
 const mainHref = embedded ? '/' : 'https://luminusos.org';
 const wikiHref = embedded ? '/wiki' : 'https://wiki.luminusos.org';
 const auroraHref = embedded ? '/aurora' : 'https://aurora.luminusos.org';

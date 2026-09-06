@@ -17,10 +17,8 @@ export function langPrefix(lang: Lang): string {
   return lang === 'en' ? '' : '/pt-br';
 }
 
-// In dev the blog/wiki/aurora sites are reachable as local paths, but each
-// production site lives on its own subdomain, so built pages must link to
-// the absolute URL.
-const useLocalPaths = import.meta.env.DEV;
+// Dev and the Pages fallback use local paths; Cloudflare uses subdomains.
+const useLocalPaths = import.meta.env.DEV || Boolean(process.env.SITE_BASE);
 
 export function auroraHref(p: string): string {
   if (siteVariant === 'aurora') return p || '/';
