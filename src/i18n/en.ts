@@ -17,6 +17,7 @@ export const en = {
     menu: 'Menu',
     wiki: 'Wiki',
     blog: 'Blog',
+    contribute: 'Get Involved',
     download: 'Download',
     donate: 'Donate',
     themeToggle: 'Toggle light/dark theme',
@@ -164,6 +165,94 @@ export const en = {
       x: { label: 'X' },
       openCollective: { label: 'Open Collective' },
     },
+  },
+  contributePage: {
+    meta: {
+      title: 'Get involved with LuminusOS',
+      description:
+        'Help build LuminusOS by reporting bugs, testing releases, writing code, improving documentation, translating or contributing design work.',
+    },
+    eyebrow: 'Built in the open',
+    title: 'Build LuminusOS with us.',
+    subtitle:
+      'You do not need to be a programmer. A clear bug report, a tested fix, a better translation or a sharper piece of documentation can move the project forward.',
+    browseProjects: 'Browse projects on GitHub',
+    talkToUs: 'Talk to us on Matrix',
+    waysTitle: 'Choose how you want to help',
+    waysSubtitle: 'Start with the work you understand or the part of LuminusOS you already use.',
+    ways: [
+      {
+        title: 'Report a bug',
+        body: 'Search the project issues first. If the bug is new, include the version, steps to reproduce it and what you expected to happen.',
+      },
+      {
+        title: 'Test and verify',
+        body: 'Try releases on real hardware, reproduce reported bugs and share the exact environment and result. Testing is a contribution.',
+      },
+      {
+        title: 'Write code',
+        body: 'Pick one issue or one concrete problem. Read that repository’s guide, build it locally and keep the change focused.',
+      },
+      {
+        title: 'Improve words and design',
+        body: 'Fix documentation, translate interfaces, improve accessibility, refine icons or help make a workflow easier to understand.',
+      },
+    ],
+    stepsTitle: 'From idea to contribution',
+    stepsSubtitle: 'A short path that works across our projects.',
+    steps: [
+      {
+        title: 'Pick a project',
+        body: 'Choose something you use or want to learn. Each repository has its own setup and checks.',
+      },
+      {
+        title: 'Check before building',
+        body: 'Search existing issues and pull requests. For a larger change, open an issue or talk to us on Matrix first.',
+      },
+      {
+        title: 'Solve one problem',
+        body: 'Keep the patch small enough to explain and review. Describe the problem and the user-visible result.',
+      },
+      {
+        title: 'Test what changed',
+        body: 'Run the repository checks and record what you tested. Screenshots help when behavior or appearance changes.',
+      },
+      {
+        title: 'Open the pull request',
+        body: 'Explain the change, include the test evidence and respond to review. Review improves the work; reviewers want your patch to land.',
+      },
+    ],
+    projectsTitle: 'Find the right repository',
+    projectsSubtitle: 'The project guide contains its development setup, architecture and required checks.',
+    projects: {
+      images: {
+        title: 'LuminusOS Images',
+        body: 'System images, editions, package choices and release validation.',
+      },
+      aurora: {
+        title: 'Aurora Shell',
+        body: 'GNOME Shell modules, desktop behavior, accessibility and JavaScript.',
+      },
+      sirius: {
+        title: 'Sirius',
+        body: 'The installer, storage flows, translations and hardware testing.',
+      },
+      aetheris: {
+        title: 'Aetheris',
+        body: 'Kubernetes workflows built with Rust, GTK4 and Libadwaita.',
+      },
+      website: {
+        title: 'Website and docs',
+        body: 'Project pages, release posts, documentation, translations and web accessibility.',
+      },
+    },
+    readGuide: 'Read the contribution guide',
+    openRepository: 'Open the repository',
+    unsureTitle: 'Not sure where to start?',
+    unsureBody:
+      'Tell us what you use and what you would like to improve. We can point you to the right repository or a small first task.',
+    matrix: 'Join Matrix',
+    discord: 'Join Discord',
   },
   footer: {
     tagline: 'A Linux that just works, everywhere.',

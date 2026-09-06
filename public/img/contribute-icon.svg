@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  LuminusOS "Get Involved" icon, following the GNOME HIG app-icon guidelines:
+  128x128 canvas, bold shapes, GNOME palette, no text.
+  Concept: two puzzle pieces joined together — your piece fits into
+  the project, and the project is built from everyone's pieces.
+-->
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="piece-you" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#57e389"/>
+      <stop offset="1" stop-color="#2ec27a"/>
+    </linearGradient>
+    <linearGradient id="piece-project" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3584e4"/>
+      <stop offset="1" stop-color="#1c71d8"/>
+    </linearGradient>
+  </defs>
+
+  <!-- your piece: light blue, socket waiting on the right -->
+  <path d="M 20 40
+           L 34 40
+           A 10 10 0 0 1 54 40
+           L 68 40
+           Q 74 40 74 46
+           L 74 60
+           A 10 10 0 0 0 74 80
+           L 74 94
+           Q 74 100 68 100
+           L 20 100
+           Q 14 100 14 94
+           L 14 46
+           Q 14 40 20 40
+           Z"
+        fill="url(#piece-you)" stroke="#1f8553" stroke-width="3" stroke-linejoin="round"/>
+
+  <!-- the project's piece: brand blue, peg fitting into your socket -->
+  <path d="M 74 46
+           Q 74 40 80 40
+           L 84 40
+           A 10 10 0 0 1 104 40
+           L 108 40
+           Q 114 40 114 46
+           L 114 94
+           Q 114 100 108 100
+           L 80 100
+           Q 74 100 74 94
+           L 74 80
+           A 10 10 0 0 1 74 60
+           L 74 46
+           Z"
+        fill="url(#piece-project)" stroke="#1a5fb4" stroke-width="3" stroke-linejoin="round"/>
+</svg>

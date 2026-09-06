@@ -82,12 +82,22 @@ const aurora = auroraHref(langPrefix(lang));
           <h2>{t.support.title}</h2>
           <p>{t.support.subtitle}</p>
         </div>
-        <a class="btn btn-donate" href={links.donate} target="_blank" rel="noopener">
-          {t.support.button}
-          <svg class="support-heart" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M12 21s-7.5-4.35-9.5-8.72C.88 8.73 2.74 5 6.5 5A5.45 5.45 0 0 1 12 8.1 5.45 5.45 0 0 1 17.5 5c3.76 0 5.62 3.73 4 7.28C19.5 16.65 12 21 12 21Z" />
-          </svg>
-        </a>
+        <div class="support-actions">
+          <a class="btn btn-primary" href={`${langPrefix(lang)}/contribute`}>
+            {t.nav.contribute}
+            <svg class="support-contribute" viewBox="0 0 128 128" aria-hidden="true">
+              <path d="M 20 40 L 34 40 A 10 10 0 0 1 54 40 L 68 40 Q 74 40 74 46 L 74 60 A 10 10 0 0 0 74 80 L 74 94 Q 74 100 68 100 L 20 100 Q 14 100 14 94 L 14 46 Q 14 40 20 40 Z" />
+              <path d="M 74 46 Q 74 40 80 40 L 84 40 A 10 10 0 0 1 104 40 L 108 40 Q 114 40 114 46 L 114 94 Q 114 100 108 100 L 80 100 Q 74 100 74 94 L 74 80 A 10 10 0 0 1 74 60 L 74 46 Z" />
+              <path class="seam" d="M 74 40 L 74 60 A 10 10 0 0 0 74 80 L 74 100" />
+            </svg>
+          </a>
+          <a class="btn btn-donate" href={links.donate} target="_blank" rel="noopener">
+            {t.support.button}
+            <svg class="support-heart" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 21s-7.5-4.35-9.5-8.72C.88 8.73 2.74 5 6.5 5A5.45 5.45 0 0 1 12 8.1 5.45 5.45 0 0 1 17.5 5c3.76 0 5.62 3.73 4 7.28C19.5 16.65 12 21 12 21Z" />
+            </svg>
+          </a>
+        </div>
       </div>
     </section>
   </main>
@@ -209,6 +219,25 @@ const aurora = auroraHref(langPrefix(lang));
     margin-top: 0.8rem;
     color: var(--ink-dim);
     max-width: 52ch;
+  }
+
+  .support-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .support-contribute {
+    width: 1.1rem;
+    height: 1.1rem;
+    flex-shrink: 0;
+    fill: #fff;
+  }
+
+  .support-contribute .seam {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 9px;
   }
 
   .support-heart {

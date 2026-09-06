@@ -20,18 +20,21 @@ const link = {
   aetheris: { href: `${mainSite}${p}/aetheris`, label: t.nav.aetheris },
   wiki: { href: siteHref('/wiki', links.wikiSite), label: t.nav.wiki },
   blog: { href: siteHref('/blog', links.blogSite), label: t.nav.blog },
+  contribute: { href: `${mainSite}${p}/contribute`, label: t.nav.contribute },
 };
 
-// The bar keeps Aurora flat while the panel files it under Products, so both
-// arrangements are written out rather than sliced out of one another.
-const desktopNav = [link.overview, link.how, link.editions, link.aurora];
-const desktopProducts = [link.aetheris];
-const desktopResources = [link.wiki, link.blog];
+const desktopNav = [link.overview, link.how, link.editions];
+const products = [link.aurora, link.aetheris];
+const resources = [link.wiki, link.blog, link.contribute];
+const desktopMenus = [
+  { label: t.nav.products, items: products },
+  { label: t.nav.resources, items: resources },
+];
 
 const mobileGroups = [
   { label: null, items: [link.overview, link.how, link.editions] },
-  { label: t.nav.products, items: [link.aurora, link.aetheris] },
-  { label: t.nav.resources, items: [link.wiki, link.blog] },
+  { label: t.nav.products, items: products },
+  { label: t.nav.resources, items: resources },
 ];
 
 const chevronPath = 'm6 9 6 6 6-6';
@@ -48,20 +51,21 @@ const heartPath =
 
     <nav class="main-nav" aria-label="Main">
       {desktopNav.map((item) => <a href={item.href}>{item.label}</a>)}
-      <details class="nav-menu" data-nav-menu>
-        <summary>
-          {t.nav.products}
-          <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
-            <path d={chevronPath} />
-          </svg>
-        </summary>
-        <ul role="list">
-          {desktopProducts.map((item) => (
-            <li><a href={item.href}>{item.label}</a></li>
-          ))}
-        </ul>
-      </details>
-      {desktopResources.map((item) => <a href={item.href}>{item.label}</a>)}
+      {desktopMenus.map((menu) => (
+        <details class="nav-menu" data-nav-menu>
+          <summary>
+            {menu.label}
+            <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
+              <path d={chevronPath} />
+            </svg>
+          </summary>
+          <ul role="list">
+            {menu.items.map((item) => (
+              <li><a href={item.href}>{item.label}</a></li>
+            ))}
+          </ul>
+        </details>
+      ))}
     </nav>
 
     <div class="header-actions">
@@ -252,6 +256,7 @@ const heartPath =
     font-size: 0.925rem;
     font-weight: 500;
     text-decoration: none;
+    white-space: nowrap;
     cursor: pointer;
     user-select: none;
     transition: background 0.12s ease;

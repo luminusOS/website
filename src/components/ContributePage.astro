@@ -1,0 +1,368 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+import type { Lang } from '../i18n/translations';
+import { siDiscord, siMatrix } from 'simple-icons';
+import { translations, links } from '../i18n/translations';
+
+interface Props {
+  lang: Lang;
+  path?: string;
+}
+
+const { lang, path = '/contribute' } = Astro.props;
+const page = translations[lang].contributePage;
+const projects = [
+  {
+    ...page.projects.images,
+    href: 'https://github.com/luminusOS/images/blob/main/CONTRIBUTING.md',
+    guide: true,
+  },
+  {
+    ...page.projects.aurora,
+    href: 'https://github.com/luminusOS/aurora-shell/blob/main/CONTRIBUTING.md',
+    guide: true,
+  },
+  {
+    ...page.projects.sirius,
+    href: 'https://github.com/luminusOS/sirius/blob/main/CONTRIBUTING.md',
+    guide: true,
+  },
+  {
+    ...page.projects.aetheris,
+    href: 'https://github.com/luminusOS/aetheris/blob/main/CONTRIBUTING.md',
+    guide: true,
+  },
+  {
+    ...page.projects.website,
+    href: 'https://github.com/luminusOS/website',
+    guide: false,
+  },
+];
+
+const wayIcons = [
+  [
+    'M8 2l1.88 1.88',
+    'M14.12 3.88 16 2',
+    'M9 7.13v-1a3.003 3.003 0 1 1 6 0v1',
+    'M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6',
+    'M12 20v-9',
+    'M6.53 9C4.6 8.8 3 7.1 3 5',
+    'M6 13H2',
+    'M3 21c0-2.1 1.7-3.9 3.8-4',
+    'M20.97 5c0 2.1-1.6 3.8-3.5 4',
+    'M22 13h-4',
+    'M17.2 17c2.1.1 3.8 1.9 3.8 4',
+  ],
+  [
+    'M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0',
+    'm8.4 12.4 2.4 2.4 4.8-5.2',
+  ],
+  [
+    'm16 18 6-6-6-6',
+    'm8 6-6 6 6 6',
+  ],
+  [
+    'M12 20h9',
+    'M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z',
+  ],
+];
+---
+
+<BaseLayout lang={lang} title={page.meta.title} description={page.meta.description} path={path}>
+  <Header lang={lang} path={path} />
+
+  <main class="contribute-page">
+    <section class="band band--plain contribute-hero">
+      <div class="container contribute-hero-inner">
+        <img class="contribute-icon" src="/img/contribute-icon.svg" alt="" width="128" height="128" />
+        <div class="contribute-hero-text">
+          <p class="eyebrow">{page.eyebrow}</p>
+          <h1>{page.title}</h1>
+          <p>{page.subtitle}</p>
+          <div class="contribute-actions">
+            <a class="btn btn-primary" href={links.org} target="_blank" rel="noopener">
+              {page.browseProjects} ↗
+            </a>
+            <a class="btn btn-ghost" href={links.matrix} target="_blank" rel="noopener">
+              {page.talkToUs} ↗
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="band band--tint section">
+      <div class="container">
+        <div class="section-head">
+          <h2>{page.waysTitle}</h2>
+          <p>{page.waysSubtitle}</p>
+        </div>
+        <div class="ways-grid">
+          {page.ways.map((way, index) => (
+            <article class="card way-card">
+              <span class="way-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  {wayIcons[index]?.map((d) => <path d={d} />)}
+                </svg>
+              </span>
+              <h3>{way.title}</h3>
+              <p>{way.body}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="band band--plain section">
+      <div class="container">
+        <div class="section-head">
+          <h2>{page.stepsTitle}</h2>
+          <p>{page.stepsSubtitle}</p>
+        </div>
+        <ol class="steps-list">
+          {page.steps.map((step, index) => (
+            <li>
+              <span class="step-number mono" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+              <div>
+                <h3>{step.title}</h3>
+                <p>{step.body}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <section class="band band--tint section">
+      <div class="container">
+        <div class="section-head">
+          <h2>{page.projectsTitle}</h2>
+          <p>{page.projectsSubtitle}</p>
+        </div>
+        <div class="projects-grid">
+          {projects.map((project) => (
+            <a class="card project-card" href={project.href} target="_blank" rel="noopener">
+              <h3>{project.title}</h3>
+              <p>{project.body}</p>
+              <span>{project.guide ? page.readGuide : page.openRepository} ↗</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="band band--accent section">
+      <div class="container contribute-callout">
+        <div>
+          <h2>{page.unsureTitle}</h2>
+          <p>{page.unsureBody}</p>
+        </div>
+        <div class="contribute-actions">
+          <a class="btn btn-primary" href={links.matrix} target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true">
+              <path d={siMatrix.path} />
+            </svg>
+            {page.matrix} ↗
+          </a>
+          <a class="btn btn-ghost" href={links.discord} target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true">
+              <path d={siDiscord.path} />
+            </svg>
+            {page.discord} ↗
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer lang={lang} />
+</BaseLayout>
+
+<style>
+  .contribute-hero {
+    padding-block: clamp(4.5rem, 9vw, 7rem);
+  }
+
+  .contribute-hero-inner {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: clamp(1.75rem, 4vw, 3rem);
+    text-align: start;
+  }
+
+  .contribute-hero-text {
+    display: grid;
+    gap: 1rem;
+    justify-items: start;
+  }
+
+  .contribute-hero .contribute-actions {
+    justify-content: flex-start;
+  }
+
+  .contribute-hero h1 {
+    font-size: clamp(2.75rem, 6.5vw, 4.75rem);
+  }
+
+  .contribute-hero p:not(.eyebrow) {
+    max-width: 46ch;
+    color: var(--ink-dim);
+    font-size: clamp(1.05rem, 1.6vw, 1.2rem);
+  }
+
+  .contribute-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+  }
+
+  .ways-grid,
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .way-card {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.8rem 1rem;
+  }
+
+  .way-card h3 {
+    font-size: 1.35rem;
+    align-self: center;
+  }
+
+  .way-card p {
+    grid-column: 2;
+    color: var(--ink-dim);
+  }
+
+  .way-icon {
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.8rem;
+    background: var(--accent-wash);
+    color: var(--accent);
+  }
+
+  .contribute-icon {
+    width: 8rem;
+    height: 8rem;
+  }
+
+  .steps-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+  }
+
+  .steps-list li {
+    display: grid;
+    grid-template-columns: 3.5rem minmax(0, 1fr);
+    gap: 1rem;
+    padding-block: 1.5rem;
+    border-top: 1px solid var(--border-color);
+  }
+
+  .steps-list li:last-child {
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .step-number {
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .steps-list h3 {
+    margin-bottom: 0.4rem;
+    font-size: 1.3rem;
+  }
+
+  .steps-list p {
+    max-width: 48rem;
+    color: var(--ink-dim);
+  }
+
+  .project-card {
+    display: grid;
+    gap: 0.7rem;
+    text-decoration: none;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+  }
+
+  .project-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .project-card h3 {
+    font-size: 1.3rem;
+  }
+
+  .project-card p {
+    color: var(--ink-dim);
+  }
+
+  .project-card span {
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .contribute-callout {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+
+  .contribute-callout h2 {
+    margin-bottom: 0.75rem;
+    font-size: clamp(2rem, 4vw, 3rem);
+  }
+
+  .contribute-callout p {
+    max-width: 42rem;
+    color: var(--ink-dim);
+  }
+
+  .contribute-callout .contribute-actions {
+    flex: none;
+    margin: 0;
+  }
+
+  @media (max-width: 720px) {
+    .contribute-hero-inner {
+      grid-template-columns: 1fr;
+    }
+
+    .contribute-icon {
+      width: 6rem;
+      height: 6rem;
+    }
+
+    .ways-grid,
+    .projects-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .contribute-callout {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .contribute-callout .contribute-actions {
+      justify-content: flex-start;
+    }
+  }
+</style>

@@ -19,6 +19,7 @@ export const ptBr: typeof en = {
     menu: 'Menu',
     wiki: 'Wiki',
     blog: 'Blog',
+    contribute: 'Participe',
     download: 'Baixar',
     donate: 'Doar',
     themeToggle: 'Alternar tema claro/escuro',
@@ -166,6 +167,94 @@ export const ptBr: typeof en = {
       x: { label: 'X' },
       openCollective: { label: 'Open Collective' },
     },
+  },
+  contributePage: {
+    meta: {
+      title: 'Participe do LuminusOS',
+      description:
+        'Ajude a construir o LuminusOS relatando bugs, testando versões, escrevendo código, melhorando a documentação, traduzindo ou contribuindo com design.',
+    },
+    eyebrow: 'Construído abertamente',
+    title: 'Construa o LuminusOS com a gente.',
+    subtitle:
+      'Você não precisa programar. Um bug bem descrito, uma correção testada, uma tradução melhor ou uma documentação mais clara já fazem o projeto avançar.',
+    browseProjects: 'Ver projetos no GitHub',
+    talkToUs: 'Falar com a gente no Matrix',
+    waysTitle: 'Escolha como você quer ajudar',
+    waysSubtitle: 'Comece pelo trabalho que você conhece ou pela parte do LuminusOS que já usa.',
+    ways: [
+      {
+        title: 'Relate um bug',
+        body: 'Pesquise primeiro nas issues do projeto. Se o bug for novo, informe a versão, como reproduzi-lo e o que deveria ter acontecido.',
+      },
+      {
+        title: 'Teste e confirme',
+        body: 'Experimente versões em hardware real, reproduza bugs relatados e informe o ambiente e o resultado exatos. Testar também é contribuir.',
+      },
+      {
+        title: 'Escreva código',
+        body: 'Escolha uma issue ou um problema concreto. Leia o guia do repositório, compile localmente e mantenha a mudança focada.',
+      },
+      {
+        title: 'Melhore textos e design',
+        body: 'Corrija a documentação, traduza interfaces, melhore a acessibilidade, refine ícones ou deixe um fluxo mais fácil de entender.',
+      },
+    ],
+    stepsTitle: 'Da ideia à contribuição',
+    stepsSubtitle: 'Um caminho curto que funciona em todos os nossos projetos.',
+    steps: [
+      {
+        title: 'Escolha um projeto',
+        body: 'Comece por algo que você usa ou quer aprender. Cada repositório tem sua própria preparação e seus próprios testes.',
+      },
+      {
+        title: 'Confira antes de construir',
+        body: 'Pesquise issues e pull requests existentes. Para mudanças maiores, abra uma issue ou converse com a gente no Matrix antes.',
+      },
+      {
+        title: 'Resolva um problema',
+        body: 'Mantenha o patch pequeno o bastante para explicar e revisar. Descreva o problema e o resultado visível para quem usa.',
+      },
+      {
+        title: 'Teste o que mudou',
+        body: 'Rode as verificações do repositório e registre o que foi testado. Screenshots ajudam quando o comportamento ou a aparência mudam.',
+      },
+      {
+        title: 'Abra o pull request',
+        body: 'Explique a mudança, inclua as evidências dos testes e responda à revisão. A revisão melhora o trabalho; quem revisa quer ver o seu patch aprovado.',
+      },
+    ],
+    projectsTitle: 'Encontre o repositório certo',
+    projectsSubtitle: 'O guia de cada projeto explica a preparação, a arquitetura e as verificações necessárias.',
+    projects: {
+      images: {
+        title: 'Imagens do LuminusOS',
+        body: 'Imagens do sistema, edições, seleção de pacotes e validação de versões.',
+      },
+      aurora: {
+        title: 'Aurora Shell',
+        body: 'Módulos do GNOME Shell, comportamento do desktop, acessibilidade e JavaScript.',
+      },
+      sirius: {
+        title: 'Sirius',
+        body: 'O instalador, fluxos de armazenamento, traduções e testes de hardware.',
+      },
+      aetheris: {
+        title: 'Aetheris',
+        body: 'Fluxos de Kubernetes construídos com Rust, GTK4 e Libadwaita.',
+      },
+      website: {
+        title: 'Site e documentação',
+        body: 'Páginas dos projetos, posts de versões, documentação, traduções e acessibilidade web.',
+      },
+    },
+    readGuide: 'Ler o guia de contribuição',
+    openRepository: 'Abrir o repositório',
+    unsureTitle: 'Não sabe por onde começar?',
+    unsureBody:
+      'Conte o que você usa e o que gostaria de melhorar. Podemos indicar o repositório certo ou uma primeira tarefa pequena.',
+    matrix: 'Entrar no Matrix',
+    discord: 'Entrar no Discord',
   },
   footer: {
     tagline: 'Um Linux que simplesmente funciona, em qualquer tela.',
