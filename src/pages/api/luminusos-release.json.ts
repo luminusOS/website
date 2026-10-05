@@ -49,8 +49,8 @@ function parseReleases(feed: string): Release[] {
   const links = feed.matchAll(/<link>(https:\/\/sourceforge\.net\/projects\/luminusos\/files\/([^/]+)\/([^<]+)\/download)<\/link>/g);
 
   for (const [, url, directory, filename] of links) {
-    const testing = directory.match(/^testing-(\d+\.\d+)$/);
-    const stable = directory.match(/^(\d+\.\d+)$/);
+    const testing = directory.match(/^testing-(\d+\.\d{8}(?:\.\d+)?)$/);
+    const stable = directory.match(/^(\d+\.\d{8}(?:\.\d+)?)$/);
     const buildVersion = testing?.[1] ?? stable?.[1];
     if (!buildVersion) continue;
 
