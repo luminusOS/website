@@ -1,0 +1,415 @@
+---
+interface ShowcaseItem {
+  tag: string;
+  title: string;
+  body: string;
+  video: string;
+  alt: string;
+}
+
+interface Props {
+  items: ShowcaseItem[];
+  label: string;
+  playLabel: string;
+  pauseLabel: string;
+}
+
+const { items, label, playLabel, pauseLabel } = Astro.props;
+const videoBase = '/video/aurora/aurora-';
+---
+
+<div class="tour" data-tour data-play-label={playLabel} data-pause-label={pauseLabel}>
+  <div class="tour-list" role="tablist" aria-orientation="vertical" aria-label={label}>
+    {items.map((item, index) => (
+      <div class="tour-item" role="presentation" data-active={index === 0 ? 'true' : 'false'}>
+        <button
+          type="button"
+          class="tour-tab"
+          role="tab"
+          id={`tour-tab-${item.video}`}
+          aria-controls={`tour-panel-${item.video}`}
+          aria-selected={index === 0 ? 'true' : 'false'}
+          tabindex={index === 0 ? 0 : -1}
+          data-video={item.video}
+        >
+          <span class="tour-tag">{item.tag}</span>
+          <span class="tour-title">{item.title}</span>
+        </button>
+        <div class="tour-more">
+          <div class="tour-more-inner">
+            <p id={`tour-body-${item.video}`}>{item.body}</p>
+            <span class="tour-progress" aria-hidden="true"><i></i></span>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <div class="tour-stage">
+    <div class="tour-frame">
+      {items.map((item, index) => (
+        <div
+          class="tour-panel"
+          role="tabpanel"
+          id={`tour-panel-${item.video}`}
+          aria-labelledby={`tour-tab-${item.video}`}
+          aria-describedby={`tour-body-${item.video}`}
+          hidden={index !== 0}
+        >
+          {/* controls stays in the markup as the no-JS fallback; the script replaces it with the pause button. */}
+          <video
+            muted
+            playsinline
+            controls
+            preload={index === 0 ? 'metadata' : 'none'}
+            poster={`${videoBase}${item.video}.jpg`}
+            aria-label={item.alt}
+            width="840"
+            height="600"
+          >
+            <source src={`${videoBase}${item.video}.webm`} type="video/webm" />
+            <source src={`${videoBase}${item.video}.mp4`} type="video/mp4" />
+          </video>
+        </div>
+      ))}
+    </div>
+    <button type="button" class="tour-toggle" data-tour-toggle hidden>
+      <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" fill="currentColor">
+        <path class="tour-icon-pause" d="M4 3h3v10H4zM9 3h3v10H9z" />
+        <path class="tour-icon-play" d="M4.5 2.8v10.4L13 8z" />
+      </svg>
+      <span data-tour-toggle-label>{pauseLabel}</span>
+    </button>
+  </div>
+</div>
+
+<noscript>
+  <style is:inline>
+    .tour-panel[hidden] { display: block !important; position: static !important; }
+    .tour-frame { aspect-ratio: auto !important; display: grid; gap: 1rem; border: 0 !important; background: none !important; }
+  </style>
+</noscript>
+
+<style>
+  .tour {
+    display: grid;
+    grid-template-columns: minmax(0, 23rem) minmax(0, 1fr);
+    gap: clamp(1.5rem, 4vw, 3rem);
+    align-items: start;
+  }
+
+  .tour-list {
+    display: grid;
+    gap: 0.25rem;
+  }
+
+  .tour-item {
+    position: relative;
+    border: 1px solid transparent;
+    border-radius: var(--radius);
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .tour-item:hover {
+    background: var(--surface-2);
+  }
+
+  .tour-item[data-active='true'] {
+    background: var(--surface-1);
+    border-color: var(--border-color);
+  }
+
+  .tour-tab {
+    all: unset;
+    box-sizing: border-box;
+    display: grid;
+    gap: 0.3rem;
+    width: 100%;
+    padding: 0.95rem 1.1rem;
+    border-radius: var(--radius);
+    cursor: pointer;
+  }
+
+  .tour-tab:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
+  }
+
+  .tour-tag {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-dim);
+  }
+
+  .tour-title {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--ink);
+  }
+
+  .tour-more {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.3s ease;
+  }
+
+  .tour-item[data-active='true'] .tour-more {
+    grid-template-rows: 1fr;
+  }
+
+  /* visibility keeps the collapsed copy out of the accessibility tree and focus order. */
+  .tour-more-inner {
+    overflow: hidden;
+    padding-inline: 1.1rem;
+    visibility: hidden;
+    transition: visibility 0s linear 0.3s;
+  }
+
+  .tour-item[data-active='true'] .tour-more-inner {
+    visibility: visible;
+    transition-delay: 0s;
+  }
+
+  .tour-more p {
+    margin: 0;
+    padding-bottom: 0.9rem;
+    color: var(--ink-dim);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .tour-progress {
+    display: block;
+    height: 2px;
+    margin-bottom: 0.95rem;
+    border-radius: 2px;
+    background: var(--border-color);
+    overflow: hidden;
+  }
+
+  .tour-progress i {
+    display: block;
+    height: 100%;
+    width: calc(var(--progress, 0) * 100%);
+    background: var(--product-accent, var(--accent));
+  }
+
+  .tour-stage {
+    position: relative;
+  }
+
+  .tour-frame {
+    position: relative;
+    aspect-ratio: 7 / 5;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    background: #0d1020;
+  }
+
+  .tour-panel {
+    position: absolute;
+    inset: 0;
+  }
+
+  .tour-panel[hidden] {
+    display: none;
+  }
+
+  .tour-panel video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .tour-toggle {
+    position: absolute;
+    inset-inline-end: 0.75rem;
+    inset-block-end: 0.75rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.4rem 0.8rem;
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    border-radius: var(--radius-pill);
+    background: rgba(13, 16, 32, 0.74);
+    color: #fff;
+    font: inherit;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  .tour-toggle[hidden] {
+    display: none;
+  }
+
+  .tour-toggle:hover {
+    background: rgba(13, 16, 32, 0.92);
+  }
+
+  .tour-toggle:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+  }
+
+  .tour-toggle .tour-icon-play {
+    display: none;
+  }
+
+  .tour-toggle[data-state='paused'] .tour-icon-play {
+    display: inline;
+  }
+
+  .tour-toggle[data-state='paused'] .tour-icon-pause {
+    display: none;
+  }
+
+  @media (max-width: 900px) {
+    .tour {
+      grid-template-columns: 1fr;
+    }
+
+    .tour-stage {
+      order: -1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tour-more,
+    .tour-more-inner,
+    .tour-item {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-tour]');
+
+  if (root) {
+    const tabs = [...root.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+    const panels = [...root.querySelectorAll<HTMLElement>('[role="tabpanel"]')];
+    const videos = panels.map((panel) => panel.querySelector('video')!);
+    const toggle = root.querySelector<HTMLButtonElement>('[data-tour-toggle]')!;
+    const toggleLabel = toggle.querySelector<HTMLElement>('[data-tour-toggle-label]')!;
+    const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    let current = 0;
+    let playing = !motion.matches;
+    let visible = false;
+    let userPicked = false;
+
+    for (const video of videos) {
+      video.controls = false;
+      video.muted = true;
+    }
+    toggle.hidden = false;
+
+    const items = tabs.map((tab) => tab.closest<HTMLElement>('.tour-item')!);
+
+    const setProgress = (index: number, value: number) => {
+      items[index].style.setProperty('--progress', value.toFixed(3));
+    };
+
+    const sync = () => {
+      const video = videos[current];
+      const shouldPlay = playing && visible && !document.hidden;
+      if (shouldPlay) {
+        video.play().catch(() => {});
+      } else {
+        video.pause();
+      }
+      toggle.dataset.state = playing ? 'playing' : 'paused';
+      toggleLabel.textContent = playing ? root.dataset.pauseLabel! : root.dataset.playLabel!;
+    };
+
+    const select = (index: number, options: { focus?: boolean; byUser?: boolean } = {}) => {
+      if (options.byUser) userPicked = true;
+      current = index;
+
+      tabs.forEach((tab, tabIndex) => {
+        const active = tabIndex === index;
+        tab.setAttribute('aria-selected', String(active));
+        tab.tabIndex = active ? 0 : -1;
+        items[tabIndex].dataset.active = String(active);
+        panels[tabIndex].hidden = !active;
+        if (!active) {
+          videos[tabIndex].pause();
+          setProgress(tabIndex, 0);
+        }
+      });
+
+      const video = videos[index];
+      video.loop = userPicked;
+      video.currentTime = 0;
+      video.preload = 'auto';
+      setProgress(index, 0);
+      if (options.focus) tabs[index].focus();
+      sync();
+    };
+
+    videos.forEach((video, index) => {
+      video.addEventListener('timeupdate', () => {
+        if (index !== current || !video.duration) return;
+        setProgress(index, video.currentTime / video.duration);
+      });
+      video.addEventListener('ended', () => {
+        if (index !== current || userPicked) return;
+        select((index + 1) % videos.length);
+      });
+    });
+
+    tabs.forEach((tab, index) => {
+      tab.addEventListener('click', () => select(index, { byUser: true }));
+      tab.addEventListener('keydown', (event) => {
+        const steps: Record<string, number> = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 };
+        let target: number;
+        if (event.key in steps) target = (index + steps[event.key] + tabs.length) % tabs.length;
+        else if (event.key === 'Home') target = 0;
+        else if (event.key === 'End') target = tabs.length - 1;
+        else return;
+        event.preventDefault();
+        select(target, { focus: true, byUser: true });
+      });
+    });
+
+    toggle.addEventListener('click', () => {
+      playing = !playing;
+      sync();
+    });
+
+    motion.addEventListener('change', () => {
+      playing = !motion.matches;
+      sync();
+    });
+
+    document.addEventListener('visibilitychange', sync);
+
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(
+        (entries) => {
+          visible = entries.some((entry) => entry.isIntersecting);
+          sync();
+        },
+        { threshold: 0.4 },
+      ).observe(root);
+    } else {
+      visible = true;
+    }
+
+    document.querySelectorAll<HTMLElement>('[data-tour-open]').forEach((link) => {
+      link.addEventListener('click', () => {
+        const index = tabs.findIndex((tab) => tab.dataset.video === link.dataset.tourOpen);
+        if (index >= 0) select(index, { byUser: true });
+      });
+    });
+
+    sync();
+  }
+</script>

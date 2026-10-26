@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from './Header.astro';
 import Footer from './Footer.astro';
-import SpotlightDemo from './SpotlightDemo.astro';
+import AuroraShowcase from './AuroraShowcase.astro';
 import type { Lang } from '../i18n/translations';
 import '../styles/product-page.css';
 import { translations, langPrefix, links, mainSite, repos } from '../i18n/translations';
@@ -18,15 +18,8 @@ const page = t.auroraPage;
 const p = langPrefix(lang);
 const homeHref = `${mainSite}${p}` || '/';
 
-const fallbackVersion = 'v50.9';
+const fallbackVersion = 'v51.1';
 
-const spotlightScene: Record<string, 'dock' | 'clipboard' | 'mixer' | 'clock' | 'tray'> = {
-  'dock.png': 'dock',
-  'clipboard.png': 'clipboard',
-  'mixer.png': 'mixer',
-  'clock.png': 'clock',
-  'tray-icons.png': 'tray',
-};
 ---
 
 <BaseLayout lang={lang} title={page.meta.title} description={page.meta.description} path={path}>
@@ -55,7 +48,7 @@ const spotlightScene: Record<string, 'dock' | 'clipboard' | 'mixer' | 'clock' | 
             </a>
           </div>
           <p class="product-version mono">
-            {page.version}: <a href={`${links.auroraRepo}/releases/latest`} target="_blank" rel="noopener"><strong data-aurora-version data-repo={repos.aurora}>{fallbackVersion}</strong></a> · GNOME Shell 50 · GPL-3.0
+            {page.version}: <a href={`${links.auroraRepo}/releases/latest`} target="_blank" rel="noopener"><strong data-aurora-version data-repo={repos.aurora}>{fallbackVersion}</strong></a> · GNOME Shell 51 · GPL-3.0
           </p>
         </div>
       </div>
@@ -75,20 +68,12 @@ const spotlightScene: Record<string, 'dock' | 'clipboard' | 'mixer' | 'clock' | 
           <p>{page.spotlightSubtitle}</p>
         </div>
 
-        <div class="showcase-list">
-          {page.spotlights.map((spotlight) => (
-            <article class="showcase" data-spot>
-              <div class="showcase-text">
-                <span class="chip">{spotlight.tag}</span>
-                <h3>{spotlight.title}</h3>
-                <p>{spotlight.body}</p>
-              </div>
-              <div class="showcase-media">
-                <SpotlightDemo demo={spotlightScene[spotlight.file]} title={spotlight.title} />
-              </div>
-            </article>
-          ))}
-        </div>
+        <AuroraShowcase
+          items={page.spotlights}
+          label={page.spotlightTitle}
+          playLabel={page.spotlightPlay}
+          pauseLabel={page.spotlightPause}
+        />
       </div>
     </section>
 
@@ -100,19 +85,27 @@ const spotlightScene: Record<string, 'dock' | 'clipboard' | 'mixer' | 'clock' | 
         </div>
 
         <div class="module-groups">
-          {page.moduleGroups.map((group) => (
-            <div class="module-group">
-              <h3 class="module-group-title">{group.name}</h3>
-              <div class="product-card-grid">
+          {page.moduleGroups.map((group, groupIndex) => (
+            <section class="module-group" aria-labelledby={`module-group-${groupIndex}`}>
+              <header class="module-group-head">
+                <h3 class="module-group-title" id={`module-group-${groupIndex}`}>{group.name}</h3>
+                <span class="module-group-count">{group.modules.length}</span>
+              </header>
+              <ul class="module-list">
                 {group.modules.map((module) => (
-                  <article class="card product-card">
-                    <span class="product-dot" aria-hidden="true"></span>
+                  <li class="module-item">
                     <h4>{module.name}</h4>
                     <p>{module.body}</p>
-                  </article>
+                    {module.demo && (
+                      <a class="module-demo" href="#spotlight" data-tour-open={module.demo} aria-label={`${page.watchDemo}: ${module.name}`}>
+                        <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true" fill="currentColor"><path d="M4.5 2.8v10.4L13 8z" /></svg>
+                        {page.watchDemo}
+                      </a>
+                    )}
+                  </li>
                 ))}
-              </div>
-            </div>
+              </ul>
+            </section>
           ))}
         </div>
       </div>
@@ -149,21 +142,4 @@ const spotlightScene: Record<string, 'dock' | 'clipboard' | 'mixer' | 'clock' | 
   latestRelease(version.dataset.repo!).then((release) => {
     if (release) version.textContent = release.tag_name;
   });
-
-  const spots = document.querySelectorAll('[data-spot]');
-  if ('IntersectionObserver' in window) {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (!entry.isIntersecting) continue;
-          entry.target.classList.add('in-view');
-          observer.unobserve(entry.target);
-        }
-      },
-      { threshold: 0.2 },
-    );
-    spots.forEach((spot) => observer.observe(spot));
-  } else {
-    spots.forEach((spot) => spot.classList.add('in-view'));
-  }
 </script>
