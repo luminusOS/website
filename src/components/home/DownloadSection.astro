@@ -38,10 +38,10 @@ const workstation = t.editions.items.workstation;
       </div>
       <div class="download-panel">
         <div class="download-split">
-          <a class="btn btn-primary btn-lg" data-download href={links.sfLatest} target="_blank" rel="noopener">
+          <a class="btn btn-primary btn-lg" data-download href={links.releasesAll} target="_blank" rel="noopener">
             {t.download.button}
           </a>
-          <details class="format-menu" data-format-menu hidden={Boolean(process.env.SITE_BASE)}>
+          <details class="format-menu" data-format-menu hidden>
             <summary aria-label={t.download.format} title={t.download.format}>
               <span class="mono" data-format-label>ISO</span>
               <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
@@ -115,13 +115,14 @@ const workstation = t.editions.items.workstation;
     if (event.key === 'Escape') menu.open = false;
   });
 
-  if (import.meta.env.BASE_URL === '/') fetch('/api/luminusos-release.json')
+  fetch(import.meta.env.BASE_URL === '/' ? '/api/luminusos-release.json' : 'https://luminusos.org/api/luminusos-release.json')
     .then((response) => response.ok ? response.json() as Promise<Release> : undefined)
     .then((latest) => {
       if (!latest) return;
       release = latest;
       tag.textContent = latest.version;
       tag.removeAttribute('hidden');
+      menu.removeAttribute('hidden');
       setHref();
     })
     .catch(() => undefined);

@@ -2,65 +2,31 @@ import type { APIRoute } from 'astro';
 
 export const prerender = false;
 
-type Format = 'iso' | 'qcow2';
-
-interface Release {
-  version: string;
-  assets: Partial<Record<Format, string>>;
-}
-
-const githubLatest = 'https://api.github.com/repos/luminusOS/images/releases/latest';
-const sourceForgeFeed = 'https://sourceforge.net/projects/luminusos/rss?path=/';
+const origin = 'https://download.luminusos.org';
 
 export const GET: APIRoute = async () => {
-  const [githubResponse, sourceForgeResponse] = await Promise.all([
-    fetch(githubLatest, { headers: { Accept: 'application/vnd.github+json' } }),
-    fetch(sourceForgeFeed),
-  ]);
+  try {
+    for (const channel of ['stable', 'testing']) {
+      const response = await fetch(`${origin}/${channel}/latest.json`, {
+        headers: { 'Cache-Control': 'no-cache' },
+      });
+      if (response.status === 404) continue;
+      if (!response.ok) break;
 
-  if (!sourceForgeResponse.ok) {
-    return Response.json({ error: 'SourceForge request failed' }, { status: 502 });
+      const release = await response.json() as { version?: unknown; assets?: { iso?: unknown; qcow2?: unknown } };
+      const version = release.version;
+      if (typeof version !== 'string' ||
+          !(channel === 'stable' ? /^\d+\.\d{8}(?:\.\d+)?$/ : /^testing-\d+\.\d{8}(?:\.\d+)?$/).test(version)) break;
+      const prefix = `${origin}/${channel}/${version}/luminusos-workstation-${version}`;
+      if (release.assets?.iso !== `${prefix}.iso` || release.assets.qcow2 !== `${prefix}.qcow2`) break;
+      return Response.json(release, {
+        headers: { 'Cache-Control': 'no-store', 'Access-Control-Allow-Origin': '*' },
+      });
+    }
+  } catch {
+    // A failed request must not be mistaken for an absent stable release.
   }
-  if (!githubResponse.ok && githubResponse.status !== 404) {
-    return Response.json({ error: 'GitHub request failed' }, { status: 502 });
-  }
-
-  const stableVersion = githubResponse.ok
-    ? ((await githubResponse.json()) as { tag_name: string }).tag_name.replace(/^v/, '')
-    : undefined;
-  const releases = parseReleases(await sourceForgeResponse.text());
-  const release = stableVersion
-    ? releases.find((candidate) => candidate.version === stableVersion)
-    : releases.find((candidate) => candidate.version.startsWith('testing-'));
-
-  if (!release?.assets.iso || !release.assets.qcow2) {
-    return Response.json({ error: 'No downloadable release found' }, { status: 502 });
-  }
-
-  return Response.json(release, {
-    headers: {
-      'Cache-Control': 'public, max-age=60, s-maxage=300, stale-while-revalidate=3600',
-    },
+  return Response.json({ error: 'No downloadable release found' }, {
+    status: 502, headers: { 'Cache-Control': 'no-store', 'Access-Control-Allow-Origin': '*' },
   });
 };
-
-function parseReleases(feed: string): Release[] {
-  const releases = new Map<string, Release>();
-  const links = feed.matchAll(/<link>(https:\/\/sourceforge\.net\/projects\/luminusos\/files\/([^/]+)\/([^<]+)\/download)<\/link>/g);
-
-  for (const [, url, directory, filename] of links) {
-    const testing = directory.match(/^testing-(\d+\.\d{8}(?:\.\d+)?)$/);
-    const stable = directory.match(/^(\d+\.\d{8}(?:\.\d+)?)$/);
-    const buildVersion = testing?.[1] ?? stable?.[1];
-    if (!buildVersion) continue;
-
-    const version = testing ? `testing-${buildVersion}` : buildVersion;
-    const prefix = `luminusos-workstation-${version}`;
-    const release = releases.get(version) ?? { version, assets: {} };
-    if (filename === `${prefix}.iso`) release.assets.iso = url;
-    if (filename === `${prefix}.qcow2`) release.assets.qcow2 = url;
-    releases.set(version, release);
-  }
-
-  return [...releases.values()];
-}
