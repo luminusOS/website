@@ -5,13 +5,13 @@
   "observability": {
     "enabled": true
   },
-  "main": "aurora/dist/_worker.js/index.js",
+  "main": "aurora/dist/server/entry.mjs",
   "compatibility_flags": [
     "global_fetch_strictly_public",
     "nodejs_compat"
   ],
   "assets": {
     "binding": "ASSETS",
-    "directory": "aurora/dist"
+    "directory": "aurora/dist/client"
   }
 }

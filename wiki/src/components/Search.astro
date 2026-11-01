@@ -10,7 +10,6 @@
  * Everything else is identical to @astrojs/starlight/components/Search.astro.
  */
 import { Icon } from '@astrojs/starlight/components';
-import project from 'virtual:starlight/project-context';
 
 const pagefindTranslations = {
 	placeholder: Astro.locals.t('search.label'),
@@ -22,7 +21,6 @@ const pagefindTranslations = {
 };
 
 const dataAttributes: DOMStringMap = { 'data-translations': JSON.stringify(pagefindTranslations) };
-if (project.trailingSlash === 'never') dataAttributes['data-strip-trailing-slash'] = '';
 ---
 
 <site-search class={Astro.props.class} {...dataAttributes}>
