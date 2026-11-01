@@ -1,10 +1,18 @@
-import { existsSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 
 const dist = new URL('../dist/', import.meta.url);
 const routesPath = new URL('_routes.json', dist);
 
 for (const path of ['blog/CNAME', 'wiki/CNAME']) {
   rmSync(new URL(path, dist), { force: true });
+}
+
+const prefix = (process.env.SITE_BASE ?? '').replace(/^\/+|\/+$/g, '');
+const assets = new URL(`client/${prefix ? `${prefix}/` : ''}`, dist);
+mkdirSync(assets, { recursive: true });
+for (const path of ['blog', 'wiki']) {
+  cpSync(new URL(path, dist), new URL(path, assets), { recursive: true });
+  rmSync(new URL(path, dist), { recursive: true });
 }
 
 if (existsSync(routesPath)) {

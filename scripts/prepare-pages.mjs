@@ -6,7 +6,7 @@ const dist = new URL('../dist/', import.meta.url);
 const base = '/website';
 const origin = 'https://luminusos.github.io';
 // The Cloudflare adapter nests its output under base; Pages mounts the artifact there.
-const nested = new URL('website/', dist);
+const nested = new URL('client/website/', dist);
 if (existsSync(nested)) {
   cpSync(nested, dist, { recursive: true });
   rmSync(nested, { recursive: true });
@@ -22,7 +22,7 @@ for (const path of pages) {
   writeFileSync(file, html);
 }
 
-for (const path of ['_worker.js', '_routes.json', 'CNAME']) {
+for (const path of ['_worker.js', '_routes.json', 'CNAME', 'client', 'server']) {
   rmSync(new URL(path, dist), { recursive: true, force: true });
 }
 writeFileSync(new URL('.nojekyll', dist), '');
