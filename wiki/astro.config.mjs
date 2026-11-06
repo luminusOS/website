@@ -46,6 +46,7 @@ export default defineConfig({
           translations: { 'pt-BR': 'Comece aqui' },
           items: [
             { slug: 'guides/installation' },
+            { slug: 'guides/boot-security' },
             { slug: 'guides/updates' },
           ],
         },

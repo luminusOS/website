@@ -28,7 +28,9 @@ Use qualquer uma destas ferramentas. O pendrive precisa de pelo menos 8 GB e
 
 Reinicie com o pendrive conectado e escolha ele no menu de boot do firmware
 (geralmente <kbd>F12</kbd>, <kbd>F10</kbd> ou <kbd>Esc</kbd> logo ao ligar).
-Desative o Secure Boot se o firmware recusar o boot.
+TPM 2.0 e Secure Boot são opcionais para instalar o LuminusOS. Se a mídia não
+iniciar, confira o checksum da ISO e as configurações do firmware antes de
+alterar opções de segurança. Veja [TPM e Secure Boot](../boot-security/).
 
 ## 4. Siga o Sirius
 
