@@ -27,7 +27,9 @@ Use any of these tools. The drive needs at least 8 GB and **will be erased**.
 
 Reboot with the drive plugged in and pick it in your firmware's boot menu
 (usually <kbd>F12</kbd>, <kbd>F10</kbd> or <kbd>Esc</kbd> right after power
-on). Disable Secure Boot if your firmware refuses to boot the drive.
+on). TPM 2.0 and Secure Boot are optional for installing LuminusOS. If the
+drive does not boot, check the ISO checksum and firmware settings before
+changing security settings. See [TPM and Secure Boot](../boot-security/).
 
 ## 4. Follow Sirius
 
