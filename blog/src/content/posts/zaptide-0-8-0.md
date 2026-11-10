@@ -1,25 +1,25 @@
 ---
-title: 'ZapTide 0.8.0: experimental voice and video calls on Linux'
-description: ZapTide 0.8.0 introduces experimental voice and video calls, incoming-call controls and call history. The release also adds an integrated media viewer and quick reactions.
+title: 'ZapTide 0.8.0: voice and video calls on Linux'
+description: ZapTide 0.8.0 introduces voice and video calls, tested with incoming calls from an Android phone, plus call history. The release also adds an integrated media viewer and quick reactions.
 date: 2026-11-10
 tag: ZapTide
 image: /img/zaptide/zaptide-v0.8.0-penpot-video-call.png
 ---
 
 [ZapTide 0.8.0](https://github.com/luminusOS/zaptide/releases/tag/v0.8.0)
-introduces experimental voice and video calls on Linux. Start a call from a
+introduces voice and video calls on Linux. Start a call from a
 direct chat, answer or decline an incoming call, and find previous calls in the
 Calls tab. You can browse conversations while a call is active and return to
 its controls from the chat.
 
 ZapTide is an unofficial WhatsApp client built with Rust, GTK4 and libadwaita.
-Calls have not yet been verified against a phone, so do not rely on them for
-everyday use. This release also adds an integrated media viewer, quick reactions,
+Voice and video calls from an Android phone to ZapTide have been tested
+successfully. This release also adds an integrated media viewer, quick reactions,
 WhatsApp text formatting and controls for notification sounds and cached downloads.
 
 The images below are Penpot mockups with sample content.
 
-## Experimental voice and video calls
+## Voice and video calls
 
 Direct chats have voice and video call buttons, and the Calls tab keeps call
 history. Incoming calls have Answer and Decline controls. You can browse chats
@@ -37,15 +37,11 @@ while a call is active and use Return to call to get back to its controls.
 
 <figure>
   <img src="../../img/zaptide/zaptide-v0.8.0-penpot-video-call.png" alt="Penpot mockup of a video call, with a local preview marked You and call controls at the bottom." width="960" height="640" loading="lazy" style="height: auto" />
-  <figcaption>The video-call layout with a local preview. This is a mockup, not a verified phone call.</figcaption>
+  <figcaption>The video-call layout with a local preview, illustrated in Penpot.</figcaption>
 </figure>
 
-No voice or video call against a phone has been verified. Audio quality, video
-interoperability, ringing and notification-button interaction remain unverified.
-Flatpak camera access and AppImage video plugins also need testing in their
-packaged environments. Group calls are unsupported. Do not rely on this release
-for calls; the [release notes](https://github.com/luminusOS/zaptide/releases/tag/v0.8.0)
-describe the remaining limitations.
+Group calls are unsupported. Flatpak camera access and AppImage video plugins
+still need confirmation in their packaged environments.
 
 ## Keep your chats beside your photos
 
