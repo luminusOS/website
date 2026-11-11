@@ -54,7 +54,12 @@ export const links = {
   wikiSite: 'https://wiki.luminusos.org',
   blogSite: 'https://blog.luminusos.org',
   donate: 'https://opencollective.com/luminusos',
+  flatpakRemote: 'https://flatpak.luminusos.org/stable/luminus-stable.flatpakrepo',
+  aetherisFlatpakRef: 'https://flatpak.luminusos.org/stable/org.luminusos.Aetheris.flatpakref',
 };
+
+// Turn on once the stable channel of https://flatpak.luminusos.org has a published release.
+export const flatpakStableLive = false;
 
 export const repos = {
   aurora: 'luminusOS/aurora-shell',
