@@ -60,8 +60,7 @@ export const links = {
   aetherisFlatpakRef: 'https://flatpak.luminusos.org/stable/org.luminusos.Aetheris.flatpakref',
 };
 
-// Turn on once the stable channel of https://flatpak.luminusos.org has a published release.
-export const flatpakStableLive = false;
+export const flatpakStableLive = true;
 
 export const repos = {
   aurora: 'luminusOS/aurora-shell',
