@@ -1,4 +1,7 @@
+import { zaptideEn } from './zaptide';
+
 export const en = {
+  zaptidePage: zaptideEn,
   meta: {
     title: 'LuminusOS: a Linux that just works, everywhere',
     description:
@@ -11,6 +14,7 @@ export const en = {
     aurora: 'Aurora Shell',
     auroraShort: 'Aurora',
     aetheris: 'Aetheris',
+    zaptide: 'ZapTide',
     products: 'Products',
     resources: 'Resources',
     language: 'Language',

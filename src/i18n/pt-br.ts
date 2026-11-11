@@ -1,6 +1,8 @@
 import type { en } from './en';
+import { zaptidePtBr } from './zaptide';
 
 export const ptBr: typeof en = {
+  zaptidePage: zaptidePtBr,
   meta: {
     title: 'LuminusOS: um Linux que simplesmente funciona, em qualquer tela',
     description:
@@ -13,6 +15,7 @@ export const ptBr: typeof en = {
     aurora: 'Aurora Shell',
     auroraShort: 'Aurora',
     aetheris: 'Aetheris',
+    zaptide: 'ZapTide',
     products: 'Produtos',
     resources: 'Recursos',
     language: 'Idioma',

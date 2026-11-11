@@ -18,13 +18,14 @@ const link = {
   editions: { href: `${mainSite}${p}/#download`, label: t.nav.editions },
   aurora: { href: auroraHref(p), label: t.nav.auroraShort },
   aetheris: { href: `${mainSite}${p}/aetheris`, label: t.nav.aetheris },
+  zaptide: { href: `${mainSite}${p}/zaptide`, label: t.nav.zaptide },
   wiki: { href: siteHref('/wiki', links.wikiSite), label: t.nav.wiki },
   blog: { href: siteHref('/blog', links.blogSite), label: t.nav.blog },
   contribute: { href: `${mainSite}${p}/contribute`, label: t.nav.contribute },
 };
 
 const desktopNav = [link.overview, link.how, link.editions];
-const products = [link.aurora, link.aetheris];
+const products = [link.aurora, link.aetheris, link.zaptide];
 const resources = [link.blog, link.contribute, link.wiki];
 const desktopMenus = [
   { label: t.nav.products, items: products },

@@ -49,6 +49,8 @@ export const links = {
   x: 'https://x.com/LuminusOS',
   auroraRepo: 'https://github.com/luminusOS/aurora-shell',
   aetherisReleases: 'https://github.com/luminusOS/aetheris/releases',
+  zaptideRepo: 'https://github.com/luminusOS/zaptide',
+  zaptideReleases: 'https://github.com/luminusOS/zaptide/releases/latest',
   auroraEgo: 'https://extensions.gnome.org/extension/9389/aurora-shell/',
   auroraSite: 'https://aurora.luminusos.org',
   wikiSite: 'https://wiki.luminusos.org',
