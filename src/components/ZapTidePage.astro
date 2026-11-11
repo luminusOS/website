@@ -1,0 +1,141 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+import ZapTideIcon from './ZapTideIcon.astro';
+import type { Lang } from '../i18n/translations';
+import { translations, langPrefix, mainSite, links } from '../i18n/translations';
+import '../styles/product-page.css';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const page = translations[lang].zaptidePage;
+const path = '/zaptide';
+const homeHref = `${mainSite}${langPrefix(lang)}` || '/';
+const featureIcons = ['message', 'bell', 'search', 'theme'] as const;
+const stepIcons = ['download', 'phone', 'history'] as const;
+---
+
+<BaseLayout lang={lang} title={page.meta.title} description={page.meta.description} path={path}>
+  <Header lang={lang} path={path} />
+  <main class="product-page product-page--zaptide">
+    <section class="band band--plain product-hero">
+      <div class="container product-hero-inner">
+        <img class="product-logo" src="/zaptide-logo.svg" alt="" width="128" height="128" />
+        <div class="product-hero-copy">
+          <p class="eyebrow">{page.eyebrow}</p>
+          <h1>{page.title}</h1>
+          <p class="product-hero-sub">{page.subtitle}</p>
+          <p class="zaptide-intro">{page.intro}</p>
+          <div class="product-hero-ctas">
+            <a class="btn btn-primary" href={links.zaptideReleases}><ZapTideIcon name="download" />{page.download}</a>
+            <a class="btn btn-ghost" href={links.zaptideRepo}><ZapTideIcon name="code" />{page.source}</a>
+          </div>
+          <p class="product-version mono">{page.formats}</p>
+        </div>
+      </div>
+      <figure class="container zaptide-hero-shot">
+        <img src="/img/zaptide/zaptide-hero.webp" alt={page.screenshotAlt} width="1090" height="750" decoding="async" />
+        <figcaption>{page.screenshotCaption}</figcaption>
+      </figure>
+    </section>
+
+    <section class="band band--tint section" id="features">
+      <div class="container">
+        <div class="section-head">
+          <h2>{page.featuresTitle}</h2>
+          <p>{page.featuresSubtitle}</p>
+        </div>
+        <div class="zaptide-features">
+          {page.features.map((feature, index) => (
+            <article class:list={['card', 'zaptide-feature', { 'zaptide-feature--illustrated': index === 0 || index === 3 }]}>
+              <div class="zaptide-feature-copy">
+                <h3 class="zaptide-title"><ZapTideIcon name={featureIcons[index]} /><span>{feature.name}</span></h3>
+                <p>{feature.body}</p>
+              </div>
+              {(index === 0 || index === 3) && (
+                <figure class="zaptide-image-slot">
+                  <img src={index === 0 ? '/img/zaptide/zaptide-messages.webp' : '/img/zaptide/zaptide-themes.webp'} alt={index === 0 ? page.messagesImage : page.themesImage} width={index === 0 ? 1090 : 1500} height={index === 0 ? 750 : 940} loading="lazy" decoding="async" />
+                </figure>
+              )}
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="band band--plain section" id="setup">
+      <div class="container">
+        <div class="section-head"><h2>{page.setupTitle}</h2></div>
+        <ol class="zaptide-steps">
+          {page.steps.map((step, index) => (
+            <li class="design-item">
+              <span class="zaptide-step-number mono" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+              <h3 class="zaptide-title"><ZapTideIcon name={stepIcons[index]} /><span>{step.title}</span></h3>
+              <p>{step.body}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <section class="band band--tint section" id="privacy">
+      <div class="container zaptide-details">
+        <div>
+          <h2 class="zaptide-title"><ZapTideIcon name="shield" /><span>{page.privacyTitle}</span></h2>
+          <p>{page.privacy}</p>
+          <p>{page.privacyFiles}</p>
+          <a href={`${links.zaptideRepo}#install`}>{page.documentation} ↗</a>
+        </div>
+        <div>
+          <h2 class="zaptide-title"><ZapTideIcon name="info" /><span>{page.limitsTitle}</span></h2>
+          <p>{page.limits}</p>
+          <p>{page.unofficial}</p>
+        </div>
+      </div>
+      <p class="container back-home"><a href={homeHref}>← {page.backHome}</a></p>
+    </section>
+  </main>
+  <Footer lang={lang} />
+</BaseLayout>
+
+<style>
+  .product-page--zaptide {
+    --product-accent: #1a7048;
+    --accent: var(--product-accent);
+    --accent-hover: #155e3c;
+    --accent-ink: #ffffff;
+    --zaptide-wash: color-mix(in srgb, var(--product-accent) 6%, var(--band-tint));
+    --zaptide-border: color-mix(in srgb, var(--product-accent) 25%, var(--border-color));
+  }
+  :global(html[data-theme='dark']) .product-page--zaptide {
+    --product-accent: #57e389;
+    --accent-hover: #33d17a;
+    --accent-ink: #155e3c;
+  }
+  .zaptide-intro { max-width: 60ch; color: var(--ink-dim); }
+  .zaptide-title { display: flex; align-items: flex-start; gap: 0.75rem; }
+  .zaptide-title :global(svg) { flex: 0 0 0.85em; width: 0.85em; height: 1lh; color: var(--product-accent); }
+  .zaptide-title span { min-width: 0; overflow-wrap: anywhere; }
+  .zaptide-features { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; }
+  .zaptide-feature-copy { display: grid; gap: 1rem; align-content: center; }
+  .zaptide-feature h3 { font-size: clamp(1.25rem, 2.5vw, 1.75rem); }
+  .zaptide-feature p { color: var(--ink-dim); max-width: 52ch; }
+  .zaptide-feature--illustrated { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); gap: 2rem; align-items: center; }
+  .zaptide-feature--illustrated { border-color: var(--zaptide-border); }
+  .zaptide-image-slot { margin: 0; min-width: 0; }
+  .zaptide-image-slot img { display: block; width: 100%; height: auto; border-radius: var(--radius); }
+  .zaptide-hero-shot { margin-block: 3rem 0; display: grid; justify-items: center; gap: 1rem; }
+  .zaptide-hero-shot img { width: min(100%, 60rem); height: auto; border-radius: var(--radius); box-shadow: 0 1.5rem 4rem -1rem rgb(0 0 0 / 0.35); }
+  .zaptide-hero-shot figcaption { color: var(--ink-dim); font-size: 0.875rem; text-align: center; }
+  .zaptide-step-number { display: inline-flex; align-items: center; justify-content: center; width: 2.5rem; height: 2.5rem; margin-bottom: 1.5rem; border: 1px solid var(--border-color); border-radius: var(--radius); color: var(--ink-dim); }
+  .zaptide-step-number { color: var(--product-accent); background: var(--zaptide-wash); border-color: var(--zaptide-border); }
+  .zaptide-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2rem; padding: 0; list-style: none; }
+  .zaptide-details { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 3rem; }
+  .zaptide-details h2 { font-size: clamp(1.5rem, 3vw, 2rem); }
+  .zaptide-details p { margin-block: 1rem; color: var(--ink-dim); }
+  .zaptide-details a { color: var(--product-accent); text-underline-offset: 0.2em; }
+  @media (max-width: 760px) {
+    .zaptide-steps, .zaptide-details, .zaptide-features, .zaptide-feature--illustrated { grid-template-columns: 1fr; }
+  }
+</style>
