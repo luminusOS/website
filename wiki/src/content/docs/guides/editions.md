@@ -37,5 +37,5 @@ These editions are reserved in the build system and waiting for their turn
 ## Versioning
 
 Images are versioned as `<fedora>.<date>`, for example `44.20260610` is the
-build from June 10, 2026 on Fedora 44. CI builds run on `f44`/`f45`/`f46`
+build from June 10, 2026 on Fedora 44. CI builds run on `f45`/`f46`
 branches and publish to [GHCR](https://github.com/orgs/luminusOS/packages).

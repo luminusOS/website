@@ -3,10 +3,12 @@ import { defineConfig } from 'astro/config';
 
 import cloudflare from "@astrojs/cloudflare";
 import { watchConfig } from './scripts/astro-watch.mjs';
+import { readFedoraVersion } from './scripts/fedora-version.mjs';
 
 // SITE_VARIANT=aurora builds the standalone aurora.luminusos.org variant:
 // the Aurora Shell page becomes the site root and links back to the main
 // site. The wiki and blog are separate repositories.
+const fedoraVersion = await readFedoraVersion();
 const variant = process.env.SITE_VARIANT ?? '';
 const sites = {
   '': 'https://luminusos.org',
@@ -40,6 +42,7 @@ export default defineConfig({
     // the build's environment, so pass the build switches in explicitly.
     define: {
       'import.meta.env.SITE_VARIANT': JSON.stringify(variant),
+      'import.meta.env.FEDORA_VERSION': JSON.stringify(fedoraVersion),
       'import.meta.env.SITE_BASE': JSON.stringify(process.env.SITE_BASE ?? ''),
     },
     server: {

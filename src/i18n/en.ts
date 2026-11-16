@@ -1,3 +1,4 @@
+import { platform } from '../lib/platform';
 import { navEn } from './nav';
 import { zaptideEn } from './zaptide';
 
@@ -21,8 +22,8 @@ export const en = {
     soon: 'Soon',
     available: 'Available now',
     facts: [
-      { label: 'Base', value: 'Fedora 44 · bootc' },
-      { label: 'Desktop', value: 'GNOME 50 · Aurora Shell' },
+      { label: 'Base', value: `Fedora ${platform.fedora} · bootc` },
+      { label: 'Desktop', value: `GNOME ${platform.gnome} · Aurora Shell` },
       { label: 'License', value: 'MIT · LGPL' },
     ],
   },
@@ -261,7 +262,7 @@ export const en = {
       description:
         'Aurora Shell is a modular GNOME Shell extension: dock, per-app volume mixer, tray icons, clipboard history, weather and meeting clocks and more. Each module is independent, so you enable only what you want.',
     },
-    eyebrow: 'A LuminusOS project · GNOME 51',
+    eyebrow: `A LuminusOS project · GNOME ${platform.gnome}`,
     title: 'GNOME, extended.',
     subtitle:
       'Aurora Shell adds optional modules to GNOME Shell, including a dock, tray icons, clipboard history and per-application volume controls.',

@@ -1,3 +1,4 @@
+import { platform } from '../lib/platform';
 import type { en } from './en';
 import { navPtBr } from './nav';
 import { zaptidePtBr } from './zaptide';
@@ -22,8 +23,8 @@ export const ptBr: typeof en = {
     soon: 'Em breve',
     available: 'Disponível agora',
     facts: [
-      { label: 'Base', value: 'Fedora 44 · bootc' },
-      { label: 'Desktop', value: 'GNOME 50 · Aurora Shell' },
+      { label: 'Base', value: `Fedora ${platform.fedora} · bootc` },
+      { label: 'Desktop', value: `GNOME ${platform.gnome} · Aurora Shell` },
       { label: 'Licença', value: 'MIT · LGPL' },
     ],
   },
@@ -262,7 +263,7 @@ export const ptBr: typeof en = {
       description:
         'Aurora Shell é uma extensão modular do GNOME Shell: dock, mixer de volume por aplicativo, ícones de bandeja, histórico da área de transferência, clima e agenda no relógio e mais. Cada módulo é independente, então você ativa só o que quiser.',
     },
-    eyebrow: 'Um projeto LuminusOS · GNOME 51',
+    eyebrow: `Um projeto LuminusOS · GNOME ${platform.gnome}`,
     title: 'GNOME, estendido.',
     subtitle:
       'O Aurora Shell adiciona módulos opcionais ao GNOME Shell, incluindo dock, ícones de bandeja, histórico da área de transferência e controles de volume por aplicativo.',

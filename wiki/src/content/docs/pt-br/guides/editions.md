@@ -39,5 +39,5 @@ contribuidores):
 
 As imagens são versionadas como `<fedora>.<data>`, por exemplo `44.20260610`
 é a build de 10 de junho de 2026 sobre o Fedora 44. A CI roda nos branches
-`f44`/`f45`/`f46` e publica no
+`f45`/`f46` e publica no
 [GHCR](https://github.com/orgs/luminusOS/packages).
