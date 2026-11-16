@@ -1,0 +1,569 @@
+---
+// The one navbar used by the main site, blog and apps. Callers build `nav`
+// with buildSiteNav() so destinations never drift between sites.
+import type { LanguageMenu, SiteNav } from '../../lib/site-nav';
+import NavPill from './NavPill.astro';
+import ThemeToggle from './ThemeToggle.astro';
+
+interface Props {
+  nav: SiteNav;
+  logoSrc: string;
+  language: LanguageMenu;
+}
+
+const { nav, logoSrc, language } = Astro.props;
+
+const chevronPath = 'm6 9 6 6 6-6';
+const globePath =
+  'M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z';
+const heartPath =
+  'M12 21s-7.5-4.7-10-9.3C.4 8.6 2.4 5 5.8 5c2 0 3.4 1.1 4.2 2.4l2 .1 2-.1C14.8 6.1 16.2 5 18.2 5c3.4 0 5.4 3.6 3.8 6.7C19.5 16.3 12 21 12 21z';
+
+const mobileGroups = [
+  { label: null, items: nav.links },
+  { label: nav.resources.label, items: nav.resources.items },
+];
+---
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href={nav.brandHref}>
+      <img src={logoSrc} alt="" width="28" height="28" />
+      <span>Luminus<strong>OS</strong></span>
+    </a>
+
+    <nav class="main-nav" aria-label="Main">
+      {nav.links.map((item) => <a href={item.href}>{item.label}</a>)}
+      <details class="nav-menu" data-nav-menu>
+        <summary>
+          {nav.resources.label}
+          <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
+            <path d={chevronPath} />
+          </svg>
+        </summary>
+        <ul role="list">
+          {nav.resources.items.map((item) => (
+            <li><a href={item.href} aria-current={item.current ? 'page' : undefined}>{item.label}</a></li>
+          ))}
+        </ul>
+      </details>
+      <span class="nav-sep" aria-hidden="true"></span>
+      {nav.pills.map((item) => <NavPill href={item.href} icon={item.icon} current={item.current}>{item.label}</NavPill>)}
+    </nav>
+
+    <div class="header-actions">
+      <ThemeToggle label={nav.themeLabel} />
+
+      <details class="lang-menu" data-lang-menu>
+        <summary class="mono" aria-label={language.label}>
+          {language.flag
+            ? <span class="flag" aria-hidden="true">{language.flag}</span>
+            : (
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10" />
+                <path d={globePath} />
+              </svg>
+            )}
+          {language.text}
+          <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
+            <path d={chevronPath} />
+          </svg>
+        </summary>
+        <div class="lang-pop">
+          {language.note && <p>{language.note}</p>}
+          <ul role="list">
+            {language.items.map((item) => (
+              <li>
+                <a href={item.href} rel={item.rel} aria-current={item.current ? 'true' : undefined}>
+                  {item.flag && <span class="flag" aria-hidden="true">{item.flag}</span>}
+                  {item.name}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </details>
+
+      <details class="mobile-menu" data-mobile-menu>
+        <summary aria-label={nav.menuLabel}>
+          <svg class="icon-burger" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <path d="M4 7h16M4 12h16M4 17h16" />
+          </svg>
+          <svg class="icon-close" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <path d="M6 6l12 12M18 6L6 18" />
+          </svg>
+        </summary>
+        <div class="mobile-panel">
+          <nav class="mobile-pills" aria-label={nav.pills.map((item) => item.label).join(', ')}>
+            {nav.pills.map((item) => <NavPill href={item.href} icon={item.icon} current={item.current} size="lg">{item.label}</NavPill>)}
+          </nav>
+
+          {mobileGroups.map((group) => (
+            <nav class="mobile-group" aria-label={group.label ?? nav.menuLabel}>
+              {group.label && <p class="mobile-group-title mono">{group.label}</p>}
+              {group.items.map((item) => <a href={item.href}>{item.label}</a>)}
+            </nav>
+          ))}
+
+          <div class="mobile-group">
+            <p class="mobile-group-title mono">{language.title}</p>
+            <div class="mobile-langs">
+              {language.items.map((item) => (
+                <a href={item.href} rel={item.rel} aria-current={item.current ? 'true' : undefined}>
+                  {item.flag && <span class="flag" aria-hidden="true">{item.flag}</span>}
+                  {item.name}
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <div class="mobile-actions">
+            <a class="btn btn-primary" href={nav.download.href}>{nav.download.label}</a>
+            <a class="btn btn-donate" href={nav.donate.href} target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true">
+                <path d={heartPath} />
+              </svg>
+              {nav.donate.label}
+            </a>
+          </div>
+        </div>
+      </details>
+
+      <a class="donate-icon" href={nav.donate.href} target="_blank" rel="noopener" aria-label={nav.donate.label} title={nav.donate.label}>
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true">
+          <path d={heartPath} />
+        </svg>
+      </a>
+      <a class="btn btn-primary btn-sm" href={nav.download.href}>{nav.download.label}</a>
+    </div>
+  </div>
+</header>
+
+<script>
+  import { closeMenusOnDismiss } from '../../scripts/dropdown-menus';
+  import { setupSharedHeaderControls } from '../../scripts/header-controls';
+
+  setupSharedHeaderControls();
+  closeMenusOnDismiss('[data-lang-menu], [data-nav-menu], [data-mobile-menu]');
+
+  document.querySelectorAll('[data-mobile-menu] a').forEach((link) => {
+    link.addEventListener('click', () => {
+      link.closest('[data-mobile-menu]')?.removeAttribute('open');
+    });
+  });
+
+  // The open panel covers the page, so the page behind it must not scroll.
+  const mobileMenu = document.querySelector<HTMLDetailsElement>('[data-mobile-menu]');
+  mobileMenu?.addEventListener('toggle', () => {
+    document.body.classList.toggle('has-open-menu', mobileMenu.open);
+  });
+</script>
+
+<style>
+  .site-header {
+    --header-h: 3.75rem;
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: var(--header-bg);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s ease;
+  }
+
+  .site-header.is-scrolled {
+    border-bottom-color: var(--border-color);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+    width: min(var(--container), calc(100% - 2.5rem));
+    min-height: var(--header-h);
+    margin-inline: auto;
+    padding-block: 0.55rem;
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin-left: -0.35rem;
+    padding: 0.35rem 0.5rem 0.35rem 0.35rem;
+    border-radius: var(--radius-sm);
+    color: inherit;
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 0.12s ease;
+  }
+
+  .brand:hover {
+    background: var(--surface-2);
+  }
+
+  .brand strong {
+    color: var(--accent);
+  }
+
+  .main-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.15rem;
+  }
+
+  .main-nav > a,
+  .nav-menu summary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.45rem 0.7rem;
+    border-radius: var(--radius-sm);
+    color: var(--ink);
+    font-size: 0.925rem;
+    font-weight: 500;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.12s ease;
+  }
+
+  .main-nav > a:hover,
+  .nav-menu summary:hover,
+  .nav-menu[open] summary {
+    background: var(--surface-2);
+  }
+
+  .nav-sep {
+    width: 1px;
+    height: 1.35rem;
+    margin-inline: 0.6rem 0.45rem;
+    background: var(--border-color);
+  }
+
+  .nav-menu {
+    position: relative;
+    display: inline-flex;
+  }
+
+  .nav-menu summary,
+  .lang-menu summary,
+  .mobile-menu summary {
+    list-style: none;
+  }
+
+  .nav-menu summary::-webkit-details-marker,
+  .lang-menu summary::-webkit-details-marker,
+  .mobile-menu summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .nav-menu[open] summary svg {
+    transform: rotate(180deg);
+  }
+
+  .nav-menu ul,
+  .lang-pop {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    z-index: 50;
+    min-width: 11rem;
+    padding: 0.375rem;
+    background: var(--surface-1);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.06), 0 10px 28px rgb(0 0 0 / 0.14);
+  }
+
+  .nav-menu ul {
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+    list-style: none;
+    display: grid;
+    gap: 0.15rem;
+  }
+
+  .lang-pop {
+    right: 0;
+  }
+
+  .lang-pop p {
+    width: 15rem;
+    margin: 0.25rem 0.35rem 0.6rem;
+    font-size: 0.78rem;
+    line-height: 1.5;
+    color: var(--ink-faint);
+  }
+
+  .lang-pop ul {
+    display: grid;
+    gap: 0.15rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .nav-menu ul a,
+  .lang-pop a {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.5rem 0.7rem;
+    border-radius: var(--radius-sm);
+    color: var(--ink-dim);
+    font-size: 0.9rem;
+    text-decoration: none;
+  }
+
+  .nav-menu ul a:hover,
+  .lang-pop a:hover {
+    background: var(--surface-2);
+    color: var(--ink);
+  }
+
+  .nav-menu ul a[aria-current],
+  .lang-pop a[aria-current] {
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  /* Divider between the site navigation and the controls. */
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .header-actions::before {
+    content: '';
+    width: 1px;
+    height: 1.35rem;
+    margin-inline: 0.5rem 0.25rem;
+    background: var(--border-color);
+  }
+
+  .donate-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    min-height: 2.25rem;
+    border-radius: var(--radius-sm);
+    color: var(--destructive);
+    transition: background 0.12s ease, color 0.12s ease;
+  }
+
+  .donate-icon:hover {
+    background: var(--surface-2);
+    color: var(--destructive-hover);
+  }
+
+  .lang-menu,
+  .mobile-menu {
+    position: relative;
+  }
+
+  .mobile-menu {
+    display: none;
+  }
+
+  .lang-menu summary,
+  .mobile-menu summary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    min-height: 2.25rem;
+    border-radius: var(--radius-sm);
+    color: var(--ink-dim);
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.12s ease, color 0.12s ease;
+  }
+
+  .mobile-menu summary {
+    width: 2.25rem;
+  }
+
+  .lang-menu summary {
+    padding-inline: 0.6rem;
+    font-size: 0.8rem;
+  }
+
+  .lang-menu summary:hover,
+  .mobile-menu summary:hover,
+  .lang-menu[open] summary,
+  .mobile-menu[open] summary {
+    background: var(--surface-2);
+    color: var(--ink);
+  }
+
+  .mobile-menu .icon-close,
+  .mobile-menu[open] .icon-burger {
+    display: none;
+  }
+
+  .mobile-menu[open] .icon-close {
+    display: block;
+  }
+
+  .mobile-panel {
+    position: fixed;
+    inset: var(--header-h) 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+    padding: 1.75rem 1.25rem calc(1.25rem + env(safe-area-inset-bottom));
+    background: var(--bg);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    animation: mobile-panel-in 0.18s ease-out;
+  }
+
+  @keyframes mobile-panel-in {
+    from { opacity: 0; transform: translateY(-0.5rem); }
+    to { opacity: 1; transform: none; }
+  }
+
+  .mobile-pills {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+    width: min(34rem, 100%);
+    margin-inline: auto;
+  }
+
+  .mobile-group {
+    display: grid;
+    gap: 0.15rem;
+    width: min(34rem, 100%);
+    margin-inline: auto;
+  }
+
+  .mobile-group-title {
+    margin: 0 0 0.4rem;
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  .mobile-group a {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    min-height: 3.25rem;
+    margin-inline: -0.85rem;
+    padding: 0.6rem 0.85rem;
+    border-radius: var(--radius);
+    color: var(--ink);
+    font-size: 1.15rem;
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .mobile-group a:hover,
+  .mobile-group a:active {
+    background: var(--surface-2);
+  }
+
+  .mobile-langs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+
+  .mobile-langs a {
+    justify-content: center;
+    gap: 0.45rem;
+    margin-inline: 0;
+    border: 1px solid var(--border-color);
+    font-size: 1rem;
+  }
+
+  .mobile-langs a[aria-current='true'] {
+    border-color: var(--accent);
+    background: var(--accent-wash);
+    color: var(--accent);
+  }
+
+  .mobile-actions {
+    display: grid;
+    gap: 0.6rem;
+    width: min(34rem, 100%);
+    margin-inline: auto;
+    margin-top: auto;
+    padding-top: 1.5rem;
+  }
+
+  .mobile-actions .btn {
+    justify-content: center;
+    min-height: 3.25rem;
+    font-size: 1.05rem;
+  }
+
+  .mobile-actions .btn-primary {
+    color: var(--accent-ink);
+  }
+
+  .mobile-actions .btn-donate {
+    color: #fff;
+  }
+
+  .flag {
+    font-size: 1rem;
+    line-height: 1;
+  }
+
+  @media (max-width: 980px) {
+    .main-nav,
+    .lang-menu,
+    .donate-icon,
+    .header-actions::before {
+      display: none;
+    }
+
+    .mobile-menu {
+      display: block;
+    }
+
+    :global(body.has-open-menu) {
+      overflow: hidden;
+    }
+
+    .header-actions {
+      --control-size: 2.5rem;
+    }
+
+    .mobile-menu summary {
+      width: 2.5rem;
+      min-height: 2.5rem;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .header-actions > .btn-primary {
+      padding-inline: 1rem;
+    }
+  }
+
+  @media (max-width: 420px) {
+    .header-inner {
+      gap: 0.8rem;
+    }
+
+    .brand span {
+      font-size: 1rem;
+    }
+
+    .header-actions {
+      gap: 0.15rem;
+    }
+  }
+</style>

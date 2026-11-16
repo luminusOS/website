@@ -1,3 +1,5 @@
+import { siblingSites } from '../lib/sibling-sites';
+import { donateUrl } from '../lib/site-nav';
 import { en } from './en';
 import { ptBr } from './pt-br';
 
@@ -20,15 +22,11 @@ export function langPrefix(lang: Lang): string {
 // Dev and the Pages fallback use local paths; Cloudflare uses subdomains.
 const useLocalPaths = import.meta.env.DEV || Boolean(process.env.SITE_BASE);
 
-export function auroraHref(p: string): string {
-  if (siteVariant === 'aurora') return p || '/';
-  if (useLocalPaths) return `${p}/aurora`;
-  return `${links.auroraSite}${p}`;
-}
-
-export function siteHref(localPath: string, absolute: string): string {
-  if (siteVariant === '' && useLocalPaths) return localPath;
-  return absolute;
+// The standalone Aurora build links to every other site by absolute URL and
+// treats the Aurora page as its own root.
+export function siblingLinks(prefix: string) {
+  const sites = siblingSites(siteVariant === '' && useLocalPaths, prefix);
+  return siteVariant === 'aurora' ? { ...sites, aurora: prefix || '/' } : sites;
 }
 
 export const translations: Record<Lang, typeof en> = {
@@ -52,10 +50,7 @@ export const links = {
   zaptideRepo: 'https://github.com/luminusOS/zaptide',
   zaptideReleases: 'https://github.com/luminusOS/zaptide/releases/latest',
   auroraEgo: 'https://extensions.gnome.org/extension/9389/aurora-shell/',
-  auroraSite: 'https://aurora.luminusos.org',
-  wikiSite: 'https://wiki.luminusos.org',
-  blogSite: 'https://blog.luminusos.org',
-  donate: 'https://opencollective.com/luminusos',
+  donate: donateUrl,
   flatpakRemote: 'https://flatpak.luminusos.org/stable/luminus-stable.flatpakrepo',
   aetherisFlatpakRef: 'https://flatpak.luminusos.org/stable/org.luminusos.Aetheris.flatpakref',
 };

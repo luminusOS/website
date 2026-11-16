@@ -1,0 +1,64 @@
+---
+type PillIcon = 'aurora' | 'apps';
+
+interface Props {
+  href: string;
+  icon: PillIcon;
+  current?: boolean;
+  size?: 'md' | 'lg';
+}
+
+const { href, icon, current = false, size = 'md' } = Astro.props;
+
+const iconPaths: Record<PillIcon, string> = {
+  aurora:
+    'M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9zM19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8z',
+  apps: 'M4 4h6.5v6.5H4zM13.5 4H20v6.5h-6.5zM4 13.5h6.5V20H4zM13.5 13.5H20V20h-6.5z',
+};
+const iconSize = size === 'lg' ? 20 : 15;
+---
+
+<a class:list={['nav-pill', size]} href={href} aria-current={current ? 'page' : undefined}>
+  <svg viewBox="0 0 24 24" width={iconSize} height={iconSize} fill="currentColor" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" aria-hidden="true">
+    <path d={iconPaths[icon]} />
+  </svg>
+  <slot />
+</a>
+
+<style>
+  .nav-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    padding: 0.42rem 0.95rem 0.42rem 0.8rem;
+    border: 1px solid color-mix(in srgb, var(--accent) 38%, transparent);
+    border-radius: var(--radius-pill);
+    background: var(--accent-wash);
+    color: var(--accent);
+    font-size: 0.925rem;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  }
+
+  .nav-pill:hover,
+  .nav-pill[aria-current='page'] {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--accent-ink);
+  }
+
+  .nav-pill.lg {
+    min-height: 3.25rem;
+    font-size: 1.05rem;
+  }
+
+  @media (max-width: 520px) {
+    .nav-pill.md {
+      padding: 0.38rem 0.7rem 0.38rem 0.6rem;
+      font-size: 0.85rem;
+    }
+  }
+</style>

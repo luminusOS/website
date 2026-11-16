@@ -1,0 +1,23 @@
+---
+// Applies the saved or system theme before first paint to avoid a flash of
+// the wrong colours. It must be inline: a bundled script would run too late.
+// Reading storage can throw when the browser blocks it, so fall back to the system theme.
+---
+
+<script is:inline>
+  (() => {
+    let saved = null;
+    try {
+      saved = localStorage.getItem('theme');
+    } catch {
+      // Blocked storage: use the system theme.
+    }
+    const theme =
+      saved === 'light' || saved === 'dark'
+        ? saved
+        : window.matchMedia('(prefers-color-scheme: dark)').matches
+          ? 'dark'
+          : 'light';
+    document.documentElement.dataset.theme = theme;
+  })();
+</script>

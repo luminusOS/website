@@ -3,7 +3,11 @@ export function setupSharedHeaderControls() {
     button.addEventListener('click', () => {
       const next = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
       document.documentElement.dataset.theme = next;
-      localStorage.setItem('theme', next);
+      try {
+        localStorage.setItem('theme', next);
+      } catch {
+        // Blocked storage: the choice only lasts for this page view.
+      }
     });
   });
 

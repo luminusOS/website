@@ -1,0 +1,91 @@
+/* Buttons, chips and type helpers shared by the main site, blog and apps. */
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+.eyebrow {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  padding: 0.7rem 1.4rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  font: inherit;
+  font-size: 0.975rem;
+  font-weight: 600;
+  line-height: 1.2;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover);
+}
+
+.btn-ghost {
+  background: var(--ghost-bg);
+  border-color: var(--border-color);
+  color: var(--ink);
+}
+
+.btn-ghost:hover {
+  background: var(--surface-2);
+  border-color: var(--ink-faint);
+}
+
+.btn-donate {
+  background: var(--destructive);
+  color: #fff;
+}
+
+.btn-donate:hover {
+  background: var(--destructive-hover);
+}
+
+.btn-sm {
+  padding: 0.5rem 1.05rem;
+  font-size: 0.9rem;
+}
+
+.btn-lg {
+  padding: 0.95rem 2rem;
+  font-size: 1.05rem;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.8rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-pill);
+  background: var(--surface-2);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+
+.chip--accent {
+  border-color: transparent;
+  background: var(--accent-wash);
+  color: var(--accent);
+}

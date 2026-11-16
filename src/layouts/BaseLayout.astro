@@ -1,5 +1,8 @@
 ---
 import '../styles/global.css';
+import GoogleFonts from '../components/shared/GoogleFonts.astro';
+import SocialMeta from '../components/shared/SocialMeta.astro';
+import ThemeInit from '../components/shared/ThemeInit.astro';
 import type { Lang } from '../i18n/translations';
 import { langPrefix } from '../i18n/translations';
 
@@ -26,46 +29,22 @@ const socialImage = new URL(base + ogImage, assetOrigin);
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="color-scheme" content="dark light" />
-    <script is:inline>
-      (() => {
-        const saved = localStorage.getItem('theme');
-        const theme =
-          saved === 'light' || saved === 'dark'
-            ? saved
-            : window.matchMedia('(prefers-color-scheme: dark)').matches
-              ? 'dark'
-              : 'light';
-        document.documentElement.dataset.theme = theme;
-      })();
-    </script>
+    <ThemeInit />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="canonical" href={canonical} />
     <link rel="alternate" hreflang="en" href={altEn} />
     <link rel="alternate" hreflang="pt-BR" href={altPt} />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:url" content={canonical} />
-    <meta property="og:site_name" content="LuminusOS" />
-    <meta property="og:locale" content={lang === 'pt-br' ? 'pt_BR' : 'en_US'} />
-    <meta property="og:image" content={socialImage} />
-    <meta property="og:image:type" content="image/png" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="LuminusOS" />
-    <meta property="og:type" content="website" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={socialImage} />
-    <meta name="twitter:image:alt" content="LuminusOS" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Sans:ital,wght@0,400..700;1,400&family=JetBrains+Mono:wght@400;600&display=swap"
-      rel="stylesheet"
+    <SocialMeta
+      title={title}
+      description={description}
+      url={canonical}
+      image={socialImage}
+      siteName="LuminusOS"
+      locale={lang === 'pt-br' ? 'pt_BR' : 'en_US'}
     />
+    <GoogleFonts />
     <meta name="generator" content={Astro.generator} />
   </head>
   <body>

@@ -1,3 +1,4 @@
+import { navEn } from './nav';
 import { zaptideEn } from './zaptide';
 
 export const en = {
@@ -7,25 +8,7 @@ export const en = {
     description:
       'LuminusOS is an immutable Linux distribution based on Fedora bootc, with atomic updates, rollback, GNOME and Aurora Shell. Workstation is available for PCs, with other device editions planned.',
   },
-  nav: {
-    overview: 'Overview',
-    how: 'How it works',
-    editions: 'Editions',
-    aurora: 'Aurora Shell',
-    auroraShort: 'Aurora',
-    aetheris: 'Aetheris',
-    zaptide: 'ZapTide',
-    products: 'Products',
-    resources: 'Resources',
-    language: 'Language',
-    menu: 'Menu',
-    wiki: 'Wiki',
-    blog: 'Blog',
-    contribute: 'Get Involved',
-    download: 'Download',
-    donate: 'Donate',
-    themeToggle: 'Toggle light/dark theme',
-  },
+  nav: navEn,
   hero: {
     eyebrow: 'Immutable · Atomic · Fedora bootc',
     title: 'One system.',
@@ -150,6 +133,13 @@ export const en = {
     format: 'Choose format',
     notes: 'Release notes',
     note: 'Downloads are served from SourceForge mirrors worldwide. The button always points to the most recent version.',
+  },
+  blog: {
+    eyebrow: 'From the blog',
+    title: 'Latest news from the project',
+    subtitle: 'Release notes and development updates from the people building LuminusOS.',
+    all: 'All posts',
+    minutes: 'min read',
   },
   support: {
     title: 'Like what we are building?',

@@ -1,0 +1,191 @@
+---
+// Blog post preview used by the blog index and the main site's home page.
+// Callers resolve URLs and format dates because each root has its own base
+// path and language.
+interface Props {
+  href: string;
+  title: string;
+  description: string;
+  tag: string;
+  date: Date;
+  dateLabel: string;
+  footer: string;
+  /** Absolute or base-resolved cover image; omitted posts get the logo on a gradient. */
+  cover?: string;
+  fallbackLogo: string;
+  featured?: boolean;
+  /** Label for the corner badge on the featured card, e.g. "Latest". */
+  badge?: string;
+  /** Heading level, so cards sit one level below their section heading. */
+  headingLevel?: 'h2' | 'h3';
+  /** Language of the post text when it differs from the page language. */
+  contentLang?: string;
+}
+
+const { href, title, description, tag, date, dateLabel, footer, cover, fallbackLogo, featured = false, badge, headingLevel: Heading = 'h3', contentLang } = Astro.props;
+---
+
+<li class:list={['item', { featured }]} data-post-card data-tag={tag} lang={contentLang}>
+  <a class="post-card" href={href}>
+    <div class="cover" data-tag={tag}>
+      {cover ? (
+        <img src={cover} alt="" loading={featured ? 'eager' : 'lazy'} decoding="async" />
+      ) : (
+        <img class="fallback" src={fallbackLogo} alt="" width="72" height="72" />
+      )}
+      {badge && <span class="badge mono">{badge}</span>}
+    </div>
+    <div class="body">
+      <div class="meta">
+        <span class="tag mono">{tag}</span>
+        <time class="mono" datetime={date.toISOString()}>{dateLabel}</time>
+      </div>
+      <Heading>{title}</Heading>
+      <p class="desc">{description}</p>
+      <p class="foot mono">{footer}</p>
+    </div>
+  </a>
+</li>
+
+<style>
+  .item {
+    display: block;
+  }
+
+  .item[hidden] {
+    display: none;
+  }
+
+  .post-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    background: var(--surface-1);
+    color: inherit;
+    text-decoration: none;
+    transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .post-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow);
+  }
+
+  .cover {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-bottom: 1px solid var(--border-color);
+    background: linear-gradient(135deg, #1a5fb4, #3584e4 60%, #62a0ea);
+  }
+
+  .cover[data-tag='Aetheris'] {
+    background: linear-gradient(135deg, #12325a, #1a5fb4 55%, #3584e4);
+  }
+
+  .cover[data-tag='Aurora Shell'] {
+    background: linear-gradient(135deg, #1b2a4a, #3a2f7a 55%, #2ec27e);
+  }
+
+  .cover img:not(.fallback) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    transition: transform 0.35s ease;
+  }
+
+  .post-card:hover .cover img:not(.fallback) {
+    transform: scale(1.03);
+  }
+
+  .fallback {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 4.5rem;
+    height: 4.5rem;
+    filter: brightness(0) invert(1);
+    opacity: 0.9;
+  }
+
+  .badge {
+    position: absolute;
+    top: 0.85rem;
+    left: 0.85rem;
+    padding: 0.28rem 0.7rem;
+    border-radius: var(--radius-pill);
+    background: var(--accent);
+    color: var(--accent-ink);
+    font-size: 0.65rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding: 1.15rem 1.3rem 1.3rem;
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.4rem 0.75rem;
+  }
+
+  .tag {
+    padding: 0.18rem 0.65rem;
+    border-radius: var(--radius-pill);
+    background: var(--accent-wash);
+    font-size: 0.64rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  time {
+    font-size: 0.72rem;
+    color: var(--ink-faint);
+  }
+
+  .body :global(:is(h2, h3)) {
+    font-size: 1.22rem;
+    line-height: 1.2;
+  }
+
+  .desc {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin: 0;
+    font-size: 0.93rem;
+    line-height: 1.55;
+    color: var(--ink-dim);
+  }
+
+  .foot {
+    margin: auto 0 0;
+    padding-top: 0.4rem;
+    font-size: 0.72rem;
+    color: var(--ink-faint);
+  }
+
+  .featured .post-card {
+    border-radius: 22px;
+    box-shadow: var(--shadow);
+  }
+
+  .featured .body :global(:is(h2, h3)) {
+    font-size: clamp(1.4rem, 2.2vw, 1.75rem);
+  }
+</style>

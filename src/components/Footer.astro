@@ -1,6 +1,6 @@
 ---
 import type { Lang } from '../i18n/translations';
-import { translations, langPrefix, links, mainSite, auroraHref, siteHref } from '../i18n/translations';
+import { translations, langPrefix, links, mainSite, siblingLinks } from '../i18n/translations';
 
 interface Props {
   lang: Lang;
@@ -9,6 +9,7 @@ interface Props {
 const { lang } = Astro.props;
 const t = translations[lang];
 const p = langPrefix(lang);
+const sites = siblingLinks(p);
 const year = new Date().getFullYear();
 ---
 
@@ -27,11 +28,12 @@ const year = new Date().getFullYear();
       <a href={`${mainSite}${p}/#why`}>{t.nav.overview}</a>
       <a href={`${mainSite}${p}/#how`}>{t.nav.how}</a>
       <a href={`${mainSite}${p}/#download`}>{t.nav.editions}</a>
-      <a href={auroraHref(p)}>{t.nav.aurora}</a>
+      <a href={sites.aurora}>{t.nav.aurora}</a>
       <a href={`${mainSite}${p}/aetheris`}>{t.nav.aetheris}</a>
       <a href={`${mainSite}${p}/zaptide`}>{t.nav.zaptide}</a>
-      <a href={siteHref('/wiki', links.wikiSite)}>{t.nav.wiki}</a>
-      <a href={siteHref('/blog', links.blogSite)}>{t.nav.blog}</a>
+      <a href={sites.apps}>{t.nav.apps}</a>
+      <a href={sites.wiki}>{t.nav.wiki}</a>
+      <a href={sites.blog}>{t.nav.blog}</a>
     </nav>
 
     <nav aria-label={t.footer.community}>
