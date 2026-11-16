@@ -128,7 +128,7 @@ top-level `src/` tree instead of copying it:
 | Path | Holds |
 | --- | --- |
 | `src/styles/tokens.css`, `ui.css` | Palette, type, radii; buttons and chips |
-| `src/components/shared/` | Head helpers, header pieces (`SiteHeader`, `NavPill`, `ThemeToggle`), `SiteFooter`, `PostCard` |
+| `src/components/shared/` | Head helpers, header pieces (`SiteHeader`, `ThemeToggle`), `SiteFooter`, `PostCard` |
 | `src/scripts/` | Theme toggle, menu dismissal, copy buttons |
 | `src/lib/` | Sibling-site URLs, navbar model (`site-nav.ts`), reading time |
 

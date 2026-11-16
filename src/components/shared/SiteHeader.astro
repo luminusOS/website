@@ -1,8 +1,7 @@
 ---
 // The one navbar used by the main site, blog and apps. Callers build `nav`
 // with buildSiteNav() so destinations never drift between sites.
-import type { LanguageMenu, SiteNav } from '../../lib/site-nav';
-import NavPill from './NavPill.astro';
+import type { LanguageMenu, NavIcon, SiteNav } from '../../lib/site-nav';
 import ThemeToggle from './ThemeToggle.astro';
 
 interface Props {
@@ -12,6 +11,15 @@ interface Props {
 }
 
 const { nav, logoSrc, language } = Astro.props;
+
+const icons: Record<NavIcon, string> = {
+  home: 'M3 11.5 12 4l9 7.5M5.5 10v9.5h13V10',
+  blog: 'M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3zM9 9h6M9 13h6',
+  involved: 'M9 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM2.5 20c0-3.3 2.9-5.5 6.5-5.5s6.5 2.2 6.5 5.5M16 4.3a3.5 3.5 0 0 1 0 6.4M18 14.8c2.1.6 3.5 2.3 3.5 5.2',
+  wiki: 'M4 5.5C4 4.7 4.7 4 5.5 4H20v14H5.5A1.5 1.5 0 0 0 4 19.5zM4 19.5A1.5 1.5 0 0 0 5.5 21H20v-3',
+  aurora: 'M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9zM19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8z',
+  apps: 'M4 4h6.5v6.5H4zM13.5 4H20v6.5h-6.5zM4 13.5h6.5V20H4zM13.5 13.5H20V20h-6.5z',
+};
 
 const chevronPath = 'm6 9 6 6 6-6';
 const globePath =
@@ -29,11 +37,14 @@ const heartPath =
     </a>
 
     <nav class="main-nav" aria-label="Main">
-      {nav.links.map((item) => <a href={item.href} aria-current={item.current ? 'page' : undefined}>{item.label}</a>)}
-      <span class="nav-sep" aria-hidden="true"></span>
-      <div class="pills">
-        {nav.pills.map((item) => <NavPill href={item.href} icon={item.icon} current={item.current}>{item.label}</NavPill>)}
-      </div>
+      {nav.links.map((item) => (
+        <a href={item.href} aria-current={item.current ? 'page' : undefined}>
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d={icons[item.icon]} />
+          </svg>
+          {item.label}
+        </a>
+      ))}
     </nav>
 
     <div class="header-actions">
@@ -79,12 +90,15 @@ const heartPath =
           </svg>
         </summary>
         <div class="mobile-panel">
-          <nav class="mobile-pills" aria-label={nav.pills.map((item) => item.label).join(', ')}>
-            {nav.pills.map((item) => <NavPill href={item.href} icon={item.icon} current={item.current} size="lg">{item.label}</NavPill>)}
-          </nav>
-
           <nav class="mobile-group" aria-label={nav.menuLabel}>
-            {nav.links.map((item) => <a href={item.href} aria-current={item.current ? 'page' : undefined}>{item.label}</a>)}
+            {nav.links.map((item) => (
+              <a href={item.href} aria-current={item.current ? 'page' : undefined}>
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d={icons[item.icon]} />
+                </svg>
+                {item.label}
+              </a>
+            ))}
           </nav>
 
           <div class="mobile-group">
@@ -157,9 +171,9 @@ const heartPath =
   }
 
   .header-inner {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    justify-content: space-between;
     gap: 1.25rem;
     width: min(var(--container), calc(100% - 2.5rem));
     min-height: var(--header-h);
@@ -168,6 +182,7 @@ const heartPath =
   }
 
   .brand {
+    justify-self: start;
     display: inline-flex;
     align-items: center;
     gap: 0.55rem;
@@ -194,22 +209,15 @@ const heartPath =
 
   .main-nav {
     display: flex;
-    flex: 1;
     align-items: center;
     gap: 0.15rem;
-    margin-left: 0.75rem;
-  }
-
-  .pills {
-    display: flex;
-    gap: 0.5rem;
   }
 
   .main-nav > a {
     display: inline-flex;
     align-items: center;
-    gap: 0.3rem;
-    padding: 0.45rem 0.7rem;
+    gap: 0.45rem;
+    padding: 0.45rem 0.75rem;
     border-radius: var(--radius-sm);
     color: var(--ink);
     font-size: 0.925rem;
@@ -229,13 +237,6 @@ const heartPath =
   .main-nav > a[aria-current='page'] {
     color: var(--accent);
     font-weight: 600;
-  }
-
-  .nav-sep {
-    width: 1px;
-    height: 1.35rem;
-    margin-inline: 0.6rem 0.75rem;
-    background: var(--border-color);
   }
 
   .lang-menu summary,
@@ -301,19 +302,11 @@ const heartPath =
     font-weight: 600;
   }
 
-  /* Divider between the site navigation and the controls. */
   .header-actions {
+    justify-self: end;
     display: flex;
     align-items: center;
     gap: 0.4rem;
-  }
-
-  .header-actions::before {
-    content: '';
-    width: 1px;
-    height: 1.35rem;
-    margin-inline: 0.5rem 0.25rem;
-    background: var(--border-color);
   }
 
   .donate-icon {
@@ -399,14 +392,6 @@ const heartPath =
     to { opacity: 1; transform: none; }
   }
 
-  .mobile-pills {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.6rem;
-    width: min(34rem, 100%);
-    margin-inline: auto;
-  }
-
   .mobile-group {
     display: grid;
     gap: 0.15rem;
@@ -490,10 +475,14 @@ const heartPath =
   }
 
   @media (max-width: 980px) {
+    .header-inner {
+      display: flex;
+      justify-content: space-between;
+    }
+
     .main-nav,
     .lang-menu,
-    .donate-icon,
-    .header-actions::before {
+    .donate-icon {
       display: none;
     }
 

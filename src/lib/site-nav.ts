@@ -7,14 +7,13 @@ export type NavStrings = typeof navEn;
 export type SiblingSites = ReturnType<typeof siblingSites>;
 export type SiteSection = 'home' | 'contribute' | 'main' | 'blog' | 'apps' | 'aurora';
 
+export type NavIcon = 'home' | 'blog' | 'involved' | 'wiki' | 'aurora' | 'apps';
+
 export interface NavLink {
   href: string;
   label: string;
+  icon: NavIcon;
   current?: boolean;
-}
-
-export interface NavPillLink extends NavLink {
-  icon: 'aurora' | 'apps';
 }
 
 export interface LanguageItem {
@@ -41,9 +40,8 @@ export interface LanguageMenu {
 export interface SiteNav {
   brandHref: string;
   links: NavLink[];
-  pills: NavPillLink[];
-  download: NavLink;
-  donate: NavLink;
+  download: { href: string; label: string };
+  donate: { href: string; label: string };
   themeLabel: string;
   menuLabel: string;
 }
@@ -65,14 +63,12 @@ export function buildSiteNav({ strings: t, sites, mainRoot, current }: Options):
   return {
     brandHref: mainRoot,
     links: [
-      { href: mainRoot, label: t.home, current: current === 'home' },
-      { href: sites.blog, label: t.blog, current: current === 'blog' },
-      { href: `${mainRoot}contribute`, label: t.contribute, current: current === 'contribute' },
-      { href: sites.wiki, label: t.wiki },
-    ],
-    pills: [
-      { href: sites.aurora, icon: 'aurora', label: t.auroraShort, current: current === 'aurora' },
-      { href: sites.apps, icon: 'apps', label: t.apps, current: current === 'apps' },
+      { href: mainRoot, label: t.home, icon: 'home', current: current === 'home' },
+      { href: sites.blog, label: t.blog, icon: 'blog', current: current === 'blog' },
+      { href: `${mainRoot}contribute`, label: t.contribute, icon: 'involved', current: current === 'contribute' },
+      { href: sites.wiki, label: t.wiki, icon: 'wiki' },
+      { href: sites.aurora, label: t.auroraShort, icon: 'aurora', current: current === 'aurora' },
+      { href: sites.apps, label: t.apps, icon: 'apps', current: current === 'apps' },
     ],
     download: { href: `${mainRoot}#download`, label: t.download },
     donate: { href: donateUrl, label: t.donate },
