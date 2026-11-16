@@ -36,6 +36,12 @@ export default defineConfig({
 
   adapter: cloudflare(),
   vite: {
+    // The Cloudflare adapter prerenders in workerd, where process.env is not
+    // the build's environment, so pass the build switches in explicitly.
+    define: {
+      'import.meta.env.SITE_VARIANT': JSON.stringify(variant),
+      'import.meta.env.SITE_BASE': JSON.stringify(process.env.SITE_BASE ?? ''),
+    },
     server: {
       watch: watchConfig('**/apps/**', '**/blog/**', '**/wiki/**'),
     },

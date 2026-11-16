@@ -5,7 +5,7 @@ export const donateUrl = 'https://opencollective.com/luminusos';
 
 export type NavStrings = typeof navEn;
 export type SiblingSites = ReturnType<typeof siblingSites>;
-export type SiteSection = 'main' | 'blog' | 'apps' | 'aurora';
+export type SiteSection = 'home' | 'contribute' | 'main' | 'blog' | 'apps' | 'aurora';
 
 export interface NavLink {
   href: string;
@@ -41,7 +41,6 @@ export interface LanguageMenu {
 export interface SiteNav {
   brandHref: string;
   links: NavLink[];
-  resources: { label: string; items: NavLink[] };
   pills: NavPillLink[];
   download: NavLink;
   donate: NavLink;
@@ -66,18 +65,11 @@ export function buildSiteNav({ strings: t, sites, mainRoot, current }: Options):
   return {
     brandHref: mainRoot,
     links: [
-      { href: `${mainRoot}#why`, label: t.overview },
-      { href: `${mainRoot}#how`, label: t.how },
-      { href: `${mainRoot}#download`, label: t.editions },
+      { href: mainRoot, label: t.home, current: current === 'home' },
+      { href: sites.blog, label: t.blog, current: current === 'blog' },
+      { href: `${mainRoot}contribute`, label: t.contribute, current: current === 'contribute' },
+      { href: sites.wiki, label: t.wiki },
     ],
-    resources: {
-      label: t.resources,
-      items: [
-        { href: sites.blog, label: t.blog, current: current === 'blog' },
-        { href: `${mainRoot}contribute`, label: t.contribute },
-        { href: sites.wiki, label: t.wiki },
-      ],
-    },
     pills: [
       { href: sites.aurora, icon: 'aurora', label: t.auroraShort, current: current === 'aurora' },
       { href: sites.apps, icon: 'apps', label: t.apps, current: current === 'apps' },

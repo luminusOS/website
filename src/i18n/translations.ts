@@ -6,7 +6,7 @@ import { ptBr } from './pt-br';
 export type Lang = 'en' | 'pt-br';
 
 export type SiteVariant = '' | 'aurora';
-export const siteVariant = (process.env.SITE_VARIANT ?? '') as SiteVariant;
+export const siteVariant = (import.meta.env.SITE_VARIANT ?? '') as SiteVariant;
 
 export const mainSite = siteVariant ? 'https://luminusos.org' : '';
 
@@ -20,7 +20,7 @@ export function langPrefix(lang: Lang): string {
 }
 
 // Dev and the Pages fallback use local paths; Cloudflare uses subdomains.
-const useLocalPaths = import.meta.env.DEV || Boolean(process.env.SITE_BASE);
+const useLocalPaths = import.meta.env.DEV || Boolean(import.meta.env.SITE_BASE);
 
 // The standalone Aurora build links to every other site by absolute URL and
 // treats the Aurora page as its own root.

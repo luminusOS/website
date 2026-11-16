@@ -1,4 +1,5 @@
 export const navEn = {
+  home: 'Home',
   overview: 'Overview',
   how: 'How it works',
   editions: 'Editions',
@@ -19,6 +20,7 @@ export const navEn = {
 };
 
 export const navPtBr: typeof navEn = {
+  home: 'Início',
   overview: 'Visão geral',
   how: 'Como funciona',
   editions: 'Edições',

@@ -19,10 +19,6 @@ const globePath =
 const heartPath =
   'M12 21s-7.5-4.7-10-9.3C.4 8.6 2.4 5 5.8 5c2 0 3.4 1.1 4.2 2.4l2 .1 2-.1C14.8 6.1 16.2 5 18.2 5c3.4 0 5.4 3.6 3.8 6.7C19.5 16.3 12 21 12 21z';
 
-const mobileGroups = [
-  { label: null, items: nav.links },
-  { label: nav.resources.label, items: nav.resources.items },
-];
 ---
 
 <header class="site-header">
@@ -33,22 +29,11 @@ const mobileGroups = [
     </a>
 
     <nav class="main-nav" aria-label="Main">
-      {nav.links.map((item) => <a href={item.href}>{item.label}</a>)}
-      <details class="nav-menu" data-nav-menu>
-        <summary>
-          {nav.resources.label}
-          <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
-            <path d={chevronPath} />
-          </svg>
-        </summary>
-        <ul role="list">
-          {nav.resources.items.map((item) => (
-            <li><a href={item.href} aria-current={item.current ? 'page' : undefined}>{item.label}</a></li>
-          ))}
-        </ul>
-      </details>
+      {nav.links.map((item) => <a href={item.href} aria-current={item.current ? 'page' : undefined}>{item.label}</a>)}
       <span class="nav-sep" aria-hidden="true"></span>
-      {nav.pills.map((item) => <NavPill href={item.href} icon={item.icon} current={item.current}>{item.label}</NavPill>)}
+      <div class="pills">
+        {nav.pills.map((item) => <NavPill href={item.href} icon={item.icon} current={item.current}>{item.label}</NavPill>)}
+      </div>
     </nav>
 
     <div class="header-actions">
@@ -98,12 +83,9 @@ const mobileGroups = [
             {nav.pills.map((item) => <NavPill href={item.href} icon={item.icon} current={item.current} size="lg">{item.label}</NavPill>)}
           </nav>
 
-          {mobileGroups.map((group) => (
-            <nav class="mobile-group" aria-label={group.label ?? nav.menuLabel}>
-              {group.label && <p class="mobile-group-title mono">{group.label}</p>}
-              {group.items.map((item) => <a href={item.href}>{item.label}</a>)}
-            </nav>
-          ))}
+          <nav class="mobile-group" aria-label={nav.menuLabel}>
+            {nav.links.map((item) => <a href={item.href} aria-current={item.current ? 'page' : undefined}>{item.label}</a>)}
+          </nav>
 
           <div class="mobile-group">
             <p class="mobile-group-title mono">{language.title}</p>
@@ -144,7 +126,7 @@ const mobileGroups = [
   import { setupSharedHeaderControls } from '../../scripts/header-controls';
 
   setupSharedHeaderControls();
-  closeMenusOnDismiss('[data-lang-menu], [data-nav-menu], [data-mobile-menu]');
+  closeMenusOnDismiss('[data-lang-menu], [data-mobile-menu]');
 
   document.querySelectorAll('[data-mobile-menu] a').forEach((link) => {
     link.addEventListener('click', () => {
@@ -212,12 +194,18 @@ const mobileGroups = [
 
   .main-nav {
     display: flex;
+    flex: 1;
     align-items: center;
     gap: 0.15rem;
+    margin-left: 0.75rem;
   }
 
-  .main-nav > a,
-  .nav-menu summary {
+  .pills {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .main-nav > a {
     display: inline-flex;
     align-items: center;
     gap: 0.3rem;
@@ -234,40 +222,32 @@ const mobileGroups = [
   }
 
   .main-nav > a:hover,
-  .nav-menu summary:hover,
-  .nav-menu[open] summary {
+  .main-nav > a[aria-current='page'] {
     background: var(--surface-2);
+  }
+
+  .main-nav > a[aria-current='page'] {
+    color: var(--accent);
+    font-weight: 600;
   }
 
   .nav-sep {
     width: 1px;
     height: 1.35rem;
-    margin-inline: 0.6rem 0.45rem;
+    margin-inline: 0.6rem 0.75rem;
     background: var(--border-color);
   }
 
-  .nav-menu {
-    position: relative;
-    display: inline-flex;
-  }
-
-  .nav-menu summary,
   .lang-menu summary,
   .mobile-menu summary {
     list-style: none;
   }
 
-  .nav-menu summary::-webkit-details-marker,
   .lang-menu summary::-webkit-details-marker,
   .mobile-menu summary::-webkit-details-marker {
     display: none;
   }
 
-  .nav-menu[open] summary svg {
-    transform: rotate(180deg);
-  }
-
-  .nav-menu ul,
   .lang-pop {
     position: absolute;
     top: calc(100% + 0.5rem);
@@ -278,15 +258,6 @@ const mobileGroups = [
     border: 1px solid var(--border-color);
     border-radius: var(--radius);
     box-shadow: 0 1px 2px rgb(0 0 0 / 0.06), 0 10px 28px rgb(0 0 0 / 0.14);
-  }
-
-  .nav-menu ul {
-    left: 50%;
-    transform: translateX(-50%);
-    margin: 0;
-    list-style: none;
-    display: grid;
-    gap: 0.15rem;
   }
 
   .lang-pop {
@@ -309,7 +280,6 @@ const mobileGroups = [
     list-style: none;
   }
 
-  .nav-menu ul a,
   .lang-pop a {
     display: flex;
     align-items: center;
@@ -321,13 +291,11 @@ const mobileGroups = [
     text-decoration: none;
   }
 
-  .nav-menu ul a:hover,
   .lang-pop a:hover {
     background: var(--surface-2);
     color: var(--ink);
   }
 
-  .nav-menu ul a[aria-current],
   .lang-pop a[aria-current] {
     color: var(--accent);
     font-weight: 600;

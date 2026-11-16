@@ -14,11 +14,18 @@ const prefix = langPrefix(lang);
 const current = languages.find((l) => l.code === lang)!;
 const t = translations[lang];
 
+const sectionOf = (route: string) => {
+  if (siteVariant === 'aurora' || route.startsWith('/aurora')) return 'aurora';
+  if (route === '/') return 'home';
+  if (route.startsWith('/contribute')) return 'contribute';
+  return 'main';
+};
+
 const nav = buildSiteNav({
   strings: t.nav,
   sites: siblingLinks(prefix),
   mainRoot: `${mainSite}${prefix}/`,
-  current: siteVariant === 'aurora' || path.startsWith('/aurora') ? 'aurora' : 'main',
+  current: sectionOf(path),
 });
 
 const language = {
