@@ -1,0 +1,84 @@
+---
+import { translations, type Lang } from '../i18n';
+import { featuredApp } from '../lib/apps';
+import { flatpak } from '../lib/flatpak';
+import SetupFaq from './SetupFaq.astro';
+import SetupSteps from './SetupSteps.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = translations[lang].setup;
+---
+
+<div class="container setup">
+  <header class="head">
+    <p class="eyebrow">{t.eyebrow}</p>
+    <h1>{t.title}</h1>
+    <p class="sub">{t.subtitle}</p>
+    <a class="btn btn-ghost" href="https://flatpak.org/setup/" target="_blank" rel="noopener">{t.flatpakGuide} ↗</a>
+  </header>
+
+  <SetupSteps example={featuredApp()} lang={lang} />
+
+  <section class="one-click">
+    <div>
+      <h2>{t.oneClick}</h2>
+      <p>{t.oneClickBody}</p>
+    </div>
+    <a class="btn btn-primary" href={flatpak.repoFile}>{t.oneClickCta}</a>
+  </section>
+
+  <SetupFaq lang={lang} />
+</div>
+
+<style>
+  .setup {
+    display: grid;
+    gap: clamp(2.5rem, 5vw, 4rem);
+    width: min(52rem, calc(100% - 2.5rem));
+    padding-block: clamp(2.5rem, 6vw, 4.5rem) clamp(3.5rem, 7vw, 5.5rem);
+  }
+
+  .head {
+    display: grid;
+    gap: 1rem;
+    justify-items: start;
+  }
+
+  h1 {
+    font-size: clamp(2.4rem, 5.5vw, 3.6rem);
+    font-weight: 800;
+  }
+
+  .sub {
+    max-width: 56ch;
+    font-size: 1.1rem;
+    color: var(--ink-dim);
+  }
+
+  .one-click {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+    padding: 1.6rem 1.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    background: var(--band-tint);
+  }
+
+  .one-click h2 {
+    margin-bottom: 0.35rem;
+    font-size: 1.3rem;
+  }
+
+  .one-click p {
+    max-width: 46ch;
+    font-size: 0.95rem;
+    color: var(--ink-dim);
+  }
+</style>

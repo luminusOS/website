@@ -1,0 +1,71 @@
+---
+import type { AppEntry } from '../data/apps';
+import { translations, type Lang } from '../i18n';
+import { homeHref } from '../lib/apps';
+import AppAbout from './AppAbout.astro';
+import AppDetails from './AppDetails.astro';
+import AppHeader from './AppHeader.astro';
+import InstallCommands from './InstallCommands.astro';
+import ReleaseTimeline from './ReleaseTimeline.astro';
+import ScreenshotGallery from './ScreenshotGallery.astro';
+
+interface Props {
+  app: AppEntry;
+  lang: Lang;
+}
+
+const { app, lang } = Astro.props;
+---
+
+<div class="container page">
+  <a class="back" href={homeHref(lang)}>← {translations[lang].app.back}</a>
+
+  <AppHeader app={app} lang={lang} />
+  <ScreenshotGallery app={app} lang={lang} />
+
+  <div class="body">
+    <div class="main">
+      <AppAbout app={app} lang={lang} />
+      <InstallCommands app={app} lang={lang} />
+      <ReleaseTimeline releases={app.releases} lang={lang} />
+    </div>
+    <AppDetails app={app} lang={lang} />
+  </div>
+</div>
+
+<style>
+  .page {
+    padding-block: 1.75rem clamp(3.5rem, 7vw, 5.5rem);
+  }
+
+  .back {
+    display: inline-block;
+    font-size: 0.9rem;
+    color: var(--ink-dim);
+    text-decoration: none;
+  }
+
+  .back:hover {
+    color: var(--accent);
+  }
+
+  .body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 19rem;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
+    margin-top: 2rem;
+  }
+
+  .main {
+    display: grid;
+    gap: 2.75rem;
+    min-width: 0;
+  }
+
+  @media (max-width: 900px) {
+    .body {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

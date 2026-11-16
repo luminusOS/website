@@ -9,6 +9,7 @@ const targets = {
   site: { label: 'site', port: publicPort + 1 },
   blog: { label: 'blog', port: publicPort + 2, prefix: '/blog' },
   wiki: { label: 'wiki', port: publicPort + 3, prefix: '/wiki' },
+  apps: { label: 'apps', port: publicPort + 4, prefix: '/apps' },
 };
 let shuttingDown = false;
 let children = [];
@@ -59,7 +60,7 @@ server.on('upgrade', (request, socket, head) => {
 
 server.listen(publicPort, '0.0.0.0', () => {
   console.log(`dev proxy ready: http://localhost:${publicPort}`);
-  console.log(`routes: / -> site, /aurora -> site, /blog -> blog, /wiki -> wiki`);
+  console.log(`routes: / -> site, /aurora -> site, /blog -> blog, /wiki -> wiki, /apps -> apps`);
   ensureWikiSearchIndex();
   children = [
     startDevServer('site', ['exec', 'astro', '--', 'dev', '--host', host, '--port', String(targets.site.port)]),
@@ -69,6 +70,10 @@ server.listen(publicPort, '0.0.0.0', () => {
     }),
     startDevServer('wiki', ['exec', 'astro', '--', 'dev', '--root', 'wiki', '--host', host, '--port', String(targets.wiki.port)], {
       SITE_BASE: '/wiki',
+      SITE_URL: `http://localhost:${publicPort}`,
+    }),
+    startDevServer('apps', ['exec', 'astro', '--', 'dev', '--root', 'apps', '--host', host, '--port', String(targets.apps.port)], {
+      SITE_BASE: '/apps',
       SITE_URL: `http://localhost:${publicPort}`,
     }),
   ];
@@ -135,6 +140,10 @@ function resolveTarget(rawUrl, headers = {}) {
     return targets.wiki;
   }
 
+  if (pathname === targets.apps.prefix || pathname.startsWith(`${targets.apps.prefix}/`)) {
+    return targets.apps;
+  }
+
   if (isSharedDevPath(pathname)) {
     const referer = Array.isArray(headers.referer) ? headers.referer[0] : headers.referer;
     const refererPath = referer ? new URL(referer, `http://localhost:${publicPort}`).pathname : '';
@@ -145,6 +154,10 @@ function resolveTarget(rawUrl, headers = {}) {
 
     if (refererPath === targets.wiki.prefix || refererPath.startsWith(`${targets.wiki.prefix}/`)) {
       return targets.wiki;
+    }
+
+    if (refererPath === targets.apps.prefix || refererPath.startsWith(`${targets.apps.prefix}/`)) {
+      return targets.apps;
     }
   }
 

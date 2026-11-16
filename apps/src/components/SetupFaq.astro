@@ -1,0 +1,59 @@
+---
+import { translations, type Lang } from '../i18n';
+import { homeHref } from '../lib/apps';
+import { flatpak } from '../lib/flatpak';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = translations[lang].setup;
+---
+
+<section>
+  <h2>{t.faqTitle}</h2>
+  <dl class="faq">
+    {t.faq.map((item) => (
+      <div>
+        <dt>{item.q}</dt>
+        <dd>{item.a}</dd>
+      </div>
+    ))}
+  </dl>
+  <div class="links">
+    <a class="btn btn-primary" href={homeHref(lang)}>{t.allApps}</a>
+    <a class="btn btn-ghost" href={flatpak.docs} target="_blank" rel="noopener">{t.docs} ↗</a>
+  </div>
+</section>
+
+<style>
+  h2 {
+    margin-bottom: 1.25rem;
+    font-size: 1.6rem;
+  }
+
+  .faq {
+    display: grid;
+    gap: 1.25rem;
+    margin: 0 0 2rem;
+  }
+
+  dt {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+
+  dd {
+    max-width: 62ch;
+    margin: 0.25rem 0 0;
+    color: var(--ink-dim);
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+</style>

@@ -37,7 +37,7 @@ export default defineConfig({
   adapter: cloudflare(),
   vite: {
     server: {
-      watch: watchConfig('**/blog/**', '**/wiki/**'),
+      watch: watchConfig('**/apps/**', '**/blog/**', '**/wiki/**'),
     },
   },
 });

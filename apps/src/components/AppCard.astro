@@ -1,0 +1,93 @@
+---
+import type { AppEntry } from '../data/apps';
+import type { Lang } from '../i18n';
+import { appHref } from '../lib/apps';
+import { withBase } from '../lib/site';
+
+interface Props {
+  app: AppEntry;
+  lang: Lang;
+}
+
+const { app, lang } = Astro.props;
+// Both summaries are searchable so a query in either language finds the app.
+const search = [app.name, app.summary[lang], app.summary.en, app.category[lang], app.id, ...app.keywords]
+  .join(' ')
+  .toLowerCase();
+---
+
+<li class="app-card-item" data-app-card data-search={search}>
+  <a class="app-card" href={appHref(app, lang)}>
+    <img class="app-icon" src={withBase(app.icon)} alt="" width="64" height="64" loading="lazy" />
+    <div class="app-card-text">
+      <h3>{app.name}</h3>
+      <p>{app.summary[lang]}</p>
+    </div>
+    <div class="app-card-meta">
+      <span class="chip">{app.category[lang]}</span>
+      <span class="mono version">v{app.releases[0].version}</span>
+    </div>
+  </a>
+</li>
+
+<style>
+  .app-card-item {
+    display: block;
+  }
+
+  .app-card-item[hidden] {
+    display: none;
+  }
+
+  .app-card {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.9rem 1.1rem;
+    align-items: center;
+    height: 100%;
+    padding: 1.25rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    background: var(--surface-1);
+    text-decoration: none;
+    transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .app-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+  }
+
+  .app-icon {
+    width: 4rem;
+    height: 4rem;
+    filter: drop-shadow(0 4px 8px rgb(0 0 0 / 0.18));
+  }
+
+  .app-card-text h3 {
+    font-size: 1.25rem;
+  }
+
+  .app-card-text p {
+    margin-top: 0.15rem;
+    font-size: 0.95rem;
+    line-height: 1.45;
+    color: var(--ink-dim);
+  }
+
+  .app-card-meta {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding-top: 0.85rem;
+    border-top: 1px solid var(--border-color);
+  }
+
+  .version {
+    font-size: 0.75rem;
+    color: var(--ink-faint);
+  }
+</style>

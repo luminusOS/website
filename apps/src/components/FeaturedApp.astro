@@ -1,0 +1,125 @@
+---
+import type { AppEntry } from '../data/apps';
+import { translations, type Lang } from '../i18n';
+import { appHref, showcaseShot } from '../lib/apps';
+import { withBase } from '../lib/site';
+
+interface Props {
+  app: AppEntry;
+  lang: Lang;
+}
+
+const { app, lang } = Astro.props;
+const t = translations[lang].home;
+---
+
+<section class="featured" aria-labelledby="featured-label" style={`--app-accent: ${app.accent}`}>
+  <div class="container">
+    <a class="banner" href={appHref(app, lang)}>
+      <img class="icon" src={withBase(app.icon)} alt="" width="112" height="112" />
+      <div class="copy">
+        <p class="label mono" id="featured-label">{t.featured}</p>
+        <h2>{app.name}</h2>
+        <p>{app.summary[lang]}</p>
+        <span class="btn">{t.viewApp} →</span>
+      </div>
+      <img class="shot" src={withBase(showcaseShot(app))} alt="" width="560" height="360" loading="lazy" />
+    </a>
+  </div>
+</section>
+
+<style>
+  .featured {
+    padding-top: 1rem;
+  }
+
+  /* The screenshot bleeds off the bottom-right corner, so the card keeps no
+     right or bottom padding and the image is pushed down by --pad instead. */
+  .banner {
+    --pad: clamp(1.5rem, 3vw, 2.5rem);
+
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) minmax(0, 0.8fr);
+    gap: clamp(1.25rem, 3vw, 2.5rem);
+    align-items: center;
+    overflow: hidden;
+    padding: var(--pad) 0 var(--pad) var(--pad);
+    border-radius: 24px;
+    box-shadow: var(--shadow);
+    color: #fff;
+    text-decoration: none;
+    background:
+      radial-gradient(40rem 20rem at 0% 0%, color-mix(in srgb, var(--app-accent) 70%, #fff 10%), transparent 70%),
+      linear-gradient(135deg, color-mix(in srgb, var(--app-accent) 55%, #0b1b33), #0b1b33);
+  }
+
+  .icon {
+    width: 7rem;
+    height: 7rem;
+    filter: drop-shadow(0 10px 20px rgb(0 0 0 / 0.35));
+  }
+
+  .copy {
+    display: grid;
+    gap: 0.6rem;
+    justify-items: start;
+  }
+
+  .label {
+    margin: 0;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    opacity: 0.8;
+  }
+
+  h2 {
+    font-size: clamp(2rem, 4vw, 2.9rem);
+  }
+
+  .copy p:not(.label) {
+    max-width: 34ch;
+    color: rgb(255 255 255 / 0.86);
+  }
+
+  .btn {
+    margin-top: 0.6rem;
+    background: #fff;
+    color: #0b1b33;
+  }
+
+  .banner:hover .btn {
+    background: #e7f0fd;
+  }
+
+  .shot {
+    align-self: end;
+    width: 100%;
+    margin-top: var(--pad);
+    border-radius: 12px 0 0 0;
+    box-shadow: -12px -12px 40px rgb(0 0 0 / 0.35);
+    transform: translateY(var(--pad));
+  }
+
+  @media (max-width: 900px) {
+    .banner {
+      grid-template-columns: auto minmax(0, 1fr);
+      padding-right: var(--pad);
+    }
+
+    .shot {
+      display: none;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .banner {
+      grid-template-columns: 1fr;
+    }
+
+    .icon {
+      width: 5rem;
+      height: 5rem;
+    }
+  }
+</style>

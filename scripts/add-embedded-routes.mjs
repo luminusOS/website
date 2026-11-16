@@ -3,14 +3,14 @@ import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } fr
 const dist = new URL('../dist/', import.meta.url);
 const routesPath = new URL('_routes.json', dist);
 
-for (const path of ['blog/CNAME', 'wiki/CNAME']) {
+for (const path of ['blog/CNAME', 'wiki/CNAME', 'apps/CNAME']) {
   rmSync(new URL(path, dist), { force: true });
 }
 
 const prefix = (process.env.SITE_BASE ?? '').replace(/^\/+|\/+$/g, '');
 const assets = new URL(`client/${prefix ? `${prefix}/` : ''}`, dist);
 mkdirSync(assets, { recursive: true });
-for (const path of ['blog', 'wiki']) {
+for (const path of ['blog', 'wiki', 'apps']) {
   cpSync(new URL(path, dist), new URL(path, assets), { recursive: true });
   rmSync(new URL(path, dist), { recursive: true });
 }
@@ -19,7 +19,7 @@ if (existsSync(routesPath)) {
   const routes = JSON.parse(readFileSync(routesPath, 'utf8'));
   const exclude = new Set(routes.exclude ?? []);
 
-  for (const route of ['/blog', '/blog/*', '/wiki', '/wiki/*']) {
+  for (const route of ['/blog', '/blog/*', '/wiki', '/wiki/*', '/apps', '/apps/*']) {
     exclude.add(route);
   }
 

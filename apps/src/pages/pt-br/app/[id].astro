@@ -1,0 +1,20 @@
+---
+import AppsLayout from '../../../layouts/AppsLayout.astro';
+import AppView from '../../../components/AppView.astro';
+import { apps } from '../../../data/apps';
+
+export function getStaticPaths() {
+  return apps.map((app) => ({ params: { id: app.id }, props: { app } }));
+}
+
+const { app } = Astro.props;
+---
+
+<AppsLayout
+  lang="pt-br"
+  title={`${app.name}: ${app.summary['pt-br']} | LuminusOS Apps`}
+  description={app.description['pt-br'][0]}
+  path={`/app/${app.id}`}
+>
+  <AppView app={app} lang="pt-br" />
+</AppsLayout>

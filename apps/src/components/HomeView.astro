@@ -1,0 +1,21 @@
+---
+import { apps } from '../data/apps';
+import type { Lang } from '../i18n';
+import { featuredApp } from '../lib/apps';
+import AppCatalog from './AppCatalog.astro';
+import FeaturedApp from './FeaturedApp.astro';
+import HomeHero from './HomeHero.astro';
+import RepoSection from './RepoSection.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const featured = featuredApp();
+---
+
+<HomeHero lang={lang} apps={apps} />
+<FeaturedApp app={featured} lang={lang} />
+<AppCatalog apps={apps} lang={lang} />
+<RepoSection example={featured} lang={lang} />

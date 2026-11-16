@@ -1,0 +1,96 @@
+---
+interface Props {
+  command: string;
+  label: string;
+  copy: string;
+  copied: string;
+}
+
+const { command, label, copy, copied } = Astro.props;
+---
+
+<div class="cmd">
+  <div class="bar">
+    <span>{label}</span>
+    <button class="copy" type="button" data-copy={command} data-copied={copied} aria-label={`${copy}: ${label}`}>
+      <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="9" y="9" width="12" height="12" rx="2" />
+        <path d="M5 15V5a2 2 0 0 1 2-2h8" />
+      </svg>
+      <span data-copy-label aria-live="polite">{copy}</span>
+    </button>
+  </div>
+  <pre><code>{command}</code></pre>
+</div>
+
+<style>
+  .cmd {
+    --term-bg: #1d1d20;
+    --term-bar: #2b2b2f;
+    --term-line: #3a3a3f;
+    --term-ink: #ededed;
+    --term-dim: #8f8f8f;
+    border-radius: var(--radius);
+    background: var(--term-bg);
+    border: 1px solid var(--term-line);
+    overflow: hidden;
+  }
+
+  :global(html[data-theme='dark']) .cmd {
+    --term-bg: #161618;
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.45rem 0.5rem 0.45rem 1rem;
+    background: var(--term-bar);
+    border-bottom: 1px solid var(--term-line);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--term-dim);
+  }
+
+  pre {
+    margin: 0;
+    padding: 0.95rem 1rem;
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--term-ink);
+  }
+
+  pre::before {
+    content: '$ ';
+    color: var(--accent-sky);
+  }
+
+  .copy {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 1.9rem;
+    padding: 0.2rem 0.7rem;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--term-ink);
+    font: inherit;
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+  }
+
+  .copy:hover {
+    background: rgb(255 255 255 / 0.1);
+  }
+
+  .copy[data-copy-done] {
+    color: #57e389;
+  }
+</style>

@@ -2,8 +2,8 @@
 
 The official website for [LuminusOS](https://luminusos.org), an immutable Linux
 distribution built on Fedora bootc, plus the [Aurora Shell](https://aurora.luminusos.org) subdomain variant, and
-the [wiki](https://wiki.luminusos.org) and [blog](https://blog.luminusos.org)
-as sub-projects in `wiki/` and `blog/`.
+the [wiki](https://wiki.luminusos.org), [blog](https://blog.luminusos.org) and
+[apps](https://apps.luminusos.org) as sub-projects in `wiki/`, `blog/` and `apps/`.
 
 Built with [Astro](https://astro.build). Fully static, no client framework;
 the only JavaScript on the page handles the theme toggle, the language menu
@@ -17,8 +17,10 @@ Every page exists in English (default) and Brazilian Portuguese:
 | --- | --- |
 | `/` and `/pt-br/` | LuminusOS home: hero, pillars, how it works, editions, download, support |
 | `/aurora/` and `/pt-br/aurora/` | Aurora Shell subpage |
+| `/zaptide/` and `/pt-br/zaptide/` | ZapTide: native WhatsApp companion for Linux, downloads, setup and data guide |
 | `/blog/` | Blog copy embedded in the main website build |
 | `/wiki/` | Wiki copy embedded in the main website build |
+| `/apps/` | Apps catalog copy embedded in the main website build |
 
 All copy lives in a single typed dictionary: `src/i18n/translations.ts`.
 Adding a language = append it to the `languages` array (name + flag, the
@@ -32,8 +34,8 @@ preference, with a header toggle persisted in `localStorage`.
 
 ```sh
 npm install
-npm run dev      # http://localhost:4321, including /aurora, /blog and /wiki
-npm run build    # static output in dist/, including /blog and /wiki
+npm run dev      # http://localhost:4321, including /aurora, /blog, /wiki and /apps
+npm run build    # static output in dist/, including /blog, /wiki and /apps
 npm run preview  # serve dist/ locally
 ```
 
@@ -91,18 +93,19 @@ with different output directories, so each Pages project should use its own UI
 settings. The Worker config used by the manual `npm run deploy` command lives
 in `wrangler.worker.jsonc`.
 
-## Wiki & Blog (sub-projects)
+## Wiki, Blog & Apps (sub-projects)
 
-The wiki and the blog live in this repository as Astro roots that share the
-top-level `package.json` and lockfile:
+The wiki, the blog and the apps catalog live in this repository as Astro roots
+that share the top-level `package.json` and lockfile:
 
 | Site | Folder | Stack |
 | --- | --- | --- |
 | [wiki.luminusos.org](https://wiki.luminusos.org) | `wiki/` | Astro Starlight (sidebar, search, i18n) |
 | [blog.luminusos.org](https://blog.luminusos.org) | `blog/` | Astro content collections, English + Google Translate menu |
+| [apps.luminusos.org](https://apps.luminusos.org) | `apps/` | Astro, English + Brazilian Portuguese, Flathub-style catalog |
 
-The root `npm run build` builds both projects with `/blog` and `/wiki` bases
-and copies them into the main website `dist/`. Standalone Cloudflare Pages
+The root `npm run build` builds the three projects with `/blog`, `/wiki` and
+`/apps` bases and copies them into the main website `dist/`. Standalone Cloudflare Pages
 builds use the subdomain versions:
 
 ```sh
@@ -110,7 +113,34 @@ npm run build:blog
 npm run deploy:blog
 npm run build:wiki
 npm run deploy:wiki
+npm run build:apps
+npm run deploy:apps
 ```
+
+The home page shows the three latest blog posts, read at build time from
+`blog/src/content/posts/`. Rebuild the main site after publishing a post.
+
+### Shared code
+
+The blog and apps roots import what they share with the main site from the
+top-level `src/` tree instead of copying it:
+
+| Path | Holds |
+| --- | --- |
+| `src/styles/tokens.css`, `ui.css` | Palette, type, radii; buttons and chips |
+| `src/components/shared/` | Head helpers, header pieces (`SiteHeader`, `NavPill`, `ThemeToggle`), `SiteFooter`, `PostCard` |
+| `src/scripts/` | Theme toggle, menu dismissal, copy buttons |
+| `src/lib/` | Sibling-site URLs, navbar model (`site-nav.ts`), reading time |
+
+### Apps catalog
+
+`apps/` lists the applications published in the Luminus Flatpak repository
+(`flatpak-repo/catalog.json`). Each entry in `apps/src/data/apps.ts` mirrors
+the application's AppStream metainfo: add one when an application joins the
+catalog, and add a release when it ships. Install buttons point at the
+`.flatpakref` files served from `https://flatpak.luminusos.org/stable/`, and
+the setup page documents the `luminus` remote. Screenshots and icons live in
+`apps/public/`.
 
 For Git-connected Cloudflare Pages projects, use only the build command and
 output directory. Leave the deploy command empty there as well.

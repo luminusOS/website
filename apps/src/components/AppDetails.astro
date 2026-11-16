@@ -1,0 +1,107 @@
+---
+import type { AppEntry } from '../data/apps';
+import { langPrefix, translations, type Lang } from '../i18n';
+import { dateFormat } from '../lib/format';
+import { siteLinks } from '../lib/site';
+
+interface Props {
+  app: AppEntry;
+  lang: Lang;
+}
+
+const { app, lang } = Astro.props;
+const t = translations[lang].app;
+const latest = app.releases[0];
+const productHref = `${siteLinks(langPrefix(lang)).main.replace(/\/$/, '')}${app.productPage}`;
+
+const details = [
+  { label: t.version, value: latest.version },
+  { label: t.released, value: dateFormat(lang).format(new Date(latest.date)) },
+  { label: t.license, value: app.license },
+  { label: t.developer, value: app.developer },
+  { label: t.category, value: app.category[lang] },
+  { label: t.architectures, value: 'x86_64, aarch64' },
+  { label: t.channel, value: t.channelValue },
+  { label: t.requirements, value: app.requirements[lang] },
+  { label: t.rating, value: app.rating[lang] },
+];
+---
+
+<aside class="side" aria-label={t.details}>
+  <h2>{t.details}</h2>
+  <dl>
+    {details.map((row) => (
+      <div>
+        <dt>{row.label}</dt>
+        <dd>{row.value}</dd>
+      </div>
+    ))}
+  </dl>
+  <h2>{t.links}</h2>
+  <ul class="links" role="list">
+    <li><a href={app.homepage} target="_blank" rel="noopener">{t.homepage} ↗</a></li>
+    <li><a href={app.source} target="_blank" rel="noopener">{t.source} ↗</a></li>
+    <li><a href={app.issues} target="_blank" rel="noopener">{t.issues} ↗</a></li>
+    <li><a href={productHref}>{t.productPage}</a></li>
+  </ul>
+</aside>
+
+<style>
+  .side {
+    position: sticky;
+    top: 5rem;
+    padding: 1.4rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    background: var(--surface-1);
+  }
+
+  h2 {
+    margin-bottom: 0.75rem;
+    font-size: 1.05rem;
+  }
+
+  dl {
+    display: grid;
+    gap: 0.8rem;
+    margin: 0 0 1.5rem;
+  }
+
+  dt {
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  dd {
+    margin: 0.1rem 0 0;
+    font-size: 0.92rem;
+    line-height: 1.45;
+  }
+
+  .links {
+    display: grid;
+    gap: 0.4rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0.92rem;
+  }
+
+  .links a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .links a:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 900px) {
+    .side {
+      position: static;
+    }
+  }
+</style>

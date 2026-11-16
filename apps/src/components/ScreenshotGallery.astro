@@ -1,0 +1,75 @@
+---
+import type { AppEntry } from '../data/apps';
+import { translations, type Lang } from '../i18n';
+import { withBase } from '../lib/site';
+
+interface Props {
+  app: AppEntry;
+  lang: Lang;
+}
+
+const { app, lang } = Astro.props;
+---
+
+<section class="gallery" aria-label={translations[lang].app.screenshots} style={`--app-accent: ${app.accent}`}>
+  {/* eslint-disable-next-line astro/jsx-a11y/no-noninteractive-tabindex -- keyboard users cannot scroll an overflow region that cannot take focus */}
+  <ul class="track" role="list" tabindex="0">
+    {app.screenshots.map((shot, index) => (
+      <li class="shot">
+        <figure>
+          <img src={withBase(shot.file)} alt="" loading={index === 0 ? 'eager' : 'lazy'} />
+          <figcaption>{shot.caption[lang]}</figcaption>
+        </figure>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .gallery {
+    margin-top: 1.75rem;
+  }
+
+  .track {
+    display: flex;
+    gap: 1rem;
+    margin: 0;
+    padding: 0.25rem 0 1rem;
+    list-style: none;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+  }
+
+  .shot {
+    flex: 0 0 min(46rem, 88%);
+    scroll-snap-align: start;
+  }
+
+  .shot:only-child {
+    flex-basis: 100%;
+  }
+
+  figure {
+    margin: 0;
+  }
+
+  img {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    padding: 1.25rem 1.25rem 0;
+    object-fit: contain;
+    object-position: top center;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    background:
+      radial-gradient(30rem 16rem at 50% 0%, color-mix(in srgb, var(--app-accent) 22%, transparent), transparent 70%),
+      var(--surface-2);
+  }
+
+  figcaption {
+    margin-top: 0.55rem;
+    font-size: 0.85rem;
+    color: var(--ink-faint);
+    text-align: center;
+  }
+</style>

@@ -1,0 +1,87 @@
+---
+import type { Release } from '../data/apps';
+import { translations, type Lang } from '../i18n';
+import { dateFormat } from '../lib/format';
+
+interface Props {
+  releases: Release[];
+  lang: Lang;
+}
+
+const { releases, lang } = Astro.props;
+const date = dateFormat(lang);
+---
+
+<section>
+  <h2>{translations[lang].app.releases}</h2>
+  <ol class="releases" role="list">
+    {releases.map((release) => (
+      <li>
+        <div class="head">
+          <span class="version mono">{release.version}</span>
+          <time class="mono" datetime={release.date}>{date.format(new Date(release.date))}</time>
+        </div>
+        <p>{release.notes}</p>
+      </li>
+    ))}
+  </ol>
+</section>
+
+<style>
+  h2 {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+  }
+
+  .releases {
+    display: grid;
+    margin: 0;
+    padding: 0 0 0 1.25rem;
+    list-style: none;
+    border-left: 2px solid var(--border-color);
+  }
+
+  li {
+    position: relative;
+    padding-bottom: 1.6rem;
+  }
+
+  li::before {
+    content: '';
+    position: absolute;
+    left: calc(-1.25rem - 6px);
+    top: 0.45rem;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--border-color);
+  }
+
+  li:first-child::before {
+    background: var(--accent);
+  }
+
+  .head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.4rem 0.9rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .version {
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  time {
+    font-size: 0.75rem;
+    color: var(--ink-faint);
+  }
+
+  p {
+    max-width: 64ch;
+    font-size: 0.95rem;
+    color: var(--ink-dim);
+  }
+</style>

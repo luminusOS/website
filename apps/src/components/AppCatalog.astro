@@ -1,0 +1,85 @@
+---
+import type { AppEntry } from '../data/apps';
+import { translations, type Lang } from '../i18n';
+import AppCard from './AppCard.astro';
+
+interface Props {
+  apps: AppEntry[];
+  lang: Lang;
+}
+
+const { apps, lang } = Astro.props;
+const t = translations[lang].home;
+---
+
+<section class="catalog" id="apps">
+  <div class="container">
+    <div class="head">
+      <div>
+        <h2>{t.allApps}</h2>
+        <p>{t.allAppsSubtitle}</p>
+      </div>
+      <p class="count mono" aria-live="polite" data-app-count data-one={t.count(1)} data-other={t.count(0)}>{t.count(apps.length)}</p>
+    </div>
+    <ul class="grid" role="list">
+      {apps.map((app) => <AppCard app={app} lang={lang} />)}
+    </ul>
+    <p class="empty" hidden data-no-results>{t.noResults}</p>
+  </div>
+</section>
+
+<script>
+  import { setupCatalogSearch } from '../scripts/catalog-search';
+
+  setupCatalogSearch();
+</script>
+
+<style>
+  .catalog {
+    padding-block: clamp(3.5rem, 7vw, 5.5rem);
+  }
+
+  .head {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.75rem;
+  }
+
+  h2 {
+    font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+  }
+
+  .head p {
+    margin-top: 0.4rem;
+    color: var(--ink-dim);
+  }
+
+  .count {
+    margin: 0;
+    font-size: 0.8rem;
+    color: var(--ink-faint);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr));
+    gap: 1.1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .empty {
+    margin-top: 1.5rem;
+    color: var(--ink-dim);
+  }
+
+  @media (max-width: 520px) {
+    .head {
+      flex-direction: column;
+      align-items: start;
+    }
+  }
+</style>

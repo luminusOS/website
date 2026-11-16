@@ -1,0 +1,78 @@
+---
+import type { AppEntry } from '../data/apps';
+import { translations, type Lang } from '../i18n';
+import { flatpak } from '../lib/flatpak';
+import CommandBlock from './CommandBlock.astro';
+
+interface Props {
+  /** App used in the sample install and run commands. */
+  example: AppEntry;
+  lang: Lang;
+}
+
+const { example, lang } = Astro.props;
+const t = translations[lang].setup;
+const { copy, copied } = translations[lang].app;
+const commands = flatpak.steps(example.id);
+---
+
+<section>
+  <h2>{t.stepsTitle}</h2>
+  <ol class="steps" role="list">
+    {t.steps.map((step, index) => (
+      <li>
+        <span class="num mono">{String(index + 1).padStart(2, '0')}</span>
+        <div class="body">
+          <h3>{step.title}</h3>
+          <p>{step.body}</p>
+          <CommandBlock command={commands[index]} label={step.label} copy={copy} copied={copied} />
+        </div>
+      </li>
+    ))}
+  </ol>
+</section>
+
+<style>
+  h2 {
+    margin-bottom: 1.25rem;
+    font-size: 1.6rem;
+  }
+
+  .steps {
+    display: grid;
+    gap: 1.75rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    display: grid;
+    grid-template-columns: 3rem minmax(0, 1fr);
+    gap: 0.5rem;
+  }
+
+  .num {
+    padding-top: 0.15rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .body {
+    display: grid;
+    gap: 0.5rem;
+    min-width: 0;
+  }
+
+  h3 {
+    font-size: 1.2rem;
+  }
+
+  p {
+    max-width: 60ch;
+    margin-bottom: 0.4rem;
+    font-size: 0.97rem;
+    color: var(--ink-dim);
+  }
+</style>

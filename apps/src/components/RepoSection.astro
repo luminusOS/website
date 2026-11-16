@@ -1,0 +1,118 @@
+---
+import type { AppEntry } from '../data/apps';
+import { translations, type Lang } from '../i18n';
+import { setupHref } from '../lib/apps';
+import { flatpak } from '../lib/flatpak';
+import CommandBlock from './CommandBlock.astro';
+
+interface Props {
+  /** App used in the sample install and run commands. */
+  example: AppEntry;
+  lang: Lang;
+}
+
+const { example, lang } = Astro.props;
+const t = translations[lang].home;
+const labels = translations[lang].setup.steps.map((step) => step.label);
+const { copy, copied } = translations[lang].app;
+const commands = flatpak.steps(example.id);
+---
+
+<section class="repo">
+  <div class="container grid">
+    <div class="copy">
+      <p class="eyebrow">Flatpak</p>
+      <h2>{t.repoTitle}</h2>
+      <p>{t.repoBody}</p>
+      <ol class="steps">
+        {t.repoSteps.map((step, index) => (
+          <li>
+            <span class="num mono">{String(index + 1).padStart(2, '0')}</span>
+            <div>
+              <h3>{step.title}</h3>
+              <p>{step.body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+      <a class="btn btn-ghost" href={setupHref(lang)}>{t.repoCta} →</a>
+    </div>
+
+    <div class="commands">
+      {commands.map((command, index) => (
+        <CommandBlock command={command} label={`${index + 1} · ${labels[index]}`} copy={copy} copied={copied} />
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .repo {
+    padding-block: clamp(3.5rem, 7vw, 5.5rem);
+    background: var(--band-tint);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: center;
+  }
+
+  .copy {
+    display: grid;
+    gap: 1rem;
+    justify-items: start;
+  }
+
+  h2 {
+    font-size: clamp(1.9rem, 3.8vw, 2.7rem);
+  }
+
+  .copy > p {
+    max-width: 52ch;
+    color: var(--ink-dim);
+  }
+
+  .steps {
+    display: grid;
+    gap: 1.1rem;
+    margin: 0.6rem 0 0.8rem;
+    padding: 0;
+    list-style: none;
+  }
+
+  .steps li {
+    display: grid;
+    grid-template-columns: 2.4rem 1fr;
+    gap: 0.75rem;
+  }
+
+  .num {
+    padding-top: 0.2rem;
+    font-size: 0.8rem;
+    color: var(--accent);
+  }
+
+  .steps h3 {
+    font-size: 1.05rem;
+  }
+
+  .steps p {
+    margin-top: 0.15rem;
+    font-size: 0.95rem;
+    color: var(--ink-dim);
+  }
+
+  .commands {
+    display: grid;
+    gap: 0.9rem;
+    min-width: 0;
+  }
+
+  @media (max-width: 900px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

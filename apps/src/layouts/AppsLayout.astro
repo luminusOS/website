@@ -1,0 +1,100 @@
+---
+import '../styles/global.css';
+import GoogleFonts from '../../../src/components/shared/GoogleFonts.astro';
+import SiteFooter from '../../../src/components/shared/SiteFooter.astro';
+import SiteHeader from '../../../src/components/shared/SiteHeader.astro';
+import SocialMeta from '../../../src/components/shared/SocialMeta.astro';
+import ThemeInit from '../../../src/components/shared/ThemeInit.astro';
+import { navEn, navPtBr } from '../../../src/i18n/nav';
+import { buildSiteNav, mainRootOf } from '../../../src/lib/site-nav';
+import { languages, langPrefix, translations, type Lang } from '../i18n';
+import { flatpak } from '../lib/flatpak';
+import { siteLinks, withBase } from '../lib/site';
+
+interface Props {
+  lang: Lang;
+  title: string;
+  description: string;
+  /** Route without language prefix or base, e.g. `/setup`. */
+  path: string;
+}
+
+const { lang, title, description, path } = Astro.props;
+const t = translations[lang];
+const prefix = langPrefix(lang);
+const links = siteLinks(prefix);
+
+const routeIn = (target: Lang) => withBase(`${langPrefix(target)}${path === '/' ? '' : path}`) || '/';
+const absolute = (route: string) => new URL(route, Astro.site);
+const assetOrigin = import.meta.env.DEV ? Astro.url.origin : Astro.site;
+const currentLanguage = languages.find((l) => l.code === lang)!;
+const strings = lang === 'pt-br' ? navPtBr : navEn;
+
+const nav = buildSiteNav({ strings, sites: links, mainRoot: mainRootOf(links), current: 'apps' });
+
+const language = {
+  label: currentLanguage.name,
+  text: lang === 'pt-br' ? 'PT' : 'EN',
+  flag: currentLanguage.flag,
+  title: strings.language,
+  items: languages.map((l) => ({
+    href: routeIn(l.code),
+    name: l.name,
+    flag: l.flag,
+    current: l.code === lang,
+  })),
+};
+---
+
+<!doctype html>
+<html lang={t.htmlLang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark light" />
+    <ThemeInit />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href={withBase('/favicon.svg')} />
+    <link rel="canonical" href={absolute(routeIn(lang))} />
+    {languages.map((l) => <link rel="alternate" hreflang={l.code === 'pt-br' ? 'pt-BR' : l.code} href={absolute(routeIn(l.code))} />)}
+    <SocialMeta
+      title={title}
+      description={description}
+      url={absolute(routeIn(lang))}
+      image={new URL(withBase('/social-card.png'), assetOrigin)}
+      siteName="LuminusOS Apps"
+      locale={lang === 'pt-br' ? 'pt_BR' : 'en_US'}
+    />
+    <GoogleFonts />
+    <meta name="generator" content={Astro.generator} />
+  </head>
+  <body>
+    <SiteHeader nav={nav} logoSrc={withBase('/logos/brand.svg')} language={language} />
+
+    <main>
+      <slot />
+    </main>
+
+    <SiteFooter
+      rights={t.footer.rights}
+      mainHref={links.main}
+      links={[
+        { href: flatpak.docs, label: t.footer.repo, external: true },
+        { href: 'https://github.com/luminusOS/website', label: t.footer.source, external: true },
+      ]}
+    />
+
+    <script>
+      import { setupCopyButtons } from '../../../src/scripts/copy-button';
+
+      setupCopyButtons();
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  main {
+    min-height: 60vh;
+  }
+</style>

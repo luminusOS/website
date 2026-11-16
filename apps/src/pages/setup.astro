@@ -1,0 +1,11 @@
+---
+import AppsLayout from '../layouts/AppsLayout.astro';
+import SetupView from '../components/SetupView.astro';
+import { translations } from '../i18n';
+
+const t = translations.en.setup.meta;
+---
+
+<AppsLayout lang="en" title={t.title} description={t.description} path="/setup">
+  <SetupView lang="en" />
+</AppsLayout>

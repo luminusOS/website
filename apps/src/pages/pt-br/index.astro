@@ -1,0 +1,11 @@
+---
+import AppsLayout from '../../layouts/AppsLayout.astro';
+import HomeView from '../../components/HomeView.astro';
+import { translations } from '../../i18n';
+
+const t = translations['pt-br'].home.meta;
+---
+
+<AppsLayout lang="pt-br" title={t.title} description={t.description} path="/">
+  <HomeView lang="pt-br" />
+</AppsLayout>

@@ -1,0 +1,119 @@
+---
+import type { AppEntry } from '../data/apps';
+import { translations, type Lang } from '../i18n';
+import { flatpak } from '../lib/flatpak';
+import { withBase } from '../lib/site';
+
+interface Props {
+  app: AppEntry;
+  lang: Lang;
+}
+
+const { app, lang } = Astro.props;
+const t = translations[lang].app;
+---
+
+<header class="head">
+  <img class="icon" src={withBase(app.icon)} alt="" width="128" height="128" />
+  <div>
+    <h1>{app.name}</h1>
+    <p class="summary">{app.summary[lang]}</p>
+    <p class="by">{t.by} {app.developer} · <span class="mono">{app.id}</span></p>
+  </div>
+  <div class="actions">
+    <a class="btn btn-primary btn-lg" href={flatpak.refFile(app.id)}>
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 3v12m0 0-4.5-4.5M12 15l4.5-4.5M4 20h16" />
+      </svg>
+      {t.install}
+    </a>
+    <p>{t.installHint}</p>
+  </div>
+</header>
+
+<ul class="badges" role="list">
+  <li class="chip chip--accent">{app.category[lang]}</li>
+  <li class="chip">Flatpak</li>
+  <li class="chip">{t.sandboxed}</li>
+  <li class="chip">{t.signed}</li>
+</ul>
+
+<style>
+  .head {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 1.75rem;
+    align-items: center;
+    margin-top: 1.5rem;
+  }
+
+  .icon {
+    width: 8rem;
+    height: 8rem;
+    filter: drop-shadow(0 12px 22px rgb(0 0 0 / 0.25));
+  }
+
+  h1 {
+    font-size: clamp(2.4rem, 5vw, 3.6rem);
+    font-weight: 800;
+  }
+
+  .summary {
+    margin-top: 0.35rem;
+    font-size: 1.25rem;
+    color: var(--ink-dim);
+  }
+
+  .by {
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--ink-faint);
+  }
+
+  .actions {
+    display: grid;
+    gap: 0.6rem;
+    justify-items: center;
+    max-width: 15rem;
+    text-align: center;
+  }
+
+  .actions p {
+    font-size: 0.78rem;
+    line-height: 1.4;
+    color: var(--ink-faint);
+  }
+
+  .badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1.75rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (max-width: 900px) {
+    .head {
+      grid-template-columns: auto 1fr;
+    }
+
+    .actions {
+      grid-column: 1 / -1;
+      justify-items: start;
+      max-width: none;
+      text-align: left;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .head {
+      grid-template-columns: 1fr;
+    }
+
+    .icon {
+      width: 6rem;
+      height: 6rem;
+    }
+  }
+</style>

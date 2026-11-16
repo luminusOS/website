@@ -1,0 +1,74 @@
+---
+import type { AppEntry } from '../data/apps';
+import { translations, type Lang } from '../i18n';
+
+interface Props {
+  app: AppEntry;
+  lang: Lang;
+}
+
+const { app, lang } = Astro.props;
+---
+
+<section>
+  <h2>{translations[lang].app.about}</h2>
+  {app.description[lang].map((paragraph) => <p class="paragraph">{paragraph}</p>)}
+  <ul class="highlights" role="list">
+    {app.highlights[lang].map((item) => (
+      <li>
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="m5 12.5 4.5 4.5L19 7.5" />
+        </svg>
+        {item}
+      </li>
+    ))}
+  </ul>
+  {app.notice && <p class="notice">{app.notice[lang]}</p>}
+</section>
+
+<style>
+  h2 {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+  }
+
+  .paragraph {
+    max-width: 62ch;
+    color: var(--ink-dim);
+  }
+
+  .paragraph + .paragraph {
+    margin-top: 0.85rem;
+  }
+
+  .highlights {
+    display: grid;
+    gap: 0.55rem;
+    margin: 1.4rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .highlights li {
+    display: flex;
+    align-items: start;
+    gap: 0.65rem;
+  }
+
+  .highlights svg {
+    flex-shrink: 0;
+    margin-top: 0.2rem;
+    color: var(--success);
+  }
+
+  .notice {
+    max-width: 62ch;
+    margin-top: 1.5rem;
+    padding: 0.9rem 1.1rem;
+    border: 1px solid color-mix(in srgb, #e5a50a 50%, var(--border-color));
+    border-radius: var(--radius);
+    background: color-mix(in srgb, #e5a50a 10%, transparent);
+    font-size: 0.92rem;
+    color: var(--ink-dim);
+  }
+</style>

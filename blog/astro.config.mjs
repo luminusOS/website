@@ -31,7 +31,7 @@ export default defineConfig({
   trailingSlash: 'ignore',
   vite: {
     server: {
-      watch: watchConfig('**/wiki/**'),
+      watch: watchConfig('**/apps/**', '**/wiki/**'),
     },
   },
 });
