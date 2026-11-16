@@ -1,0 +1,62 @@
+---
+interface Props {
+  /** Tags with the number of posts that carry each one. */
+  tags: [string, number][];
+  total: number;
+}
+
+const { tags, total } = Astro.props;
+---
+
+<div class="filters" role="group" aria-label="Filter posts by project">
+  <button type="button" class="filter" aria-pressed="true" data-filter="">All <span>{total}</span></button>
+  {tags.map(([tag, count]) => (
+    <button type="button" class="filter" aria-pressed="false" data-filter={tag}>{tag} <span>{count}</span></button>
+  ))}
+</div>
+
+<script>
+  import { setupPostFilter } from '../scripts/post-filter';
+
+  setupPostFilter();
+</script>
+
+<style>
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+  }
+
+  .filter {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.4rem 0.95rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-pill);
+    background: var(--ghost-bg);
+    color: var(--ink-dim);
+    font: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  }
+
+  .filter span {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    opacity: 0.7;
+  }
+
+  .filter:hover {
+    border-color: var(--ink-faint);
+  }
+
+  .filter[aria-pressed='true'] {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: var(--accent-ink);
+  }
+</style>

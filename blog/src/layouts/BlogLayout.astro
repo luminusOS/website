@@ -1,6 +1,14 @@
 ---
-import { basePath, withBase } from '../lib/site';
 import '../styles/global.css';
+import GoogleFonts from '../../../src/components/shared/GoogleFonts.astro';
+import SiteFooter from '../../../src/components/shared/SiteFooter.astro';
+import SiteHeader from '../../../src/components/shared/SiteHeader.astro';
+import SocialMeta from '../../../src/components/shared/SocialMeta.astro';
+import ThemeInit from '../../../src/components/shared/ThemeInit.astro';
+import { navEn } from '../../../src/i18n/nav';
+import { buildSiteNav, mainRootOf } from '../../../src/lib/site-nav';
+import { siteLinks, withBase } from '../lib/site';
+import { translateLanguages, translateUrl } from '../lib/translate';
 
 interface Props {
   title: string;
@@ -13,27 +21,22 @@ interface Props {
 const { title, description, image = '/social-card.png', type = 'website', publishedTime } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const assetOrigin = import.meta.env.DEV ? Astro.url.origin : Astro.site;
-const socialImage = new URL(withBase(image), assetOrigin);
-const embedded = basePath.endsWith('/blog');
-const mainHref = embedded ? '/' : 'https://luminusos.org';
-const wikiHref = embedded ? '/wiki' : 'https://wiki.luminusos.org';
-const auroraHref = embedded ? '/aurora' : 'https://aurora.luminusos.org';
+const rssHref = withBase('/rss.xml');
 
-// Posts are written in English only. The Translate menu hands the current
-// page to Google Translate's proxy (<host with dashes>.translate.goog).
-const translateHost = new URL(Astro.site ?? 'https://blog.luminusos.org').hostname.replaceAll('.', '-');
-const translateTo = (tl: string) =>
-  `https://${translateHost}.translate.goog${Astro.url.pathname}?_x_tr_sl=en&_x_tr_tl=${tl}&_x_tr_hl=${tl}`;
+const nav = buildSiteNav({ strings: navEn, sites: siteLinks, mainRoot: mainRootOf(siteLinks), current: 'blog' });
 
-const translateLangs = [
-  { code: 'pt', label: 'Português' },
-  { code: 'es', label: 'Español' },
-  { code: 'fr', label: 'Français' },
-  { code: 'de', label: 'Deutsch' },
-  { code: 'it', label: 'Italiano' },
-  { code: 'ja', label: '日本語' },
-  { code: 'zh-CN', label: '中文' },
-];
+// Posts are written in English only, so the language slot offers a machine translation instead.
+const language = {
+  label: 'Translate',
+  text: 'Translate',
+  title: 'Translate',
+  note: 'Posts are written in English. Read a machine translation via Google Translate:',
+  items: translateLanguages.map((l) => ({
+    href: translateUrl(Astro.site, Astro.url.pathname, l.code),
+    name: l.label,
+    rel: 'noopener nofollow',
+  })),
+};
 ---
 
 <!doctype html>
@@ -42,327 +45,44 @@ const translateLangs = [
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="color-scheme" content="dark light" />
-    <!-- is:inline scripts cannot import, so this cannot be shared with
-         ../../../src/layouts/BaseLayout.astro. Keep the two in sync. -->
-    <script is:inline>
-      (() => {
-        const saved = localStorage.getItem('theme');
-        const theme =
-          saved === 'light' || saved === 'dark'
-            ? saved
-            : window.matchMedia('(prefers-color-scheme: dark)').matches
-              ? 'dark'
-              : 'light';
-        document.documentElement.dataset.theme = theme;
-      })();
-    </script>
+    <ThemeInit />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="icon" type="image/svg+xml" href={withBase('/favicon.svg')} />
     <link rel="canonical" href={canonical} />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:url" content={canonical} />
-    <meta property="og:site_name" content="LuminusOS Blog" />
-    <meta property="og:locale" content="en_US" />
-    <meta property="og:image" content={socialImage} />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content={title} />
-    <meta property="og:type" content={type} />
-    {type === 'article' && publishedTime && <meta property="article:published_time" content={publishedTime.toISOString()} />}
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={socialImage} />
-    <meta name="twitter:image:alt" content={title} />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Sans:ital,wght@0,400..700;1,400&family=JetBrains+Mono:wght@400;600&display=swap"
-      rel="stylesheet"
+    <link rel="alternate" type="application/rss+xml" title="LuminusOS Blog" href={rssHref} />
+    <SocialMeta
+      title={title}
+      description={description}
+      url={canonical}
+      image={new URL(withBase(image), assetOrigin)}
+      siteName="LuminusOS Blog"
+      type={type}
+      publishedTime={publishedTime}
     />
+    <GoogleFonts />
     <meta name="generator" content={Astro.generator} />
   </head>
   <body>
-    <header class="site-header">
-      <div class="header-inner">
-        <a class="brand" href={withBase('/')}>
-          <img src={withBase('/logos/brand.svg')} alt="" width="26" height="26" />
-          <span>Luminus<strong>OS</strong> Blog</span>
-        </a>
+    <SiteHeader nav={nav} logoSrc={withBase('/logos/brand.svg')} language={language} />
 
-        <nav class="main-nav" aria-label="Main">
-          <a href={mainHref}>Luminus OS</a>
-          <a href={wikiHref}>Wiki</a>
-          <a href={auroraHref}>Aurora Shell</a>
-          <a href="https://github.com/luminusOS" target="_blank" rel="noopener">GitHub ↗</a>
-        </nav>
-
-        <div class="header-actions">
-          <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle light/dark theme" title="Toggle light/dark theme">
-            <svg class="icon-sun" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
-              <circle cx="12" cy="12" r="4.5" />
-              <path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M19.4 4.6l-1.8 1.8M6.4 17.6l-1.8 1.8" />
-            </svg>
-            <svg class="icon-moon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
-            </svg>
-          </button>
-
-          <details class="translate-menu" data-translate-menu>
-            <summary>
-              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <circle cx="12" cy="12" r="10" />
-                <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-              </svg>
-              Translate
-              <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
-                <path d="m6 9 6 6 6-6" />
-              </svg>
-            </summary>
-            <div class="translate-pop">
-              <p>Posts are written in English. Read a machine translation via Google Translate:</p>
-              <ul role="list">
-                {translateLangs.map((l) => (
-                  <li><a href={translateTo(l.code)} rel="noopener nofollow">{l.label}</a></li>
-                ))}
-              </ul>
-            </div>
-          </details>
-        </div>
-      </div>
-    </header>
-
-    <main class="container">
+    <main>
       <slot />
     </main>
 
-    <footer class="site-footer">
-      <div class="container">
-        <p>
-          © {new Date().getFullYear()} LuminusOS Community ·
-          <a href={mainHref}>luminusos.org</a> ·
-          <a href="https://github.com/luminusOS/blog" target="_blank" rel="noopener">Source</a>
-        </p>
-      </div>
-    </footer>
-
-    <!-- The blog is a separate Astro root, so it cannot import the main site's
-         header component. Menu behavior stays local while shared controls are
-         imported from the main source tree. -->
-    <script>
-      import { setupSharedHeaderControls } from '../../../src/scripts/header-controls';
-
-      setupSharedHeaderControls();
-
-      document.addEventListener('click', (e) => {
-        document.querySelectorAll('[data-translate-menu][open]').forEach((menu) => {
-          if (e.target instanceof Node && !menu.contains(e.target)) {
-            menu.removeAttribute('open');
-          }
-        });
-      });
-
-    </script>
+    <SiteFooter
+      rights="LuminusOS Community"
+      mainHref={siteLinks.main}
+      links={[
+        { href: rssHref, label: 'RSS' },
+        { href: 'https://github.com/luminusOS/website', label: 'Source', external: true },
+      ]}
+    />
   </body>
 </html>
 
-<style>
-  .site-header {
-    position: sticky;
-    top: 0;
-    z-index: 40;
-    background: var(--header-bg);
-    border-bottom: 1px solid transparent;
-    transition: border-color 0.2s ease;
-  }
-
-  .site-header.is-scrolled {
-    border-bottom-color: var(--border-color);
-  }
-
-  .header-inner {
-    width: min(72rem, calc(100% - 2.5rem));
-    margin-inline: auto;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1.25rem;
-    min-height: 3.75rem;
-    padding-block: 0.55rem;
-  }
-
-  .brand {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.6rem;
-    text-decoration: none;
-    color: inherit;
-    font-family: var(--font-display);
-    font-size: 1.1rem;
-  }
-
-  .brand strong {
-    color: var(--accent);
-  }
-
-  .main-nav {
-    display: flex;
-    align-items: center;
-    gap: 0.15rem;
-  }
-
-  .main-nav a {
-    display: inline-flex;
-    align-items: center;
-    padding: 0.45rem 0.7rem;
-    border-radius: var(--radius-sm);
-    text-decoration: none;
-    color: var(--ink);
-    font-size: 0.925rem;
-    font-weight: 500;
-    transition: background 0.12s ease;
-  }
-
-  .main-nav a:hover {
-    background: var(--surface-2);
-    color: var(--ink);
-  }
-
-  .header-actions {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-  }
-
-  .header-actions::before {
-    content: '';
-    width: 1px;
-    height: 1.35rem;
-    background: var(--border-color);
-    margin-inline: 0.5rem 0.25rem;
-  }
-
-  .theme-toggle {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 2.25rem;
-    min-height: 2.25rem;
-    border-radius: var(--radius-sm);
-    border: none;
-    background: transparent;
-    color: var(--ink-dim);
-    cursor: pointer;
-    transition: background 0.12s ease, color 0.12s ease;
-  }
-
-  .theme-toggle:hover {
-    background: var(--surface-2);
-    color: var(--ink);
-  }
-
-  .theme-toggle .icon-sun { display: none; }
-  :global(html[data-theme='dark']) .theme-toggle .icon-sun { display: block; }
-  :global(html[data-theme='dark']) .theme-toggle .icon-moon { display: none; }
-
-  .translate-menu {
-    position: relative;
-  }
-
-  .translate-menu summary {
-    list-style: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45rem;
-    font-size: 0.85rem;
-    border: none;
-    background: transparent;
-    border-radius: var(--radius-sm);
-    padding: 0.4rem 0.7rem;
-    min-height: 2.25rem;
-    color: var(--ink-dim);
-    cursor: pointer;
-    user-select: none;
-    transition: background 0.12s ease, color 0.12s ease;
-  }
-
-  .translate-menu summary::-webkit-details-marker {
-    display: none;
-  }
-
-  .translate-menu summary:hover,
-  .translate-menu[open] summary {
-    background: var(--surface-2);
-    color: var(--ink);
-  }
-
-  .translate-pop {
-    position: absolute;
-    right: 0;
-    top: calc(100% + 0.5rem);
-    width: 15rem;
-    padding: 0.9rem;
-    background: var(--surface-1);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius);
-    box-shadow: 0 1px 2px rgb(0 0 0 / 0.06), 0 10px 28px rgb(0 0 0 / 0.14);
-    z-index: 50;
-  }
-
-  .translate-pop p {
-    margin: 0 0 0.6rem;
-    font-size: 0.78rem;
-    color: var(--ink-faint);
-    line-height: 1.5;
-  }
-
-  .translate-pop ul {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    display: grid;
-    gap: 0.1rem;
-  }
-
-  .translate-pop a {
-    display: block;
-    padding: 0.4rem 0.6rem;
-    border-radius: var(--radius-sm);
-    text-decoration: none;
-    font-size: 0.9rem;
-    color: var(--ink-dim);
-  }
-
-  .translate-pop a:hover {
-    background: var(--ghost-bg);
-    color: var(--accent);
-  }
-
+<style is:global>
   main {
-    padding-block: clamp(2.5rem, 6vw, 4.5rem);
     min-height: 60vh;
-  }
-
-  .site-footer {
-    border-top: 1px solid var(--border-color);
-    padding-block: 2rem;
-  }
-
-  .site-footer p {
-    margin: 0;
-    font-size: 0.85rem;
-    color: var(--ink-faint);
-  }
-
-  .site-footer a {
-    color: var(--ink-dim);
-  }
-
-  @media (max-width: 720px) {
-    .main-nav {
-      display: none;
-    }
   }
 </style>

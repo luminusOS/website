@@ -1,0 +1,99 @@
+---
+interface Stat {
+  value: string | number;
+  label: string;
+  note: string;
+  /** Long values such as dates use a smaller figure. */
+  compact?: boolean;
+}
+
+interface Props {
+  stats: Stat[];
+}
+
+const { stats } = Astro.props;
+---
+
+<section class="stats" aria-label="Blog statistics">
+  <dl class="grid">
+    {stats.map((stat) => (
+      <div class="stat">
+        <dt>{stat.label}</dt>
+        <dd class:list={['value', { compact: stat.compact }]}>{stat.value}</dd>
+        <dd class="note">{stat.note}</dd>
+      </div>
+    ))}
+  </dl>
+</section>
+
+<style>
+  .stats {
+    border-block: 1px solid var(--border-color);
+    background: var(--band-tint);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    width: min(var(--container), calc(100% - 2.5rem));
+    margin: 0 auto;
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+    padding: 1.6rem 1.5rem;
+    border-left: 1px solid var(--border-color);
+  }
+
+  .stat:first-child {
+    padding-left: 0;
+    border-left: none;
+  }
+
+  .value {
+    order: 1;
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 4.2vw, 3.1rem);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    color: var(--accent);
+  }
+
+  .value.compact {
+    padding-block: 0.4rem 0.3rem;
+    font-size: clamp(1.25rem, 2.2vw, 1.6rem);
+    line-height: 1.25;
+  }
+
+  dt {
+    order: 2;
+    margin-top: 0.4rem;
+    font-weight: 700;
+  }
+
+  .note {
+    order: 3;
+    margin: 0;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    color: var(--ink-faint);
+  }
+
+  @media (max-width: 900px) {
+    .grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .stat:nth-child(3) {
+      padding-left: 0;
+      border-left: none;
+    }
+
+    .stat:nth-child(n + 3) {
+      border-top: 1px solid var(--border-color);
+    }
+  }
+</style>

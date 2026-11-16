@@ -1,0 +1,76 @@
+---
+import type { Lang, Translation } from '../../i18n/translations';
+import { siblingLinks } from '../../i18n/translations';
+import { latestBlogPosts } from '../../lib/blog-posts';
+import PostCard from '../shared/PostCard.astro';
+
+interface Props {
+  t: Translation;
+  lang: Lang;
+}
+
+const { t, lang } = Astro.props;
+const blogBase = siblingLinks('').blog;
+const posts = latestBlogPosts(3);
+const dateFormat = new Intl.DateTimeFormat(lang === 'en' ? 'en-US' : 'pt-BR', { dateStyle: 'long', timeZone: 'UTC' });
+---
+
+<section class="band band--plain section" id="blog">
+  <div class="container">
+    <div class="blog-head">
+      <div class="section-head">
+        <p class="eyebrow">{t.blog.eyebrow}</p>
+        <h2>{t.blog.title}</h2>
+        <p>{t.blog.subtitle}</p>
+      </div>
+      <a class="btn btn-ghost" href={blogBase}>{t.blog.all} →</a>
+    </div>
+
+    <ul class="blog-grid" role="list">
+      {posts.map((post) => (
+        <PostCard
+          href={`${blogBase}/posts/${post.slug}/`}
+          title={post.title}
+          description={post.description}
+          tag={post.tag}
+          date={post.date}
+          dateLabel={dateFormat.format(post.date)}
+          footer={`${post.minutes} ${t.blog.minutes}`}
+          cover={post.image ? `${blogBase}${post.image}` : undefined}
+          fallbackLogo="/logos/brand.svg"
+          contentLang="en"
+        />
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .blog-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-bottom: clamp(2rem, 4vw, 3rem);
+  }
+
+  .blog-head .section-head {
+    margin-bottom: 0;
+  }
+
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.4rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (max-width: 900px) {
+    .blog-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

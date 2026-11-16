@@ -1,108 +1,77 @@
 ---
-import { withBase, postDate } from '../lib/site';
-import { getCollection } from 'astro:content';
+import PostCard from '../../../src/components/shared/PostCard.astro';
+import BlogHero from '../components/BlogHero.astro';
+import PostFilters from '../components/PostFilters.astro';
+import StatsStrip from '../components/StatsStrip.astro';
 import BlogLayout from '../layouts/BlogLayout.astro';
+import { postCardProps } from '../lib/post-card';
+import { getPosts, imageCount } from '../lib/posts';
+import { postDate } from '../lib/site';
 
-const posts = (await getCollection('posts')).sort(
-  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
-);
+const posts = await getPosts();
+const [latest, ...older] = posts;
 
+const countByTag = (list: typeof posts) =>
+  [...list.reduce((map, post) => map.set(post.data.tag, (map.get(post.data.tag) ?? 0) + 1), new Map<string, number>())];
+const allTags = countByTag(posts);
+
+const stats = [
+  { value: posts.length, label: 'Posts', note: 'release notes and stories' },
+  { value: allTags.length, label: 'Projects', note: 'covered so far' },
+  { value: posts.reduce((sum, post) => sum + imageCount(post), 0), label: 'Images', note: 'screenshots and recordings' },
+  { value: postDate.format(latest.data.date), label: 'Latest', note: latest.data.tag, compact: true },
+];
 ---
 
 <BlogLayout
   title="LuminusOS Blog"
   description="Release announcements, development updates and stories from the LuminusOS project."
 >
-  <p class="eyebrow">News</p>
-  <h1>The LuminusOS Blog</h1>
-  <p class="sub">
-    Release notes, development updates and the occasional behind-the-scenes story.
-  </p>
+  <BlogHero latest={latest} />
+  <StatsStrip stats={stats} />
 
-  <div class="post-list">
-    {posts.map((post) => (
-      <a class="card post-item" href={withBase(`/posts/${post.id}/`)}>
-        <header>
-          <span class="tag mono">{post.data.tag}</span>
-          <time class="mono" datetime={post.data.date.toISOString()}>
-            {postDate.format(post.data.date)}
-          </time>
-        </header>
-        <h2>{post.data.title}</h2>
-        <p>{post.data.description}</p>
-        <span class="read-more">Read more →</span>
-      </a>
-    ))}
-  </div>
+  <section class="past">
+    <div class="wide">
+      <div class="head">
+        <h2>Past posts</h2>
+        <PostFilters tags={countByTag(older)} total={older.length} />
+      </div>
+      <ul class="grid" role="list" data-post-grid>
+        {older.map((post) => <PostCard {...postCardProps(post)} />)}
+      </ul>
+    </div>
+  </section>
 </BlogLayout>
 
 <style>
-  h1 {
-    font-size: clamp(2.4rem, 6vw, 3.6rem);
-    font-weight: 800;
-    margin-top: 0.6rem;
+  .past {
+    padding-block: clamp(3rem, 6vw, 4.5rem) clamp(3.5rem, 7vw, 5.5rem);
   }
 
-  .sub {
-    color: var(--ink-dim);
-    font-size: 1.1rem;
-    margin: 1rem 0 0;
+  .wide {
+    width: min(var(--container), calc(100% - 2.5rem));
+    margin-inline: auto;
   }
 
-  .post-list {
-    margin-top: 2.5rem;
-    display: grid;
-    gap: 1.4rem;
-  }
-
-  .post-item {
-    display: grid;
-    gap: 0.7rem;
-    padding: 1.75rem;
-    text-decoration: none;
-    color: inherit;
-    transition: border-color 0.2s ease;
-  }
-
-  .post-item:hover {
-    border-color: var(--accent);
-  }
-
-  .post-item header {
+  .head {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
     flex-wrap: wrap;
+    align-items: end;
+    justify-content: space-between;
+    gap: 1rem 2rem;
+    margin-bottom: 1.75rem;
   }
 
-  .tag {
-    font-size: 0.68rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--accent);
-    border: 1px solid var(--border-color);
-    border-radius: 999px;
-    padding: 0.25rem 0.75rem;
+  h2 {
+    font-size: clamp(1.8rem, 3.5vw, 2.5rem);
   }
 
-  time {
-    font-size: 0.75rem;
-    color: var(--ink-faint);
-  }
-
-  .post-item h2 {
-    font-size: 1.6rem;
-  }
-
-  .post-item p {
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+    gap: 1.4rem;
     margin: 0;
-    color: var(--ink-dim);
-  }
-
-  .read-more {
-    color: var(--accent);
-    font-weight: 600;
-    font-size: 0.95rem;
+    padding: 0;
+    list-style: none;
   }
 </style>

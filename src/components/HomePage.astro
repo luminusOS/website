@@ -1,9 +1,10 @@
 ---
 import type { Lang } from '../i18n/translations';
-import { auroraHref, langPrefix, links, translations } from '../i18n/translations';
+import { langPrefix, links, siblingLinks, translations } from '../i18n/translations';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Footer from './Footer.astro';
 import Header from './Header.astro';
+import BlogSection from './home/BlogSection.astro';
 import CommunitySection from './home/CommunitySection.astro';
 import DownloadSection from './home/DownloadSection.astro';
 import HomeHero from './home/HomeHero.astro';
@@ -15,7 +16,7 @@ interface Props {
 
 const { lang } = Astro.props;
 const t = translations[lang];
-const aurora = auroraHref(langPrefix(lang));
+const aurora = siblingLinks(langPrefix(lang)).aurora;
 ---
 
 <BaseLayout lang={lang} title={t.meta.title} description={t.meta.description} path="/">
@@ -73,6 +74,8 @@ const aurora = auroraHref(langPrefix(lang));
         </div>
       </div>
     </section>
+
+    <BlogSection t={t} lang={lang} />
 
     <CommunitySection t={t} />
 

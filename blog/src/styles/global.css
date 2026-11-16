@@ -1,47 +1,5 @@
-/* Keep in sync with ../../../src/styles/global.css */
-:root {
-  color-scheme: light;
-
-  --accent: #3584e4;
-  --accent-hover: #1c71d8;
-  --accent-sky: #62a0ea;
-  --accent-ink: #ffffff;
-
-  --font-display: 'Bricolage Grotesque', 'Instrument Sans', sans-serif;
-  --font-body: 'Instrument Sans', sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
-
-  --radius-sm: 6px;
-  --radius: 12px;
-  --radius-lg: 16px;
-  --radius-pill: 9999px;
-
-  --bg: #ffffff;
-  --band-tint: #f6f5f4;
-  --surface-1: #ffffff;
-  --surface-2: #f0efed;
-  --ink: #1d1d1f;
-  --ink-dim: #55575c;
-  --ink-faint: #8a8d92;
-  --border-color: #deddda;
-  --header-bg: #ffffff;
-  --ghost-bg: #ffffff;
-}
-
-html[data-theme='dark'] {
-  color-scheme: dark;
-
-  --bg: #1e1e1e;
-  --band-tint: #262626;
-  --surface-1: #2a2a2a;
-  --surface-2: #242424;
-  --ink: #f4f4f4;
-  --ink-dim: #c7c7c7;
-  --ink-faint: #8f8f8f;
-  --border-color: #3f3f3f;
-  --header-bg: #1e1e1e;
-  --ghost-bg: #2a2a2a;
-}
+@import '../../../src/styles/tokens.css';
+@import '../../../src/styles/ui.css';
 
 * {
   box-sizing: border-box;
@@ -78,23 +36,4 @@ img {
 .container {
   width: min(46rem, calc(100% - 2.5rem));
   margin-inline: auto;
-}
-
-.mono {
-  font-family: var(--font-mono);
-}
-
-.eyebrow {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin: 0;
-}
-
-.card {
-  background: var(--surface-1);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius);
 }
