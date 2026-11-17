@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from './Header.astro';
 import Footer from './Footer.astro';
-import ZapTideIcon from './ZapTideIcon.astro';
+import ProductIcon from './ProductIcon.astro';
 import type { Lang } from '../i18n/translations';
 import { translations, langPrefix, mainSite, links, repos } from '../i18n/translations';
 import '../styles/product-page.css';
@@ -28,8 +28,8 @@ const flatpak = page.flatpakInstall;
           <p class="product-hero-sub">{page.subtitle}</p>
           <p class="deskunion-intro">{page.intro}</p>
           <div class="product-hero-ctas">
-            <a class="btn btn-primary" href={links.deskunionReleases} data-deskunion-download><ZapTideIcon name="download" />{page.download}</a>
-            <a class="btn btn-ghost" href={links.deskunionRepo}><ZapTideIcon name="code" />{page.source}</a>
+            <a class="btn btn-primary" href={links.deskunionReleases} data-deskunion-download><ProductIcon name="download" />{page.download}</a>
+            <a class="btn btn-ghost" href={links.deskunionRepo}><ProductIcon name="code" />{page.source}</a>
           </div>
           <p class="product-version mono">
             {page.status}: <strong data-deskunion-version data-repo={repos.deskunion}>{fallbackVersion}</strong> · {page.platforms}
