@@ -2,9 +2,11 @@ import { platform } from '../lib/platform';
 import type { en } from './en';
 import { navPtBr } from './nav';
 import { zaptidePtBr } from './zaptide';
+import { deskunionPtBr } from './deskunion';
 
 export const ptBr: typeof en = {
   zaptidePage: zaptidePtBr,
+  deskunionPage: deskunionPtBr,
   meta: {
     title: 'LuminusOS: um Linux que simplesmente funciona, em qualquer tela',
     description:
@@ -236,6 +238,10 @@ export const ptBr: typeof en = {
       aetheris: {
         title: 'Aetheris',
         body: 'Fluxos de Kubernetes construídos com Rust, GTK4 e Libadwaita.',
+      },
+      deskunion: {
+        title: 'DeskUnion',
+        body: 'Compartilhamento de mouse e teclado entre computadores, com interface GTK4 e Libadwaita.',
       },
       website: {
         title: 'Site e documentação',

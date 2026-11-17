@@ -49,9 +49,13 @@ export const links = {
   aetherisReleases: 'https://github.com/luminusOS/aetheris/releases',
   zaptideRepo: 'https://github.com/luminusOS/zaptide',
   zaptideReleases: 'https://github.com/luminusOS/zaptide/releases/latest',
+  deskunionRepo: 'https://github.com/luminusOS/deskunion',
+  deskunionReleases: 'https://github.com/luminusOS/deskunion/releases/latest',
+  lanMouse: 'https://github.com/feschber/lan-mouse',
   auroraEgo: 'https://extensions.gnome.org/extension/9389/aurora-shell/',
   donate: donateUrl,
   flatpakRemote: 'https://flatpak.luminusos.org/stable/luminus-stable.flatpakrepo',
+  deskunionFlatpakRef: 'https://flatpak.luminusos.org/stable/org.luminusos.DeskUnion.flatpakref',
   aetherisFlatpakRef: 'https://flatpak.luminusos.org/stable/org.luminusos.Aetheris.flatpakref',
 };
 
@@ -60,6 +64,7 @@ export const flatpakStableLive = true;
 export const repos = {
   aurora: 'luminusOS/aurora-shell',
   aetheris: 'luminusOS/aetheris',
+  deskunion: 'luminusOS/deskunion',
 };
 
 export type Translation = typeof en;
