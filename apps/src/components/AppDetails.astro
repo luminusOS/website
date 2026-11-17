@@ -21,7 +21,7 @@ const details = [
   { label: t.developer, value: app.developer },
   { label: t.category, value: app.category[lang] },
   { label: t.architectures, value: 'x86_64, aarch64' },
-  { label: t.channel, value: t.channelValue },
+  ...(app.inFlatpakRepo === false ? [] : [{ label: t.channel, value: t.channelValue }]),
   { label: t.requirements, value: app.requirements[lang] },
   { label: t.rating, value: app.rating[lang] },
 ];

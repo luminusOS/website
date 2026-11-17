@@ -30,7 +30,7 @@ export const deskunionEn = {
     { name: 'Linux', body: 'Flatpak bundles for x86_64 and aarch64, and an AppImage.' },
     { name: 'Windows', body: 'A setup installer or a portable zip.' },
     { name: 'Android', body: 'APK packages.' },
-    { name: 'macOS', body: 'Supported platform. See the release page for the builds available.' },
+    { name: 'macOS', body: 'macOS builds for Intel and ARM are on the release page.' },
   ],
   flatpakInstall: {
     title: 'Install on Linux',
@@ -83,7 +83,7 @@ export const deskunionPtBr: typeof deskunionEn = {
     { name: 'Linux', body: 'Pacotes Flatpak para x86_64 e aarch64, e um AppImage.' },
     { name: 'Windows', body: 'Um instalador ou um zip portátil.' },
     { name: 'Android', body: 'Pacotes APK.' },
-    { name: 'macOS', body: 'Plataforma suportada. Veja a página de versões para as builds disponíveis.' },
+    { name: 'macOS', body: 'Builds para macOS, Intel e ARM, estão na página de versões.' },
   ],
   flatpakInstall: {
     title: 'Instalar no Linux',

@@ -11,6 +11,8 @@ interface Props {
 
 const { app, lang } = Astro.props;
 const t = translations[lang].app;
+const inRepo = app.inFlatpakRepo !== false;
+const downloadHref = inRepo ? flatpak.refFile(app.id) : `${app.source}/releases/latest`;
 ---
 
 <header class="head">
@@ -21,21 +23,25 @@ const t = translations[lang].app;
     <p class="by">{t.by} {app.developer} · <span class="mono">{app.id}</span></p>
   </div>
   <div class="actions">
-    <a class="btn btn-primary btn-lg" href={flatpak.refFile(app.id)}>
+    <a class="btn btn-primary btn-lg" href={downloadHref}>
       <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M12 3v12m0 0-4.5-4.5M12 15l4.5-4.5M4 20h16" />
       </svg>
-      {t.install}
+      {inRepo ? t.install : t.download}
     </a>
-    <p>{t.installHint}</p>
+    <p>{inRepo ? t.installHint : t.downloadHint}</p>
   </div>
 </header>
 
 <ul class="badges" role="list">
   <li class="chip chip--accent">{app.category[lang]}</li>
-  <li class="chip">Flatpak</li>
-  <li class="chip">{t.sandboxed}</li>
-  <li class="chip">{t.signed}</li>
+  {inRepo && (
+    <>
+      <li class="chip">Flatpak</li>
+      <li class="chip">{t.sandboxed}</li>
+      <li class="chip">{t.signed}</li>
+    </>
+  )}
 </ul>
 
 <style>

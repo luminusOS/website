@@ -25,6 +25,8 @@ export interface AppEntry {
   issues: string;
   source: string;
   productPage: string;
+  /** False until the app is published in the Luminus Flatpak repository. */
+  inFlatpakRepo?: boolean;
   icon: string;
   accent: string;
   screenshots: Screenshot[];
@@ -214,6 +216,93 @@ export const apps: AppEntry[] = [
     },
     rating: { en: 'Suitable for all ages (OARS)', 'pt-br': 'Adequado para todas as idades (OARS)' },
     keywords: ['kubernetes', 'k8s', 'openshift', 'devops', 'cluster', 'kubeconfig', 'yaml'],
+  },
+  {
+    id: 'io.github.luminusos.DeskUnion',
+    name: 'DeskUnion',
+    summary: {
+      en: 'Mouse and keyboard sharing via LAN',
+      'pt-br': 'Compartilhe mouse e teclado pela rede local',
+    },
+    category: { en: 'Utility', 'pt-br': 'Utilitário' },
+    description: {
+      en: [
+        'Share one mouse and keyboard between computers on the same network. Move the pointer past a screen edge to control the neighbouring computer.',
+        'Traffic is encrypted with DTLS and devices are paired by certificate fingerprint. Optionally stream a client’s audio to the server and share plain-text clipboard contents between computers.',
+      ],
+      'pt-br': [
+        'Compartilhe um mouse e teclado entre computadores da mesma rede. Mova o ponteiro além da borda da tela para controlar o computador vizinho.',
+        'O tráfego é criptografado com DTLS e os dispositivos são pareados pela impressão digital do certificado. Opcionalmente, transmita o áudio de um cliente para o servidor e compartilhe texto simples da área de transferência entre os computadores.',
+      ],
+    },
+    highlights: {
+      en: [
+        'Cross a screen edge to control another computer',
+        'DTLS-encrypted traffic with certificate fingerprint pairing',
+        'Plain-text clipboard sharing and client audio streaming',
+        'Tray icon, CLI and daemon mode',
+      ],
+      'pt-br': [
+        'Atravesse a borda da tela para controlar outro computador',
+        'Tráfego criptografado com DTLS e pareamento por impressão digital do certificado',
+        'Compartilhamento de texto da área de transferência e transmissão de áudio do cliente',
+        'Ícone na bandeja, CLI e modo daemon',
+      ],
+    },
+    notice: {
+      en: 'DeskUnion is not in the Luminus Flatpak repository yet. Download it from the GitHub releases page. macOS, Windows and Android builds are there too.',
+      'pt-br':
+        'O DeskUnion ainda não está no repositório Flatpak do Luminus. Baixe-o na página de versões do GitHub, onde também há builds para macOS, Windows e Android.',
+    },
+    license: 'GPL-3.0-or-later',
+    developer: 'LuminusOS',
+    homepage: 'https://github.com/luminusOS/deskunion',
+    issues: 'https://github.com/luminusOS/deskunion/issues',
+    source: 'https://github.com/luminusOS/deskunion',
+    productPage: '/deskunion',
+    inFlatpakRepo: false,
+    icon: '/icons/io.github.luminusos.DeskUnion.svg',
+    accent: '#1a5fb4',
+    screenshots: [
+      {
+        file: '/img/deskunion/deskunion-light.webp',
+        caption: { en: 'Connections page in light mode', 'pt-br': 'Página de conexões no modo claro' },
+      },
+      {
+        file: '/img/deskunion/deskunion-dark.webp',
+        caption: { en: 'Connections page in dark mode', 'pt-br': 'Página de conexões no modo escuro' },
+      },
+    ],
+    releases: [
+      {
+        version: '0.3.0',
+        date: '2026-11-17',
+        notes:
+          'Rebuilds the window on libadwaita navigation and pages: the sidebar collapses on narrow screens, each view has one suggested action, and the role is chosen on a first-run page and in Settings. A client pins the server certificate the first time it connects and refuses a different one until you trust it. Recovers capture and emulation sessions that the desktop ended, stops wlroots from dropping emulated input, ignores outputs that were removed, and fixes the tray fallback icon on Linux. Android APKs are now named like the other release assets.',
+      },
+      {
+        version: '0.2.11',
+        date: '2026-11-04',
+        notes: 'Adds Android APK packaging through GTK Android Builder (Pixiewood) and Meson, runs the background service in-process on Android, and adds the Android APK build to CI and release workflows.',
+      },
+      {
+        version: '0.2.10',
+        date: '2026-11-03',
+        notes:
+          'Fixes robotized Microsoft Teams call audio in Windows loopback capture. Aligns the GTK interface with the Adwaita Design Kit, adding in-app banners for capture warnings, reconnecting state and active audio streaming, and a keyboard shortcuts dialog.',
+      },
+      {
+        version: '0.2.9',
+        date: '2026-10-23',
+        notes: 'Captures the voices of Microsoft Teams calls on Windows by capturing the output Teams plays on while it is playing. Also updates the Windows audio library, which fixes the lookup of an output chosen in the Audio page.',
+      },
+    ],
+    requirements: {
+      en: 'Computers on the same local network. Linux: GNOME 45 or later, KDE Plasma 6.1 or later, or a wlroots compositor. A display at least 360 px wide.',
+      'pt-br': 'Computadores na mesma rede local. Linux: GNOME 45 ou superior, KDE Plasma 6.1 ou superior ou um compositor wlroots. Tela com pelo menos 360 px de largura.',
+    },
+    rating: { en: 'Suitable for all ages (OARS)', 'pt-br': 'Adequado para todas as idades (OARS)' },
+    keywords: ['kvm', 'mouse', 'keyboard', 'teclado', 'share', 'lan', 'clipboard', 'gtk4'],
   },
 ];
 
