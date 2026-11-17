@@ -218,7 +218,7 @@ export const apps: AppEntry[] = [
     keywords: ['kubernetes', 'k8s', 'openshift', 'devops', 'cluster', 'kubeconfig', 'yaml'],
   },
   {
-    id: 'io.github.luminusos.DeskUnion',
+    id: 'org.luminusos.DeskUnion',
     name: 'DeskUnion',
     summary: {
       en: 'Mouse and keyboard sharing via LAN',
@@ -261,7 +261,7 @@ export const apps: AppEntry[] = [
     source: 'https://github.com/luminusOS/deskunion',
     productPage: '/deskunion',
     inFlatpakRepo: false,
-    icon: '/icons/io.github.luminusos.DeskUnion.svg',
+    icon: '/icons/org.luminusos.DeskUnion.svg',
     accent: '#1a5fb4',
     screenshots: [
       {
