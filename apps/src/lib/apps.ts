@@ -1,10 +1,12 @@
 import { apps, featuredId, type AppEntry } from '../data/apps';
 import { langPrefix, type Lang } from '../i18n';
-import { withBase } from './site';
+import { siteLinks, withBase } from './site';
 
 export const homeHref = (lang: Lang) => withBase(langPrefix(lang)) || '/';
 
 export const appHref = (app: AppEntry, lang: Lang) => withBase(`${langPrefix(lang)}/app/${app.id}`);
+
+export const wikiGuideHref = (lang: Lang) => `${siteLinks(langPrefix(lang)).wiki}/guides/apps/#${lang === 'en' ? 'luminus-repository' : 'repositório-luminus'}`;
 
 export const setupHref = (lang: Lang) => withBase(`${langPrefix(lang)}/setup`);
 
