@@ -1,8 +1,7 @@
 ---
 import { translations, type Lang } from '../i18n';
-import { featuredApp } from '../lib/apps';
+import { featuredApp, homeHref, wikiGuideHref } from '../lib/apps';
 import { flatpak } from '../lib/flatpak';
-import SetupFaq from './SetupFaq.astro';
 import SetupSteps from './SetupSteps.astro';
 
 interface Props {
@@ -31,7 +30,10 @@ const t = translations[lang].setup;
     <a class="btn btn-primary" href={flatpak.repoFile}>{t.oneClickCta}</a>
   </section>
 
-  <SetupFaq lang={lang} />
+  <div class="links">
+    <a class="btn btn-primary" href={wikiGuideHref(lang)}>{t.fullGuide} ↗</a>
+    <a class="btn btn-ghost" href={homeHref(lang)}>{t.allApps}</a>
+  </div>
 </div>
 
 <style>
@@ -57,6 +59,12 @@ const t = translations[lang].setup;
     max-width: 56ch;
     font-size: 1.1rem;
     color: var(--ink-dim);
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
   }
 
   .one-click {

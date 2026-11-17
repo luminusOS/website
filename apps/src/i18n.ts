@@ -104,26 +104,7 @@ const en = {
     oneClick: 'Prefer a click?',
     oneClickBody: 'Download the repository file and open it with GNOME Software or your Flatpak-aware app store.',
     oneClickCta: 'Download luminus.flatpakrepo',
-    faqTitle: 'Good to know',
-    faq: [
-      {
-        q: 'What is in the repository?',
-        a: 'Only apps published by the LuminusOS project. They are built from public source and signed with the repository key.',
-      },
-      {
-        q: 'How do updates work?',
-        a: 'Like any Flatpak remote. Run flatpak update, or let GNOME Software do it in the background.',
-      },
-      {
-        q: 'Is there a testing channel?',
-        a: 'Contributors can use a separate testing remote with its own signing key. It is described in the repository documentation.',
-      },
-      {
-        q: 'How do I remove the repository?',
-        a: 'Uninstall the apps you installed from it, then run flatpak remote-delete luminus.',
-      },
-    ],
-    docs: 'Repository documentation',
+    fullGuide: 'Read the full guide in the Wiki',
     allApps: 'Browse the apps',
   },
   footer: {
@@ -230,26 +211,7 @@ const ptBr: typeof en = {
     oneClick: 'Prefere um clique?',
     oneClickBody: 'Baixe o arquivo do repositório e abra com o GNOME Software ou com sua loja de apps compatível com Flatpak.',
     oneClickCta: 'Baixar luminus.flatpakrepo',
-    faqTitle: 'Bom saber',
-    faq: [
-      {
-        q: 'O que há no repositório?',
-        a: 'Apenas apps publicados pelo projeto LuminusOS. Eles são compilados a partir de código público e assinados com a chave do repositório.',
-      },
-      {
-        q: 'Como funcionam as atualizações?',
-        a: 'Como em qualquer remoto Flatpak. Execute flatpak update ou deixe o GNOME Software fazer isso em segundo plano.',
-      },
-      {
-        q: 'Existe um canal de testes?',
-        a: 'Quem contribui pode usar um remoto de testes separado, com chave de assinatura própria. Ele está descrito na documentação do repositório.',
-      },
-      {
-        q: 'Como removo o repositório?',
-        a: 'Desinstale os apps instalados por ele e execute flatpak remote-delete luminus.',
-      },
-    ],
-    docs: 'Documentação do repositório',
+    fullGuide: 'Leia o guia completo na Wiki',
     allApps: 'Ver os apps',
   },
   footer: {

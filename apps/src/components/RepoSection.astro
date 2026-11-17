@@ -1,7 +1,7 @@
 ---
 import type { AppEntry } from '../data/apps';
 import { translations, type Lang } from '../i18n';
-import { setupHref } from '../lib/apps';
+import { wikiGuideHref } from '../lib/apps';
 import { flatpak } from '../lib/flatpak';
 import CommandBlock from './CommandBlock.astro';
 
@@ -35,7 +35,7 @@ const commands = flatpak.steps(example.id);
           </li>
         ))}
       </ol>
-      <a class="btn btn-ghost" href={setupHref(lang)}>{t.repoCta} →</a>
+      <a class="btn btn-ghost" href={wikiGuideHref(lang)}>{t.repoCta} →</a>
     </div>
 
     <div class="commands">
