@@ -1,9 +1,11 @@
 import { platform } from '../lib/platform';
 import { navEn } from './nav';
 import { zaptideEn } from './zaptide';
+import { deskunionEn } from './deskunion';
 
 export const en = {
   zaptidePage: zaptideEn,
+  deskunionPage: deskunionEn,
   meta: {
     title: 'LuminusOS: a Linux that just works, everywhere',
     description:
@@ -235,6 +237,10 @@ export const en = {
       aetheris: {
         title: 'Aetheris',
         body: 'Kubernetes workflows built with Rust, GTK4 and Libadwaita.',
+      },
+      deskunion: {
+        title: 'DeskUnion',
+        body: 'Mouse and keyboard sharing across computers, with a GTK4 and Libadwaita interface.',
       },
       website: {
         title: 'Website and docs',

@@ -1,0 +1,158 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+import ZapTideIcon from './ZapTideIcon.astro';
+import type { Lang } from '../i18n/translations';
+import { translations, langPrefix, mainSite, links, repos } from '../i18n/translations';
+import '../styles/product-page.css';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const page = translations[lang].deskunionPage;
+const path = '/deskunion';
+const homeHref = `${mainSite}${langPrefix(lang)}` || '/';
+const fallbackVersion = '0.3.0';
+const flatpak = page.flatpakInstall;
+---
+
+<BaseLayout lang={lang} title={page.meta.title} description={page.meta.description} path={path}>
+  <Header lang={lang} path={path} />
+  <main class="product-page product-page--deskunion">
+    <section class="band band--plain product-hero">
+      <div class="container product-hero-inner">
+        <img class="product-logo" src="/deskunion-logo.svg" alt="" width="128" height="128" />
+        <div class="product-hero-copy">
+          <p class="eyebrow">{page.eyebrow}</p>
+          <h1>{page.title}</h1>
+          <p class="product-hero-sub">{page.subtitle}</p>
+          <p class="deskunion-intro">{page.intro}</p>
+          <div class="product-hero-ctas">
+            <a class="btn btn-primary" href={links.deskunionReleases} data-deskunion-download><ZapTideIcon name="download" />{page.download}</a>
+            <a class="btn btn-ghost" href={links.deskunionRepo}><ZapTideIcon name="code" />{page.source}</a>
+          </div>
+          <p class="product-version mono">
+            {page.status}: <strong data-deskunion-version data-repo={repos.deskunion}>{fallbackVersion}</strong> · {page.platforms}
+          </p>
+        </div>
+      </div>
+      <figure class="container deskunion-hero-shot">
+        <img class="deskunion-shot deskunion-shot--dark" src="/img/deskunion/deskunion-dark.webp" alt={page.screenshotAlt} width="1100" height="750" decoding="async" />
+        <img class="deskunion-shot deskunion-shot--light" src="/img/deskunion/deskunion-light.webp" alt={page.screenshotAlt} width="1100" height="750" decoding="async" />
+        <figcaption>{page.screenshotCaption}</figcaption>
+      </figure>
+    </section>
+
+    <section class="band band--tint section" id="features">
+      <div class="container">
+        <div class="section-head">
+          <h2>{page.featuresTitle}</h2>
+          <p>{page.featuresSubtitle}</p>
+        </div>
+        <div class="product-card-grid">
+          {page.features.map((feature) => (
+            <article class="card product-card">
+              <span class="product-dot" aria-hidden="true"></span>
+              <h3>{feature.name}</h3>
+              <p>{feature.body}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="band band--plain section" id="setup">
+      <div class="container">
+        <div class="section-head"><h2>{page.setupTitle}</h2></div>
+        <ol class="design-grid deskunion-steps">
+          {page.steps.map((step, index) => (
+            <li class="design-item">
+              <span class="deskunion-step-number mono" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+              <h3>{step.title}</h3>
+              <p>{step.body}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <section class="band band--tint section" id="download">
+      <div class="container">
+        <div class="section-head">
+          <h2>{page.downloadTitle}</h2>
+          <p>{page.downloadBody}</p>
+        </div>
+        <div class="product-card-grid">
+          {page.assets.map((asset) => (
+            <article class="card product-card">
+              <h3>{asset.name}</h3>
+              <p>{asset.body}</p>
+            </article>
+          ))}
+        </div>
+        <div class="deskunion-install">
+          <h3>{flatpak.title}</h3>
+          <p>{flatpak.body}</p>
+          <pre class="mono"><code>{flatpak.installCommand}</code></pre>
+          <p>{flatpak.note}</p>
+          <p>
+            <a class="btn btn-ghost" href={links.deskunionReleases}>{page.allReleases} ↗</a>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="band band--plain section" id="fork">
+      <div class="container deskunion-fork">
+        <h2>{page.forkTitle}</h2>
+        <p>{page.fork}</p>
+        <p>
+          <a href={links.lanMouse}>{page.forkLink} ↗</a> ·
+          <a href={links.deskunionRepo}>{page.documentation} ↗</a>
+        </p>
+      </div>
+      <p class="container back-home"><a href={homeHref}>← {page.backHome}</a></p>
+    </section>
+  </main>
+  <Footer lang={lang} />
+</BaseLayout>
+
+<script>
+  import { latestRelease } from '../scripts/latest-release';
+
+  const version = document.querySelector<HTMLElement>('[data-deskunion-version]')!;
+  latestRelease(version.dataset.repo!).then((release) => {
+    if (release) version.textContent = release.tag_name.replace(/^v/, '');
+  });
+</script>
+
+<style>
+  .product-page--deskunion {
+    --product-accent: #1a5fb4;
+    --accent: var(--product-accent);
+    --accent-hover: #144a8f;
+    --accent-ink: #ffffff;
+    --deskunion-wash: color-mix(in srgb, var(--product-accent) 6%, var(--band-tint));
+    --deskunion-border: color-mix(in srgb, var(--product-accent) 25%, var(--border-color));
+  }
+  :global(html[data-theme='dark']) .product-page--deskunion {
+    --product-accent: #99c1f1;
+    --accent-hover: #78aeed;
+    --accent-ink: #0b2a52;
+  }
+  .deskunion-intro { max-width: 60ch; color: var(--ink-dim); }
+  .deskunion-hero-shot { margin-block: 3rem 0; display: grid; justify-items: center; gap: 1rem; }
+  .deskunion-shot { display: none; width: min(100%, 60rem); height: auto; filter: drop-shadow(0 1.5rem 2rem rgb(0 0 0 / 0.35)); }
+  :global(html[data-theme='dark']) .deskunion-shot--dark,
+  :global(html[data-theme='light']) .deskunion-shot--light { display: block; }
+  .deskunion-hero-shot figcaption { color: var(--ink-dim); font-size: 0.875rem; text-align: center; }
+  .deskunion-steps { grid-template-columns: repeat(3, minmax(0, 1fr)); padding: 0; list-style: none; }
+  @media (max-width: 760px) { .deskunion-steps { grid-template-columns: 1fr; } }
+  .deskunion-step-number { display: inline-flex; align-items: center; justify-content: center; width: 2.5rem; height: 2.5rem; margin-bottom: 1.5rem; border: 1px solid var(--deskunion-border); border-radius: var(--radius); color: var(--product-accent); background: var(--deskunion-wash); }
+  .deskunion-install { margin-top: 3rem; display: grid; gap: 1rem; justify-items: start; }
+  .deskunion-install p { color: var(--ink-dim); }
+  .deskunion-install pre { max-width: 100%; overflow-x: auto; }
+  .deskunion-fork { display: grid; gap: 1rem; }
+  .deskunion-fork p { color: var(--ink-dim); max-width: 60ch; }
+  .deskunion-fork a { color: var(--product-accent); text-underline-offset: 0.2em; }
+</style>

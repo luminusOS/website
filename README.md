@@ -18,6 +18,7 @@ Every page exists in English (default) and Brazilian Portuguese:
 | `/` and `/pt-br/` | LuminusOS home: hero, pillars, how it works, editions, download, support |
 | `/aurora/` and `/pt-br/aurora/` | Aurora Shell subpage |
 | `/zaptide/` and `/pt-br/zaptide/` | ZapTide: native WhatsApp companion for Linux, downloads, setup and data guide |
+| `/deskunion/` and `/pt-br/deskunion/` | DeskUnion: mouse and keyboard sharing across computers, downloads and setup |
 | `/blog/` | Blog copy embedded in the main website build |
 | `/wiki/` | Wiki copy embedded in the main website build |
 | `/apps/` | Apps catalog copy embedded in the main website build |
