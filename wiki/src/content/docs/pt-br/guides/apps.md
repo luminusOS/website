@@ -65,7 +65,7 @@ remote que use a chave errada. Cada canal é uma branch própria, então `stable
 `testing` podem ficar instaladas lado a lado.
 
 ```sh
-flatpak remote-add --user luminus-testing https://raw.githubusercontent.com/luminusOS/flatpak-repo/main/descriptors/testing/luminus-testing.flatpakrepo
+flatpak remote-add --user luminus-testing https://flatpak.luminusos.org/testing/luminus-testing.flatpakrepo
 flatpak install --user luminus-testing org.luminusos.DeskUnion//testing
 ```
 
