@@ -55,6 +55,7 @@ export const links = {
   auroraEgo: 'https://extensions.gnome.org/extension/9389/aurora-shell/',
   donate: donateUrl,
   flatpakRemote: 'https://flatpak.luminusos.org/stable/luminus-stable.flatpakrepo',
+  deskunionFlatpakRef: 'https://flatpak.luminusos.org/stable/org.luminusos.DeskUnion.flatpakref',
   aetherisFlatpakRef: 'https://flatpak.luminusos.org/stable/org.luminusos.Aetheris.flatpakref',
 };
 

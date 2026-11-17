@@ -93,9 +93,12 @@ const flatpak = page.flatpakInstall;
         <div class="deskunion-install">
           <h3>{flatpak.title}</h3>
           <p>{flatpak.body}</p>
-          <pre class="mono"><code>{flatpak.installCommand}</code></pre>
+          <pre class="mono"><code>{flatpak.remoteCommand}
+{flatpak.installCommand}
+{flatpak.runCommand}</code></pre>
           <p>{flatpak.note}</p>
-          <p>
+          <p class="deskunion-install-links">
+            <a class="btn btn-ghost" href={links.deskunionFlatpakRef}>{flatpak.refLabel}</a>
             <a class="btn btn-ghost" href={links.deskunionReleases}>{page.allReleases} ↗</a>
           </p>
         </div>
@@ -151,6 +154,7 @@ const flatpak = page.flatpakInstall;
   .deskunion-step-number { display: inline-flex; align-items: center; justify-content: center; width: 2.5rem; height: 2.5rem; margin-bottom: 1.5rem; border: 1px solid var(--deskunion-border); border-radius: var(--radius); color: var(--product-accent); background: var(--deskunion-wash); }
   .deskunion-install { margin-top: 3rem; display: grid; gap: 1rem; justify-items: start; }
   .deskunion-install p { color: var(--ink-dim); }
+  .deskunion-install-links { display: flex; flex-wrap: wrap; gap: 0.75rem; }
   .deskunion-install pre { max-width: 100%; overflow-x: auto; }
   .deskunion-fork { display: grid; gap: 1rem; }
   .deskunion-fork p { color: var(--ink-dim); max-width: 60ch; }

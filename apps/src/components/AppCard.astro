@@ -1,6 +1,6 @@
 ---
 import type { AppEntry } from '../data/apps';
-import { translations, type Lang } from '../i18n';
+import type { Lang } from '../i18n';
 import { appHref } from '../lib/apps';
 import { withBase } from '../lib/site';
 
@@ -10,7 +10,6 @@ interface Props {
 }
 
 const { app, lang } = Astro.props;
-const t = translations[lang].home;
 // Both summaries are searchable so a query in either language finds the app.
 const search = [app.name, app.summary[lang], app.summary.en, app.category[lang], app.id, ...app.keywords]
   .join(' ')
@@ -26,7 +25,6 @@ const search = [app.name, app.summary[lang], app.summary.en, app.category[lang],
     </div>
     <div class="app-card-meta">
       <span class="chip">{app.category[lang]}</span>
-      {app.inFlatpakRepo === false && <span class="chip">{t.githubOnly}</span>}
       <span class="mono version">v{app.releases[0].version}</span>
     </div>
   </a>

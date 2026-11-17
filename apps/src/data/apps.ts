@@ -25,8 +25,6 @@ export interface AppEntry {
   issues: string;
   source: string;
   productPage: string;
-  /** False until the app is published in the Luminus Flatpak repository. */
-  inFlatpakRepo?: boolean;
   icon: string;
   accent: string;
   screenshots: Screenshot[];
@@ -249,18 +247,12 @@ export const apps: AppEntry[] = [
         'Ícone na bandeja, CLI e modo daemon',
       ],
     },
-    notice: {
-      en: 'DeskUnion is not in the Luminus Flatpak repository yet. Download it from the GitHub releases page. macOS, Windows and Android builds are there too.',
-      'pt-br':
-        'O DeskUnion ainda não está no repositório Flatpak do Luminus. Baixe-o na página de versões do GitHub, onde também há builds para macOS, Windows e Android.',
-    },
     license: 'GPL-3.0-or-later',
     developer: 'LuminusOS',
     homepage: 'https://github.com/luminusOS/deskunion',
     issues: 'https://github.com/luminusOS/deskunion/issues',
     source: 'https://github.com/luminusOS/deskunion',
     productPage: '/deskunion',
-    inFlatpakRepo: false,
     icon: '/icons/org.luminusos.DeskUnion.svg',
     accent: '#1a5fb4',
     screenshots: [

@@ -16,7 +16,6 @@ const labels = t.setup.steps.map((step) => step.label);
 const commands = flatpak.steps(app.id);
 ---
 
-{app.inFlatpakRepo !== false && (
 <section>
   <h2>{t.app.terminal}</h2>
   <p class="hint">
@@ -28,7 +27,6 @@ const commands = flatpak.steps(app.id);
     ))}
   </div>
 </section>
-)}
 
 <style>
   h2 {
