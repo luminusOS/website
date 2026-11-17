@@ -65,7 +65,7 @@ channel is its own branch, so `stable` and `testing` can be installed side by
 side.
 
 ```sh
-flatpak remote-add --user luminus-testing https://raw.githubusercontent.com/luminusOS/flatpak-repo/main/descriptors/testing/luminus-testing.flatpakrepo
+flatpak remote-add --user luminus-testing https://flatpak.luminusos.org/testing/luminus-testing.flatpakrepo
 flatpak install --user luminus-testing org.luminusos.DeskUnion//testing
 ```
 
