@@ -287,14 +287,14 @@ export const ptBr: typeof en = {
         title: 'Dock adaptativo',
         body: 'Um dock em cada monitor que pode se ocultar perto de janelas, aparecer pela borda da tela ou permanecer fixo. Também inclui Lixeira e unidades removíveis.',
         video: 'dock',
-        alt: 'Uma janela é arrastada sobre o dock, que desliza para fora e volta quando a janela sobe. Com uma janela maximizada, o dock reaparece quando o ponteiro chega à borda inferior.',
+        alt: 'O ponteiro arrasta uma janela pela barra de título. O dock se recolhe quando a janela desce e volta quando ela sobe.',
       },
       {
         tag: 'Clipboard History',
         title: 'Histórico pesquisável da área de transferência',
         body: 'Pesquise itens copiados, fixe entradas e navegue pelo teclado. O histórico permanece na máquina local.',
         video: 'clipboard',
-        alt: 'O painel do histórico da área de transferência abre ao lado de um editor de texto. Digitar filtra a lista, e Enter cola a entrada selecionada no editor.',
+        alt: 'O histórico da área de transferência abre com quatro itens copiados. Digitar “design” reduz a lista aos dois itens correspondentes.',
       },
       {
         tag: 'Volume Mixer',
@@ -308,24 +308,24 @@ export const ptBr: typeof en = {
         title: 'Seu próximo evento ao lado do relógio',
         body: 'Os próximos eventos das suas agendas aparecem ao lado do relógio, com notificações de lembrete que você pode adiar ou usar para abrir a agenda.',
         video: 'calendar',
-        alt: 'Um próximo evento surge ao lado do relógio. Uma notificação de lembrete aparece e se expande com Abrir Agenda e Adiar, e o ponteiro clica em Adiar.',
+        alt: 'Um próximo evento surge ao lado do relógio. Passar o ponteiro sobre o lembrete expande a notificação e revela as opções Abrir Agenda e Adiar.',
       },
       {
         tag: 'Tray Icons',
         title: 'Ícones de bandeja e apps em segundo plano',
         body: 'Exibe ícones SNI e apps em segundo plano do GNOME no painel, removendo entradas duplicadas.',
         video: 'tray',
-        alt: 'Ícones de aplicativos surgem um a um no painel superior. A bandeja se expande pela seta, e passar o ponteiro sobre um ícone mostra o nome.',
+        alt: 'O ponteiro clica na seta para expandir, recolher e reabrir a bandeja. Passar o ponteiro sobre um ícone revela o nome do aplicativo.',
       },
     ],
-    spotlightPlay: 'Reproduzir',
-    spotlightPause: 'Pausar',
-    watchDemo: 'Ver',
-    modulesTitle: 'Os módulos',
-    modulesSubtitle: 'Vinte e dois módulos independentes, em quatro grupos. Ative cada um nas preferências.',
+    watchDemo: 'Ver demonstração',
+    modulesTitle: 'Explore os módulos',
+    modulesSubtitle: 'Escolha o que adicionar ao seu desktop GNOME. Ative ou desative cada módulo nas preferências do Aurora Shell.',
+    moduleIndex: 'Categorias de módulos',
     moduleGroups: [
       {
-        name: 'Dock e Painel',
+        icon: 'panel' as const,
+        name: 'Dock e painel',
         modules: [
           { name: 'Dock', body: 'Substitui o dash padrão por um dock por monitor: intellihide, revelação na borda, modo sempre visível, Lixeira e atalhos de unidades removíveis.', demo: 'dock' },
           { name: 'Aurora Menu', body: 'Um menu no painel com itens recentes, atalhos úteis, ícone configurável e um espaço para comando personalizado.' },
@@ -340,6 +340,7 @@ export const ptBr: typeof en = {
         ],
       },
       {
+        icon: 'theme' as const,
         name: 'Aparência',
         modules: [
           { name: 'Theme Changer', body: 'Mantém o comportamento de tema claro/escuro do GNOME consistente em todo o sistema.' },
@@ -349,6 +350,7 @@ export const ptBr: typeof en = {
         ],
       },
       {
+        icon: 'sliders' as const,
         name: 'Comportamento',
         modules: [
           { name: 'Skip Overview on Login', body: 'Inicie direto na área de trabalho. Pula a visão geral no boot.' },
@@ -360,7 +362,8 @@ export const ptBr: typeof en = {
         ],
       },
       {
-        name: 'Privacidade e Área de Transferência',
+        icon: 'shield' as const,
+        name: 'Privacidade e área de transferência',
         modules: [
           { name: 'Privacy', body: 'Privacidade ao compartilhar a tela: Não Perturbe automático e ocultação de conteúdo do painel.' },
           { name: 'Clipboard History', body: 'Histórico pesquisável da área de transferência com fixação, navegação por teclado e atalho definido por você. Tudo fica local.', demo: 'clipboard' },

@@ -5,6 +5,7 @@ import Footer from './Footer.astro';
 import AuroraShowcase from './AuroraShowcase.astro';
 import type { Lang } from '../i18n/translations';
 import '../styles/product-page.css';
+import ProductIcon from './ProductIcon.astro';
 import { translations, langPrefix, links, mainSite, repos } from '../i18n/translations';
 
 interface Props {
@@ -71,42 +72,56 @@ const fallbackVersion = 'v51.1';
         <AuroraShowcase
           items={page.spotlights}
           label={page.spotlightTitle}
-          playLabel={page.spotlightPlay}
-          pauseLabel={page.spotlightPause}
         />
       </div>
     </section>
 
-    <section class="band band--tint section" id="modules">
+    <section class="band band--tint section" id="modules" aria-labelledby="modules-title">
       <div class="container">
         <div class="section-head">
-          <h2>{page.modulesTitle}</h2>
+          <h2 id="modules-title">{page.modulesTitle}</h2>
           <p>{page.modulesSubtitle}</p>
         </div>
 
-        <div class="module-groups">
-          {page.moduleGroups.map((group, groupIndex) => (
-            <section class="module-group" aria-labelledby={`module-group-${groupIndex}`}>
-              <header class="module-group-head">
-                <h3 class="module-group-title" id={`module-group-${groupIndex}`}>{group.name}</h3>
-                <span class="module-group-count">{group.modules.length}</span>
-              </header>
-              <ul class="module-list">
-                {group.modules.map((module) => (
-                  <li class="module-item">
-                    <h4>{module.name}</h4>
-                    <p>{module.body}</p>
-                    {module.demo && (
-                      <a class="module-demo" href="#spotlight" data-tour-open={module.demo} aria-label={`${page.watchDemo}: ${module.name}`}>
-                        <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true" fill="currentColor"><path d="M4.5 2.8v10.4L13 8z" /></svg>
-                        {page.watchDemo}
-                      </a>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </section>
-          ))}
+        <div class="module-catalog">
+          <nav class="module-index" aria-labelledby="module-index-title">
+            <p id="module-index-title">{page.moduleIndex}</p>
+            <ul role="list">
+              {page.moduleGroups.map((group) => (
+                <li>
+                  <a href={`#modules-${group.icon}`}>
+                    <ProductIcon name={group.icon} />
+                    <span>{group.name}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <div class="module-groups">
+            {page.moduleGroups.map((group) => (
+              <section class="module-group" aria-labelledby={`modules-${group.icon}`}>
+                <header class="module-group-head">
+                  <span class="module-group-icon"><ProductIcon name={group.icon} /></span>
+                  <h3 class="module-group-title" id={`modules-${group.icon}`} tabindex="-1">{group.name}</h3>
+                </header>
+                <ul class="module-list" role="list">
+                  {group.modules.map((module) => (
+                    <li class="module-item">
+                      <h4>{module.name}</h4>
+                      <p>{module.body}</p>
+                      {'demo' in module && module.demo && (
+                        <a class="module-demo" href={`#tour-panel-${module.demo}`} data-tour-open={module.demo} aria-label={`${page.watchDemo}: ${module.name}`}>
+                          <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true" fill="currentColor"><path d="M4.5 2.8v10.4L13 8z" /></svg>
+                          {page.watchDemo}
+                        </a>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ))}
+          </div>
         </div>
       </div>
     </section>
