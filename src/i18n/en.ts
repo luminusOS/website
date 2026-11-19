@@ -286,14 +286,14 @@ export const en = {
         title: 'Adaptive dock',
         body: 'A dock on every monitor that can hide around windows, reveal from the screen edge or remain fixed. It also supports Trash and removable drives.',
         video: 'dock',
-        alt: 'A window is dragged over the dock, which slides away, then returns when the window moves back up. With a maximized window, the dock reappears when the pointer reaches the bottom edge.',
+        alt: 'The pointer drags a window by its title bar. The dock slides out of view as the window moves down and returns as the window moves back up.',
       },
       {
         tag: 'Clipboard History',
         title: 'Searchable clipboard history',
         body: 'Search copied items, pin entries and navigate from the keyboard. Clipboard history remains on the local machine.',
         video: 'clipboard',
-        alt: 'The clipboard history panel opens next to a text editor. Typing filters the list, and pressing Enter pastes the selected entry into the editor.',
+        alt: 'The clipboard history panel opens with four copied entries. Typing “design” narrows the list to the two matching entries.',
       },
       {
         tag: 'Volume Mixer',
@@ -307,23 +307,23 @@ export const en = {
         title: 'Your next event beside the clock',
         body: 'Upcoming events from your calendars appear next to the clock, with reminder notifications you can snooze or use to open the calendar.',
         video: 'calendar',
-        alt: 'An upcoming event slides in beside the clock. A reminder notification appears and expands to show Open Calendar and Snooze, and the pointer clicks Snooze.',
+        alt: 'An upcoming event slides in beside the clock. Hovering over its reminder expands the notification to show Open Calendar and Snooze.',
       },
       {
         tag: 'Tray Icons',
         title: 'Tray and background app icons',
         body: 'Display SNI tray icons and GNOME background apps in the panel while deduplicating repeated entries.',
         video: 'tray',
-        alt: 'Application icons appear one by one in the top panel. The tray expands from its chevron, and hovering an icon shows its name.',
+        alt: 'The pointer clicks the arrow to expand, collapse and reopen the tray, then hovers over an app icon to reveal its name.',
       },
     ],
-    spotlightPlay: 'Play',
-    spotlightPause: 'Pause',
-    watchDemo: 'Watch',
-    modulesTitle: 'The modules',
-    modulesSubtitle: 'Twenty-two independent modules, in four groups. Toggle each one in preferences.',
+    watchDemo: 'Watch demo',
+    modulesTitle: 'Explore the modules',
+    modulesSubtitle: 'Choose what to add to your GNOME desktop. Turn each module on or off in Aurora Shell preferences.',
+    moduleIndex: 'Module categories',
     moduleGroups: [
       {
+        icon: 'panel' as const,
         name: 'Dock & Panel',
         modules: [
           { name: 'Dock', body: 'Replaces the stock dash with a per-monitor dock: intellihide, edge reveal, always-visible mode, Trash and drive shortcuts.', demo: 'dock' },
@@ -339,6 +339,7 @@ export const en = {
         ],
       },
       {
+        icon: 'theme' as const,
         name: 'Appearance',
         modules: [
           { name: 'Theme Changer', body: 'Keeps GNOME light/dark color-scheme behavior consistent across the system.' },
@@ -348,6 +349,7 @@ export const en = {
         ],
       },
       {
+        icon: 'sliders' as const,
         name: 'Behavior',
         modules: [
           { name: 'Skip Overview on Login', body: 'Boot straight to your desktop. Skips the overview on startup.' },
@@ -359,6 +361,7 @@ export const en = {
         ],
       },
       {
+        icon: 'shield' as const,
         name: 'Privacy & Clipboard',
         modules: [
           { name: 'Privacy', body: 'Screen-sharing privacy: automatic Do Not Disturb and panel content hiding.' },
